@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { findCalibrationValue } from "../../src/ts/functions";
+import { findCalibrationValue, calibrate } from "../../src/ts/functions";
 
 describe ('findCalibrationValue', () => {
     [
@@ -18,5 +18,20 @@ describe ('findCalibrationValue', () => {
 
     it ( "should throw an error", () => {
         expect ( () => findCalibrationValue("ahfdahswdoahd")).to.throw(Error, "input does not contain digit");
+    })
+});
+
+
+describe ('calibrate', () => {
+    [
+        ["0", 0],
+        ["1", 11],
+        ["1\n2", 33],
+        ["1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet", 142]
+    ].forEach( (inputAndExpected : (string|number)[] ) => {
+        it ( inputAndExpected[0] + ' should calibrate to ' + inputAndExpected[0], () => {
+            expect(calibrate (""+inputAndExpected[0])).to.be.deep.equal(inputAndExpected[1]);
+        })
+    
     })
 });

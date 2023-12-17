@@ -1,3 +1,11 @@
+export function calibrate ( input: string ) : number {
+    return input
+        .split("\n")
+        .map ( line => findCalibrationValue (line))
+        .reduce ( (prev, current, index ) => prev + current )
+}
+
+
 export function findCalibrationValue (line: string) : number {
     let leftDigit = findFirstLeftDigit ( line );
     let rightDigit = findFirstRightDigit ( line );
