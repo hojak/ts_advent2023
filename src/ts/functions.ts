@@ -18,24 +18,24 @@ export function findCalibrationValue (line: string) : number {
 }
 
 function findFirstLeftDigit ( line: string ) : number {
-    let index = 0;
-    while (index < line.length ) {
-        if ( "0123456789".includes ( line[index] ) ) {
-            return Number (line[index]);
+    let startIndex = 0;
+    while (startIndex < line.length ) {
+        if ( "0123456789".includes ( line[startIndex] ) ) {
+            return Number (line[startIndex]);
         }
-        index ++;
+        startIndex ++;
     }
 
     throw new Error ( "input does not contain digit");    
 }
 
 function findFirstRightDigit ( line: string ) : number {
-    let index = line.length-1;
-    while (index >= 0 ) {
-        if ( "0123456789".includes ( line[index] ) ) {
-            return Number (line[index]);
+    let startIndex = line.length-1;
+    while (startIndex >= 0 ) {
+        if ( "0123456789".includes ( line[startIndex] ) ) {
+            return Number (line[startIndex]);
         }
-        index --;
+        startIndex --;
     }
 
     throw new Error ( "input does not contain digit");    
