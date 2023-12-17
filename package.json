@@ -1,0 +1,27 @@
+{
+  "name": "ts-kata-base",
+  "version": "1.0.0",
+  "description": "Basic repository to use as starting point for a small Typescript project e.g. in a coding kata",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "Holger Janßen-Kroll",
+  "license": "GPL v3",
+  "dependencies": {
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.2"
+  },
+  "mocha": {
+    "extension": ["ts"],
+    "spec": ["test/ts/**/*.test.ts"],
+    "require": ["ts-node/register"]
+  }
+}

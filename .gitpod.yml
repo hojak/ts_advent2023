@@ -1,0 +1,15 @@
+
+tasks:
+ - name: Setup Gitpod and Run Tests
+   init: |
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | sh
+    nvm use
+    npm install
+    curl -sL install.mob.sh | sudo sh
+   command: npm run test
+
+
+vscode:
+  extensions:
+    - hbenl.vscode-mocha-test-adapter
+    - ms-vscode.vscode-typescript-next
