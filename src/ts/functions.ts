@@ -1,4 +1,8 @@
 export function calibrate ( input: string ) : number {
+    if ( input == "" ) {
+        return 0;
+    }
+    
     return input
         .split("\n")
         .map ( line => findCalibrationValue (line))

@@ -32,6 +32,11 @@ describe ('calibrate', () => {
         it ( inputAndExpected[0] + ' should calibrate to ' + inputAndExpected[0], () => {
             expect(calibrate (""+inputAndExpected[0])).to.be.deep.equal(inputAndExpected[1]);
         })
+    })
+
+    it ( "should return 0 for empty input", () => {
+        expect(calibrate ("")).to.be.equal(0);
+    })
     
     })
 });
