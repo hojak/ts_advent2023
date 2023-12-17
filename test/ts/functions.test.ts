@@ -37,6 +37,8 @@ describe ('calibrate', () => {
     it ( "should return 0 for empty input", () => {
         expect(calibrate ("")).to.be.equal(0);
     })
-    
+
+    it ( "should raise an error", () => {
+        expect ( () => calibrate("aadsdlk")).to.throw(Error, "input does not contain digit");
     })
 });
