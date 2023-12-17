@@ -20,18 +20,11 @@
     "@types/mocha": "^10.0.6",
     "chai": "^4.3.10",
     "mocha": "^10.2.0",
-    "mocha-param": "^2.0.1",
     "ts-node": "^10.9.2"
   },
   "mocha": {
-    "extension": [
-      "ts"
-    ],
-    "spec": [
-      "test/ts/**/*.test.ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ]
+    "extension": ["ts"],
+    "spec": ["test/ts/**/*.test.ts"],
+    "require": ["ts-node/register"]
   }
 }
