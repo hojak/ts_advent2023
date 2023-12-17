@@ -4,7 +4,10 @@
   "description": "Basic repository to use as starting point for a small Typescript project e.g. in a coding kata",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "main": "tsc --build && echo \"hallo\" | node out/src/ts/main.js",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
   },
   "keywords": [],
   "author": "Holger Janßen-Kroll",
