@@ -1,3 +1,5 @@
+import { calibrate } from "./functions";
+
 let input = '';
 
 process.stdin.resume();
@@ -8,5 +10,6 @@ process.stdin.on ('data', function (part) {
 })
 
 process.stdin.on ('end', function () {
-    console.log ( "complete input consists of " + input.length + " chars\n");
+    console.log ("Calibrating on input");
+    console.log ( "Calibration value: " + calibrate ( input ));
 })
