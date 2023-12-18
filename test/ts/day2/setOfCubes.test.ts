@@ -32,4 +32,23 @@ describe("SetOfCubes", () =>{
     });
 
 
+    [
+        [1,1,1],
+        [1,0,0],
+        [2,1,1],
+    ].forEach( (setDefinition : (number)[])  => {
+        it ( "it should not contain larger set: " + setDefinition, () => {
+            expect ( new SetOfCubes ( setDefinition[0], setDefinition[1], setDefinition[2])
+                .contains ( new SetOfCubes(setDefinition[0]+1,setDefinition[1],setDefinition[2] )))
+                .to.be.false;
+            expect ( new SetOfCubes ( setDefinition[0], setDefinition[1], setDefinition[2])
+                .contains ( new SetOfCubes(setDefinition[0],setDefinition[1]+1,setDefinition[2] )))
+                .to.be.false;
+            expect ( new SetOfCubes ( setDefinition[0], setDefinition[1], setDefinition[2])
+                .contains ( new SetOfCubes(setDefinition[0],setDefinition[1],setDefinition[2]+1 )))
+                .to.be.false;
+        })            
+    });
+
+
 })
