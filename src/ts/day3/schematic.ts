@@ -1,4 +1,5 @@
 export class Schematic {
+
     static readonly digitChars = "0123456789";
     lineLength = 0;
 
@@ -76,6 +77,12 @@ export class Schematic {
 
         return line >= 0 && index >= 0 && index < this.schematic.length &&
             ! (Schematic.digitChars + ".\n").includes( this.schematic[index]);
+    }
+
+
+
+    getSumOfGearRatios(): number {
+        return 0;
     }
     
 }

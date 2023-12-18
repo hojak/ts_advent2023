@@ -3,7 +3,7 @@ import { describe } from "mocha";
 import { Schematic } from "../../../src/ts/day3/schematic";
 
 describe ("day 3", () => {
-    describe ("Schematic", () => {
+    describe ("Schematic Day 1", () => {
         it ( "should return recognize a simple 1", () => {
             const testee = new Schematic ("1*");
             expect ( testee.getSumOfMissingParts ()).to.be.equal(1);
@@ -13,7 +13,6 @@ describe ("day 3", () => {
             const testee = new Schematic ("123*");
             expect ( testee.getSumOfMissingParts ()).to.be.equal(123);
         })
-
         
         it ( "should also recognize # as a symbol", () => {
             const testee = new Schematic ("123#");
@@ -34,7 +33,6 @@ describe ("day 3", () => {
             const testee = new Schematic ("*123\n");
             expect ( testee.getSumOfMissingParts ()).to.be.equal(123);
         })
-
 
         it ( "should recognize a symbol below a part", () => {
             const testee = new Schematic ("1\n*");
@@ -72,7 +70,11 @@ describe ("day 3", () => {
             expect ( testee.getSumOfMissingParts ()).to.be.equal(4361);
         });
 
-
-
     });
-})
+
+    describe ( "Gear Evaluation (part 2)", () => {
+        it ( "should return a value", () => {
+            expect ( new Schematic(".").getSumOfGearRatios()).to.be.equal (0)
+        })
+    });
+});
