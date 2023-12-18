@@ -15,7 +15,7 @@ export class Game {
     }
 
     getMinimalSetOfCubes(): SetOfCubes {
-        return new SetOfCubes(0,0,0);
+        return this.draws.reduce( (currentSuperSet, currentDraw, index) => currentSuperSet.getSuperSetWith(currentDraw));
     }
 
     static createFromString(representation: string): Game {

@@ -36,11 +36,16 @@ describe("Game", () => {
             .isPossibleWith(SetOfCubes.createFromString("12 red, 13 green, 14 blue"))).to.be.false;
     })
 
-
     describe ( "getMinimalSetOfCubes", () => {
         it ( "should return an empty set for an empty game", () => {
             expect ( Game.createFromString("Game 1: 0 green").getMinimalSetOfCubes())
                 .to.be.deep.equal( new SetOfCubes(0,0,0));
         });
+
+        it ( "it should combine all colors", () => {
+            expect ( Game.createFromString("Game 1: 1 green; 2 red; 3 blue").getMinimalSetOfCubes())
+                .to.be.deep.equal( new SetOfCubes(3,1,2));
+        });
+
     });
 });
