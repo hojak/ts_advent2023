@@ -16,7 +16,7 @@ export class SetOfCubes {
     }
 
     getPower(): any {
-        return this.red + this.blue + this.green;
+        return this.red * this.blue * this.green;
     }
 
     getSuperSetWith(anotherSet: SetOfCubes): any {

@@ -78,8 +78,8 @@ describe("SetOfCubes", () =>{
             expect ( new SetOfCubes ( 0,0,0).getPower()).to.be.equal(0);
         })
 
-        it ( "should be the sum of the number of cubes", () => {
-            expect ( new SetOfCubes ( 10,20,30).getPower()).to.be.equal(60);
+        it ( "should be the multiplication of the number of cubes", () => {
+            expect ( new SetOfCubes ( 2,3,4 ).getPower()).to.be.equal(24);
         })
 
     })
