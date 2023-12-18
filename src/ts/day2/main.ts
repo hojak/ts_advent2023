@@ -33,7 +33,7 @@ process.stdin.on ('data', function (part) {
 })
 
 process.stdin.on ('end', function () {
-    console.log ("computing sum of possible games");
-    console.log ( "result: " + computeSumOfPossibleGames ( input, "12 red, 13 green, 14 blue" ));
+    console.log ( "sum of possible games: " + computeSumOfPossibleGames ( input, "12 red, 13 green, 14 blue" ));
+    console.log ( "sum of powers of all minimal games: " + computePowerSumOfAllMinimalSets(input));
 })
 
