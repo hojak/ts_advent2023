@@ -11,14 +11,15 @@ export class Schematic {
         
         let index = 0;
         while (index < this.schematic.length) {
+            const currentChar = this.schematic[index];
 
-            if ( Schematic.digitChars.includes(this.schematic[index])) {
+            if ( Schematic.digitChars.includes(currentChar)) {
                 let numberOfDigits = 1;
                 while ( Schematic.digitChars.includes(this.schematic[index + numberOfDigits])) {
                     numberOfDigits++;
                 }
 
-                if ( this.isSymbolCharacter(index + numberOfDigits)) {
+                if ( this.hasNeighboringSymbol(index, numberOfDigits) ) {
                     found.push ( Number ( this.schematic.substring(index, index+numberOfDigits)));
                 }
 
@@ -31,7 +32,16 @@ export class Schematic {
         return found.reduce( (prev, curr, index) => prev + curr);
     }
 
-    private isSymbolCharacter(index: number) {
-        return ! (Schematic.digitChars + ".\n").includes( this.schematic[index]);
+    hasNeighboringSymbol(index: number, numberOfDigits: number) : boolean {
+        return this.isSymbolCharacter(index+numberOfDigits)
+            || this.isSymbolCharacter(index-1);
     }
+
+    private isSymbolCharacter(index: number) {
+        return index >= 0 && index < this.schematic.length &&
+            ! (Schematic.digitChars + ".\n").includes( this.schematic[index]);
+    }
+
+
+    
 }
