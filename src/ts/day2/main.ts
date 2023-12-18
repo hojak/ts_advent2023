@@ -13,6 +13,16 @@ export function computeSumOfPossibleGames ( input: string, checkWithSet : string
 }
 
 
+export function computePowerSumOfAllMinimalSets ( input: string ) : number {
+    return input
+        .split ("\n")
+        .map( line => Game.createFromString(line))
+        .map ( game => game.getMinimalSetOfCubes())
+        .map ( setOfCubes => setOfCubes.getPower())
+        .reduce( (prev, current, index ) => prev+current );
+}
+
+
 let input = '';
 
 process.stdin.resume();

@@ -25,7 +25,6 @@ describe("Game", () => {
         expect (Game.createFromString("Game 12: 2 red").getNumber()).to.be.equal(12);
     })
 
-
     it ( "Game 1 should be possible", function () {
         expect ( Game.createFromString("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green")
             .isPossibleWith(SetOfCubes.createFromString("12 red, 13 green, 14 blue"))).to.be.true;
