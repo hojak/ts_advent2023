@@ -14,7 +14,7 @@ export class Schematic {
         let column = 0;
         let line = 0;
         while (column + line*this.lineLength < this.schematic.length) {
-            const currentChar = this.schematic[column];
+            const currentChar = this.schematic[line*this.lineLength + column];
 
             if ( Schematic.digitChars.includes(currentChar)) {
                 let numberOfDigits = 1;
@@ -23,7 +23,7 @@ export class Schematic {
                 }
 
                 if ( this.hasNeighboringSymbol(line, column, numberOfDigits) ) {
-                    found.push ( Number ( this.schematic.substring(column, column+numberOfDigits)));
+                    found.push ( Number ( this.schematic.substring(line*this.lineLength + column, line*this.lineLength + column+numberOfDigits)));
                 }
 
                 column += numberOfDigits;
@@ -39,13 +39,16 @@ export class Schematic {
     }
 
     hasNeighboringSymbol(line: number, column: number, numberOfDigits: number) : boolean {
-        return this.isSymbolCharacter(line*this.lineLength + column+numberOfDigits)
-            || this.isSymbolCharacter(line*this.lineLength + column-1)
-            || this.isSymbolCharacter((line+1)*this.lineLength);
+        return this.isSymbolCharacter(line, column+numberOfDigits)
+            || this.isSymbolCharacter(line, column-1)
+            || this.isSymbolCharacter((line+1), column)
+            || this.isSymbolCharacter((line-1), column);
     }
 
-    private isSymbolCharacter(index: number) {
-        return index >= 0 && index < this.schematic.length &&
+    private isSymbolCharacter(line: number, column: number) {
+        let index = line * this.lineLength + column;
+
+        return line >= 0 && index >= 0 && index < this.schematic.length &&
             ! (Schematic.digitChars + ".\n").includes( this.schematic[index]);
     }
 
