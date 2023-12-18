@@ -2,9 +2,12 @@ import { SetOfCubes } from "./setOfCubes";
 
 export class SetOfDraws {
 
-    static createFromString(representation: string): any {
-        let result : SetOfCubes[] = [];
-        return result;
+    isPossibleWith ( setOfCubes: SetOfCubes ) : boolean {
+        return true;
+    }
+
+    static createFromString(representation: string): SetOfDraws {
+        return new SetOfDraws();
     }
 
 }
