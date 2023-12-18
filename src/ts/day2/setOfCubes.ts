@@ -8,4 +8,12 @@ export class SetOfCubes {
         this.green = green;
         this.red = red;
     }
+
+
+    contains(compareTo: SetOfCubes): any {
+        return compareTo.blue <= this.blue
+            && compareTo.red <= this.red
+            && compareTo.green <= this.green;
+    }
+
 }
