@@ -117,13 +117,7 @@ export class Schematic {
         foundAdjacentParts = foundAdjacentParts.concat(this.getGearNeigborsInLine(line+1, column));
 
         // same line
-        if ( this.isDigitAt(line, column - 1)) {
-            foundAdjacentParts.push(this.getPartNumberOfDigitAt(line, column-1));
-        }
-
-        if ( this.isDigitAt(line, column + 1)) {
-            foundAdjacentParts.push(this.getPartNumberOfDigitAt(line, column+1));
-        }
+        foundAdjacentParts = foundAdjacentParts.concat(this.getGearNeigborsInLine(line, column));
 
         if ( foundAdjacentParts.length == 2 ) {
             return foundAdjacentParts[0] * foundAdjacentParts[1];
