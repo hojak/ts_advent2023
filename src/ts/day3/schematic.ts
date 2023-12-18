@@ -1,4 +1,6 @@
 export class Schematic {
+    static readonly digitChars = "0123456789";
+
     schematic: string;
     constructor ( representation: string ) {
         this.schematic = representation;
@@ -9,9 +11,10 @@ export class Schematic {
         
         let index = 0;
         while (index < this.schematic.length) {
-            if ( "0123456789".includes(this.schematic[index])) {
+
+            if ( Schematic.digitChars.includes(this.schematic[index])) {
                 let numberOfDigits = 1;
-                while ( "0123456789".includes(this.schematic[index + numberOfDigits])) {
+                while ( Schematic.digitChars.includes(this.schematic[index + numberOfDigits])) {
                     numberOfDigits++;
                 }
 
