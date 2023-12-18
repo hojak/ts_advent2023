@@ -11,7 +11,18 @@ export class Card {
         this.myNumbers = Card.splitToNumbers(splitWinningNumbers[1]);
     }
 
-    rate(): number {
+    getRating(): number {
+        let matching = this.getNumberOfMatches();        
+
+        if ( matching == 0) { 
+            return 0; 
+        } else {
+            return Math.pow(2, matching-1);
+        }
+    }
+
+
+    getNumberOfMatches(): number {
         if ( this.winningNumbers.length == 0 && this.myNumbers.length == 0 ) {
             return 0;
         }
@@ -32,13 +43,10 @@ export class Card {
                 }
             }
         }
-
-        if ( matching == 0) { 
-            return 0; 
-        } else {
-            return Math.pow(2, matching-1);
-        }
+        
+        return matching;
     }
+
 
     static splitToNumbers ( str: string ) : number[] {
         return str
