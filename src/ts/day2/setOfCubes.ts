@@ -10,7 +10,7 @@ export class SetOfCubes {
     }
 
 
-    contains(compareTo: SetOfCubes): any {
+    contains(compareTo: SetOfCubes): boolean {
         return compareTo.blue <= this.blue
             && compareTo.red <= this.red
             && compareTo.green <= this.green;
