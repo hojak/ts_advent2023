@@ -10,6 +10,9 @@ process.stdin.on ('data', function (part) {
 })
 
 process.stdin.on ('end', function () {
-    console.log ( "compute sum of missing part numbers");
+    console.log ( "compute sum of missing part numbers:");
     console.log ( new Schematic (input).getSumOfMissingParts() );
+
+    console.log ( "compute sum of gear Ratios:");
+    console.log ( new Schematic (input).getSumOfGearRatios() );
 })
