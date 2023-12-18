@@ -117,13 +117,21 @@ export class Schematic {
             foundAdjacentParts.push (this.getPartNumberOfDigitAt(line - 1, column - 1));
             foundAdjacentParts.push (this.getPartNumberOfDigitAt(line - 1, column + 1));
         }
-        
+
         if ( this.isDigitAt(line, column - 1)) {
             foundAdjacentParts.push(this.getPartNumberOfDigitAt(line, column-1));
         }
 
         if ( this.isDigitAt(line, column + 1)) {
             foundAdjacentParts.push(this.getPartNumberOfDigitAt(line, column+1));
+        }
+
+        if ( this.isDigitAt(line+1, column-1) && this.isDigitAt(line+1, column+1)
+                && ! this.isDigitAt(line-1, column)) {
+            // case .*.
+            //      X.X
+            foundAdjacentParts.push (this.getPartNumberOfDigitAt(line + 1, column - 1));
+            foundAdjacentParts.push (this.getPartNumberOfDigitAt(line + 1, column + 1));
         }
 
         if ( foundAdjacentParts.length == 2 ) {
