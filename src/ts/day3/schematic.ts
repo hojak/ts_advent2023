@@ -144,7 +144,9 @@ export class Schematic {
             }
         } else if (this.isDigitAt(line, column) ) {
             result.push ( this.getPartNumberOfDigitAt(line, column) );
-        }
+        } else if (this.isDigitAt(line, column+1) ) {
+            result.push ( this.getPartNumberOfDigitAt(line, column+1) );
+        } 
 
         return result;
     }
