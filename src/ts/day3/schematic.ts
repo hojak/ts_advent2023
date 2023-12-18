@@ -27,7 +27,7 @@ export class Schematic {
                 let numberOfDigits = this.getNumberOfDigitsStartingAt(line, column);
 
                 if (this.hasNeighboringSymbol(line, column, numberOfDigits)) {
-                    result.push(this.getCurrentPartNumber(line, column, numberOfDigits));
+                    result.push(this.getPartNumberStartingAt(line, column, numberOfDigits));
                 }
 
                 column += numberOfDigits;
@@ -53,7 +53,7 @@ export class Schematic {
         return Schematic.digitChars.includes(currentChar);
     }
 
-    private getCurrentPartNumber(line: number, column: number, numberOfDigits: number): number {
+    private getPartNumberStartingAt(line: number, column: number, numberOfDigits: number): number {
         return Number(this.schematic.substring(
             line * this.lineLength + column,
             line * this.lineLength + column + numberOfDigits
@@ -130,10 +130,7 @@ export class Schematic {
         while ( this.isDigit(this.getCharAt(line,startColumn+numberOfDigits))) {
             numberOfDigits++;
         }
-        let numberSubstring = this.schematic.substring(
-            line*this.lineLength+startColumn, 
-            line*this.lineLength+startColumn+numberOfDigits
-        );
-        return Number(numberSubstring);
+
+        return this.getPartNumberStartingAt(line, startColumn, numberOfDigits );
     }
 }
