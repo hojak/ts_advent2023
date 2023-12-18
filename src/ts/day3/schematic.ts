@@ -108,10 +108,10 @@ export class Schematic {
     }
 
     getGearRatio(line: number, column: number): number | null {
-        let foundAdjacentParts : number[] = [];
+        let foundAdjacentParts : number[];
 
         // line above
-        foundAdjacentParts = foundAdjacentParts.concat(this.getGearNeigborsInLine(line-1, column));
+        foundAdjacentParts = this.getGearNeigborsInLine(line-1, column);
         
         // line below
         foundAdjacentParts = foundAdjacentParts.concat(this.getGearNeigborsInLine(line+1, column));
