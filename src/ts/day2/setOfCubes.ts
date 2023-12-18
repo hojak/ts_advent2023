@@ -18,15 +18,23 @@ export class SetOfCubes {
 
 
     static createFromString(representation: string): any {
-        const matcher = /^(\d+) (blue)$/i;
-        let match = matcher.exec(representation);
-
-        if ( match != null ) {
-            let blue = Number ( match[1]);
-            return new SetOfCubes(blue, 0, 0);
+        let splitted = representation.split(",").map( str => str.trim());
+        let foundValues: { [color: string] : number } = {
+            "red" : 0,
+            "blue": 0,
+            "green" : 0
         }
+        const matcher = /^(\d+) +(blue|red|green)$/i;
 
-        throw new Error("Method not implemented.");
+        splitted.forEach ( part => {
+            let match = matcher.exec(part);
+
+            if ( match != null ) {
+                foundValues[match[2]] = Number(match[1]);
+            }    
+        })
+
+        return new SetOfCubes(foundValues['blue'], foundValues['green'], foundValues['red']);
     }
 
 

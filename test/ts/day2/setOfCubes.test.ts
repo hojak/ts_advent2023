@@ -58,4 +58,19 @@ describe("SetOfCubes", () =>{
         expect ( SetOfCubes.createFromString("243 blue")).to.be.deep.equal(new SetOfCubes(243,0,0));
     })
 
+    it ("should create a set with cubes of all colors", () => {
+        expect ( SetOfCubes.createFromString("243 blue, 234 green, 123 red"))
+            .to.be.deep.equal(new SetOfCubes(243,234,123));
+    })
+
+    it ("should use the last found value", () => {
+        expect ( SetOfCubes.createFromString("1 red, 2 red, 3 red"))
+            .to.be.deep.equal(new SetOfCubes(0,0,3));
+    })
+
+    it ("should ignore white spaces", () => {
+        expect ( SetOfCubes.createFromString("   1     red   "))
+            .to.be.deep.equal(new SetOfCubes(0,0,1));
+    })
+
 })
