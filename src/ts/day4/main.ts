@@ -8,16 +8,11 @@ export function rateCards ( input : string ) {
 }
 
 
-let input = '';
+export function getNumberOfCards( input: string ) {
+    return 0;
+}
 
-process.stdin.resume();
-process.stdin.setEncoding('utf8');
-
-process.stdin.on ('data', function (part) {
-    input += part
-})
-
-process.stdin.on ('end', function () {
+consoleApp( (input: string) => {
     console.log ( "compute rating of al cards:");
     console.log ( rateCards( input ) );
 })
