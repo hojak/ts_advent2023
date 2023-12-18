@@ -21,7 +21,7 @@ function findFirstLeftDigit ( line: string ) : number {
     let startIndex = 0;
     while (startIndex < line.length ) {
         if ( "0123456789".includes ( line[startIndex] ) ) {
-            return Number (line[startIndex]);
+            return getValueOfMatchedString(line[startIndex]);
         }
         startIndex ++;
     }
@@ -29,11 +29,15 @@ function findFirstLeftDigit ( line: string ) : number {
     throw new Error ( "input does not contain digit");    
 }
 
+function getValueOfMatchedString(matchingString: string): number {
+    return Number(matchingString);
+}
+
 function findFirstRightDigit ( line: string ) : number {
     let startIndex = line.length-1;
     while (startIndex >= 0 ) {
         if ( "0123456789".includes ( line[startIndex] ) ) {
-            return Number (line[startIndex]);
+            return getValueOfMatchedString (line[startIndex]);
         }
         startIndex --;
     }
