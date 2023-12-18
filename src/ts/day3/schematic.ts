@@ -134,16 +134,17 @@ export class Schematic {
     
 
     private getGearNeigborsInLine(line: number, column: number) : number[] {
-        if (this.isDigitAt(line, column - 1) && this.isDigitAt(line, column + 1)
-            && !this.isDigitAt(line, column)) {
-            // case X.X
-            //      .*.
-            return [
-                this.getPartNumberOfDigitAt(line, column - 1),
-                this.getPartNumberOfDigitAt(line, column + 1)
-            ];
+        let result: number[] = [];
+
+        if (this.isDigitAt(line, column - 1) ) {
+            result.push ( this.getPartNumberOfDigitAt(line, column - 1) );
+            
+            if (this.isDigitAt(line, column + 1) && !this.isDigitAt(line, column)) {
+                result.push ( this.getPartNumberOfDigitAt(line, column + 1));
+            }
         }
-        return [];
+
+        return result;
     }
 
     private isDigitAt(line: number, column: number) {
