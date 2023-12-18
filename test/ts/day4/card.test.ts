@@ -17,6 +17,12 @@ describe ( "day 4", () => {
             it ( "a simple match should rate to 1", () => { 
                 expect ( new Card ( "Card 1: 1 | 1").rate()).to.be.equal (1);
             });
+
+            it ( "should rate to 8", () => {
+                expect ( new Card ( "Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53").rate()).to.be.equal(8);
+            })
+
+            
         })
     })
 })

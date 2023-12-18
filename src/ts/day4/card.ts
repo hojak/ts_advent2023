@@ -15,10 +15,29 @@ export class Card {
         if ( this.winningNumbers.length == 0 && this.myNumbers.length == 0 ) {
             return 0;
         }
-        if ( this.winningNumbers[0] == this.myNumbers[0]) {
-            return 1;
+
+        let matching = 0;
+        let myIndex = 0, winningIndex = 0;
+        while ( myIndex < this.myNumbers.length && winningIndex < this.winningNumbers.length) {
+            if ( this.winningNumbers[winningIndex] == this.myNumbers[myIndex]) {
+                matching++;
+                myIndex++;
+                winningIndex++;
+            } else {
+                while ( this.winningNumbers[winningIndex] < this.myNumbers[myIndex]) {
+                    winningIndex++;
+                }
+                while ( this.winningNumbers[winningIndex] > this.myNumbers[myIndex]) {
+                    myIndex++;
+                }
+            }
         }
-        return 0;
+
+        if ( matching == 0) { 
+            return 0; 
+        } else {
+            return Math.pow(2, matching-1);
+        }
     }
 
     static splitToNumbers ( str: string ) : number[] {
@@ -27,7 +46,7 @@ export class Card {
             .map(part => part.trim())
             .filter ( part => part != "" )
             .map ( part => Number (part))
-            .sort();
+            .sort( (a,b) =>  a-b );
     }
 
 }
