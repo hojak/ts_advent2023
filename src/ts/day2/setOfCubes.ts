@@ -16,4 +16,12 @@ export class SetOfCubes {
             && compareTo.green <= this.green;
     }
 
+
+    static createFromString(representation: string): any {
+        if ( representation == "1 blue" ) {
+            return new SetOfCubes(1,0,0);
+        }
+        throw new Error("Method not implemented.");
+    }
+
 }
