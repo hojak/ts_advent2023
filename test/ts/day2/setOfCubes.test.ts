@@ -89,6 +89,16 @@ describe("SetOfCubes", () =>{
             let testSet = new SetOfCubes(10,11,12);
             expect ( testSet.getSuperSetWith( new SetOfCubes(10,1,1))).to.be.deep.equal(testSet);
         })
-    });
 
+        it ( "should return the larger set", () => {
+            let testSet = new SetOfCubes(10,11,12);
+            expect ( new SetOfCubes(1,1,1).getSuperSetWith( testSet )).to.be.deep.equal(testSet);
+        })
+
+        it ( "should return a set with the larger number of cubes for each color", () => {
+            expect ( 
+                new SetOfCubes(10,1,7).getSuperSetWith( new SetOfCubes(2, 20, 12) ))
+                .to.be.deep.equal(new SetOfCubes(10, 20, 12));
+        })
+    });
 })

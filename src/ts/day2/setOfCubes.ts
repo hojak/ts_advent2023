@@ -20,7 +20,11 @@ export class SetOfCubes {
     }
 
     getSuperSetWith(anotherSet: SetOfCubes): any {
-        return new SetOfCubes(this.blue, this.green, this.red);
+        return new SetOfCubes(
+            Math.max(this.blue, anotherSet.blue),
+            Math.max(this.green, anotherSet.green), 
+            Math.max(this.red, anotherSet.red)
+        );
     }
 
     static createFromString(representation: string): any {
