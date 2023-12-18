@@ -9,36 +9,54 @@ export class Schematic {
     }
 
     getSumOfMissingParts(): number {
-        let found : number[] = [0];
-        
+        return this
+            .findMissingParts()
+            .reduce( (prev, curr, index) => prev + curr);
+    }
+
+    private findMissingParts(): number[] {
+        let result : number[] = [0];
         let column = 0;
         let line = 0;
-        while (column + line*this.lineLength < this.schematic.length) {
-            const currentChar = this.schematic[line*this.lineLength + column];
+        
+        while (column + line * this.lineLength < this.schematic.length) {
+            const currentChar = this.schematic[line * this.lineLength + column];
 
-            if ( Schematic.digitChars.includes(currentChar)) {
-                let numberOfDigits = 1;
-                while ( Schematic.digitChars.includes(this.schematic[line*this.lineLength + column + numberOfDigits])) {
-                    numberOfDigits++;
-                }
+            if (this.isDigit(currentChar)) {
+                let numberOfDigits = this.getNumberOfDigitsStartingAt(line, column);
 
-                if ( this.hasNeighboringSymbol(line, column, numberOfDigits) ) {
-                    found.push ( Number ( this.schematic.substring(
-                        line*this.lineLength + column, 
-                        line*this.lineLength + column+numberOfDigits
-                    )));
+                if (this.hasNeighboringSymbol(line, column, numberOfDigits)) {
+                    result.push(this.getCurrentPartNumber(line, column, numberOfDigits));
                 }
 
                 column += numberOfDigits;
-            } else if ( currentChar == "\n") {
-                line ++;
+            } else if (currentChar == "\n") {
+                line++;
                 column = 0;
             } else {
-                column ++;
+                column++;
             }
         }
+        return result;
+    }
 
-        return found.reduce( (prev, curr, index) => prev + curr);
+    private getNumberOfDigitsStartingAt(line: number, column: number) {
+        let numberOfDigits = 1;
+        while (this.isDigit(this.schematic[line * this.lineLength + column + numberOfDigits])) {
+            numberOfDigits++;
+        }
+        return numberOfDigits;
+    }
+
+    private isDigit(currentChar: string) {
+        return Schematic.digitChars.includes(currentChar);
+    }
+
+    private getCurrentPartNumber(line: number, column: number, numberOfDigits: number): number {
+        return Number(this.schematic.substring(
+            line * this.lineLength + column,
+            line * this.lineLength + column + numberOfDigits
+        ));
     }
 
     hasNeighboringSymbol(line: number, column: number, numberOfDigits: number) : boolean {
