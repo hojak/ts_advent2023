@@ -110,28 +110,19 @@ export class Schematic {
     getGearRatio(line: number, column: number): number | null {
         let foundAdjacentParts : number[] = [];
 
-        if ( this.isDigitAt(line-1, column-1) && this.isDigitAt(line-1, column+1)
-                && ! this.isDigitAt(line-1, column)) {
-            // case X.X
-            //      .*.
-            foundAdjacentParts.push (this.getPartNumberOfDigitAt(line - 1, column - 1));
-            foundAdjacentParts.push (this.getPartNumberOfDigitAt(line - 1, column + 1));
-        }
+        // line above
+        foundAdjacentParts = foundAdjacentParts.concat(this.getGearNeigborsInLine(line-1, column));
+        
+        // line below
+        foundAdjacentParts = foundAdjacentParts.concat(this.getGearNeigborsInLine(line+1, column));
 
+        // same line
         if ( this.isDigitAt(line, column - 1)) {
             foundAdjacentParts.push(this.getPartNumberOfDigitAt(line, column-1));
         }
 
         if ( this.isDigitAt(line, column + 1)) {
             foundAdjacentParts.push(this.getPartNumberOfDigitAt(line, column+1));
-        }
-
-        if ( this.isDigitAt(line+1, column-1) && this.isDigitAt(line+1, column+1)
-                && ! this.isDigitAt(line-1, column)) {
-            // case .*.
-            //      X.X
-            foundAdjacentParts.push (this.getPartNumberOfDigitAt(line + 1, column - 1));
-            foundAdjacentParts.push (this.getPartNumberOfDigitAt(line + 1, column + 1));
         }
 
         if ( foundAdjacentParts.length == 2 ) {
@@ -141,6 +132,19 @@ export class Schematic {
         }
     }
     
+
+    private getGearNeigborsInLine(line: number, column: number) : number[] {
+        if (this.isDigitAt(line, column - 1) && this.isDigitAt(line, column + 1)
+            && !this.isDigitAt(line, column)) {
+            // case X.X
+            //      .*.
+            return [
+                this.getPartNumberOfDigitAt(line, column - 1),
+                this.getPartNumberOfDigitAt(line, column + 1)
+            ];
+        }
+        return [];
+    }
 
     private isDigitAt(line: number, column: number) {
         const charAt = this.getCharAt(line, column);
