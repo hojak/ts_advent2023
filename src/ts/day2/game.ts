@@ -14,6 +14,10 @@ export class Game {
             .reduce((prev, current, index) => prev && current);
     }
 
+    getMinimalSetOfCubes(): SetOfCubes {
+        return new SetOfCubes(0,0,0);
+    }
+
     static createFromString(representation: string): Game {
         let result = new Game();
 
