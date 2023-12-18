@@ -142,6 +142,8 @@ export class Schematic {
             if (this.isDigitAt(line, column + 1) && !this.isDigitAt(line, column)) {
                 result.push ( this.getPartNumberOfDigitAt(line, column + 1));
             }
+        } else if (this.isDigitAt(line, column) ) {
+            result.push ( this.getPartNumberOfDigitAt(line, column) );
         }
 
         return result;

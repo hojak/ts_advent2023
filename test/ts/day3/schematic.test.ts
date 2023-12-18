@@ -102,6 +102,10 @@ describe ("day 3", () => {
             expect ( new Schematic("123\n2*.\n").getSumOfGearRatios ()).to.be.equal (246);
         });
 
+        it ( "should recognize a gear with a part on center top", () => {
+            expect ( new Schematic(".23\n2*.\n").getSumOfGearRatios ()).to.be.equal (46);
+        });
+
 
     });
 });
