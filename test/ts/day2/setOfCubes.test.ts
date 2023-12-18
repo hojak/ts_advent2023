@@ -84,4 +84,11 @@ describe("SetOfCubes", () =>{
 
     })
 
+    describe ("getSuperSet", () => {
+        it ( "should stay the same for a smaller set", () => {
+            let testSet = new SetOfCubes(10,11,12);
+            expect ( testSet.getSuperSetWith( new SetOfCubes(10,1,1))).to.be.deep.equal(testSet);
+        })
+    });
+
 })

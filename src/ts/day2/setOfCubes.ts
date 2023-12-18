@@ -9,7 +9,6 @@ export class SetOfCubes {
         this.red = red;
     }
 
-
     contains(compareTo: SetOfCubes): boolean {
         return compareTo.blue <= this.blue
             && compareTo.red <= this.red
@@ -18,6 +17,10 @@ export class SetOfCubes {
 
     getPower(): any {
         return this.red + this.blue + this.green;
+    }
+
+    getSuperSetWith(anotherSet: SetOfCubes): any {
+        return new SetOfCubes(this.blue, this.green, this.red);
     }
 
     static createFromString(representation: string): any {
