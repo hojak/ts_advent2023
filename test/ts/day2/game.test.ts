@@ -38,7 +38,7 @@ describe("Game", () => {
 
     describe ( "getMinimalSetOfCubes", () => {
         it ( "should return an empty set for an empty game", () => {
-            expect ( Game.createFromString("Game 1: 0 green").getMinimalSetOfCubes())
+            expect ( Game.createFromString("Game 1:").getMinimalSetOfCubes())
                 .to.be.deep.equal( new SetOfCubes(0,0,0));
         });
 
