@@ -21,7 +21,7 @@ export class Schematic {
         let line = 0;
         
         while (column + line * this.lineLength < this.schematic.length) {
-            const currentChar = this.schematic[line * this.lineLength + column];
+            const currentChar = this.getCharAt(line, column);
 
             if (this.isDigit(currentChar)) {
                 let numberOfDigits = this.getNumberOfDigitsStartingAt(line, column);
@@ -43,7 +43,7 @@ export class Schematic {
 
     private getNumberOfDigitsStartingAt(line: number, column: number) {
         let numberOfDigits = 1;
-        while (this.isDigit(this.schematic[line * this.lineLength + column + numberOfDigits])) {
+        while (this.isDigit(this.getCharAt(line, column + numberOfDigits))) {
             numberOfDigits++;
         }
         return numberOfDigits;
