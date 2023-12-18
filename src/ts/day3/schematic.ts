@@ -7,6 +7,9 @@ export class Schematic {
     constructor ( representation: string ) {
         this.schematic = representation;
         this.lineLength = representation.indexOf("\n")+1;
+        if ( this.lineLength == 0 ) {
+            this.lineLength = representation.length;
+        }
     }
 
     getSumOfMissingParts(): number {
@@ -105,25 +108,35 @@ export class Schematic {
     }
 
     getGearRatio(line: number, column: number): number | null {
+        let foundAdjacentParts : number[] = [];
 
         if ( this.isDigitAt(line-1, column-1) && this.isDigitAt(line-1, column+1)
-            && ! this.isDigitAt(line-1, column)) {
-                // case X.X
-                //      .*.
-                return this.getPartNumberOfDigitAt(line - 1, column - 1)
-                * this.getPartNumberOfDigitAt(line - 1, column + 1);
-        } else if ( this.isDigitAt(line, column - 1) && this.isDigitAt(line, column + 1)) {
-            // case x*x
-            return this.getPartNumberOfDigitAt(line, column-1) 
-                * this.getPartNumberOfDigitAt(line, column+1)
+                && ! this.isDigitAt(line-1, column)) {
+            // case X.X
+            //      .*.
+            foundAdjacentParts.push (this.getPartNumberOfDigitAt(line - 1, column - 1));
+            foundAdjacentParts.push (this.getPartNumberOfDigitAt(line - 1, column + 1));
+        }
+        
+        if ( this.isDigitAt(line, column - 1)) {
+            foundAdjacentParts.push(this.getPartNumberOfDigitAt(line, column-1));
         }
 
-        return null;
+        if ( this.isDigitAt(line, column + 1)) {
+            foundAdjacentParts.push(this.getPartNumberOfDigitAt(line, column+1));
+        }
+
+        if ( foundAdjacentParts.length == 2 ) {
+            return foundAdjacentParts[0] * foundAdjacentParts[1];
+        } else {
+            return null;
+        }
     }
     
 
     private isDigitAt(line: number, column: number) {
-        return this.isDigit(this.getCharAt(line, column));
+        const charAt = this.getCharAt(line, column);
+        return charAt != undefined && this.isDigit(charAt);
     }
 
     private getCharAt(line: number, column: number) {

@@ -89,5 +89,10 @@ describe ("day 3", () => {
             expect ( new Schematic("2.3\n.*.\n").getSumOfGearRatios ()).to.be.equal (6);
         });
 
+        it ( "should not recognize a gear with 3 adjacent parts", () => {
+            expect ( new Schematic("2.3\n.*1\n").getSumOfGearRatios ()).to.be.equal (0);
+        });
+
+
     });
 });
