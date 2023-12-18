@@ -36,6 +36,12 @@ describe ("day 3", () => {
         })
 
 
+        it ( "should recognize a symbol below a part", () => {
+            const testee = new Schematic ("1\n*");
+            expect ( testee.getSumOfMissingParts ()).to.be.equal(1);
+        })
+
+
 
     });
 })
