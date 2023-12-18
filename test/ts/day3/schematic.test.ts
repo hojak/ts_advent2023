@@ -84,5 +84,10 @@ describe ("day 3", () => {
         it ( "should recognize a value right to left", () => {
             expect ( new Schematic("11*3").getSumOfGearRatios ()).to.be.equal (33);
         });
+
+        it ( "should recognize a gear with both parts on top", () => {
+            expect ( new Schematic("2.3\n.*.\n").getSumOfGearRatios ()).to.be.equal (6);
+        });
+
     });
 });
