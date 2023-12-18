@@ -43,7 +43,7 @@ export class Schematic {
 
     private getNumberOfDigitsStartingAt(line: number, column: number) {
         let numberOfDigits = 1;
-        while (this.isDigit(this.getCharAt(line, column + numberOfDigits))) {
+        while (this.isDigitAt(line, column + numberOfDigits)) {
             numberOfDigits++;
         }
         return numberOfDigits;
@@ -105,16 +105,14 @@ export class Schematic {
     }
 
     getGearRatio(line: number, column: number): number | null {
-        const charBefore = this.getCharAt(line, column-1);
-        const charAfter = this.getCharAt(line, column+1);
 
-        if ( this.isDigit( this.getCharAt(line-1, column-1)) && this.isDigit(this.getCharAt(line-1, column+1))
-            && ! this.isDigit ( this.getCharAt(line-1, column)) ) {
+        if ( this.isDigitAt(line-1, column-1) && this.isDigitAt(line-1, column+1)
+            && ! this.isDigitAt(line-1, column)) {
                 // case X.X
                 //      .*.
                 return this.getPartNumberOfDigitAt(line - 1, column - 1)
                 * this.getPartNumberOfDigitAt(line - 1, column + 1);
-        } else if ( this.isDigit( charBefore) && this.isDigit(charAfter)) {
+        } else if ( this.isDigitAt(line, column - 1) && this.isDigitAt(line, column + 1)) {
             // case x*x
             return this.getPartNumberOfDigitAt(line, column-1) 
                 * this.getPartNumberOfDigitAt(line, column+1)
@@ -124,17 +122,21 @@ export class Schematic {
     }
     
 
+    private isDigitAt(line: number, column: number) {
+        return this.isDigit(this.getCharAt(line, column));
+    }
+
     private getCharAt(line: number, column: number) {
         return this.schematic[line * this.lineLength + column];
     }
 
     private getPartNumberOfDigitAt(line: number, column: number) : number {
         let startColumn = column;
-        while (this.isDigit(this.getCharAt(line, startColumn-1))) {
+        while (this.isDigitAt(line, startColumn-1)) {
             startColumn--;
         }
         let numberOfDigits = column-startColumn+1;
-        while ( this.isDigit(this.getCharAt(line,startColumn+numberOfDigits))) {
+        while ( this.isDigitAt(line,startColumn+numberOfDigits)) {
             numberOfDigits++;
         }
 
