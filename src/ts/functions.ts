@@ -1,3 +1,9 @@
+const digitNamesToValues = new Map<string, number>( [
+    ["one", 1]
+]);
+
+const digitMatcher = new RegExp ("^("+ [ ... digitNamesToValues.keys() ].join("|") + ")", "i");
+
 export function calibrate ( input: string ) : number {
     if ( input == "" ) {
         return 0;
@@ -20,6 +26,12 @@ export function findCalibrationValue (line: string) : number {
 function findFirstLeftDigit ( line: string ) : number {
     let startIndex = 0;
     while (startIndex < line.length ) {
+        let match = digitMatcher .exec(line.substring(startIndex));
+
+        if ( match != null ) {
+            return digitNamesToValues.get(match[0]) ?? 0;
+        }
+
         if ( "0123456789".includes ( line[startIndex] ) ) {
             return getValueOfMatchedString(line[startIndex]);
         }
