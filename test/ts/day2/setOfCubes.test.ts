@@ -54,4 +54,8 @@ describe("SetOfCubes", () =>{
         expect ( SetOfCubes.createFromString("1 blue")).to.be.deep.equal(new SetOfCubes(1,0,0));
     })
 
+    it ("should create a set with multiple blue cube", () => {
+        expect ( SetOfCubes.createFromString("243 blue")).to.be.deep.equal(new SetOfCubes(243,0,0));
+    })
+
 })

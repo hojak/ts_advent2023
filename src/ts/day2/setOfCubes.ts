@@ -18,10 +18,17 @@ export class SetOfCubes {
 
 
     static createFromString(representation: string): any {
-        if ( representation == "1 blue" ) {
-            return new SetOfCubes(1,0,0);
+        const matcher = /^(\d+) (blue)$/i;
+        let match = matcher.exec(representation);
+
+        if ( match != null ) {
+            let blue = Number ( match[1]);
+            return new SetOfCubes(blue, 0, 0);
         }
+
         throw new Error("Method not implemented.");
     }
+
+
 
 }
