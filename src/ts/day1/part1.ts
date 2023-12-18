@@ -1,4 +1,4 @@
-import { calibrate } from "./functions";
+import { calibrate } from "./functions_part1";
 
 let input = '';
 
