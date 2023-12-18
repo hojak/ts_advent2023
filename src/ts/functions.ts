@@ -8,6 +8,16 @@ const digitNamesToValues = new Map<string, number>( [
     ["seven", 7],
     ["eight", 8],
     ["nine", 9],
+    ["0", 0],
+    ["1", 1],
+    ["2", 2],
+    ["3", 3],
+    ["4", 4],
+    ["5", 5],
+    ["6", 6],
+    ["7", 7],
+    ["8", 8],
+    ["9", 9]
 ]);
 
 const digitMatcher = new RegExp ("^("+ [ ... digitNamesToValues.keys() ].join("|") + ")", "i");
@@ -44,10 +54,6 @@ function findFirstLeftDigit ( line: string ) : number {
     throw new Error ( "input does not contain digit");    
 }
 
-function getValueOfMatchedString(matchingString: string): number {
-    return Number(matchingString);
-}
-
 function findFirstRightDigit ( line: string ) : number {
     let startIndex = line.length-1;
     while (startIndex >= 0 ) {
@@ -61,16 +67,11 @@ function findFirstRightDigit ( line: string ) : number {
     throw new Error ( "input does not contain digit");    
 }
 
-
 function findMatchingValueForStartposition(line: string, startIndex: number ) : number | null {
     let match = digitMatcher .exec(line.substring(startIndex));
 
     if ( match != null ) {
         return digitNamesToValues.get(match[0]) ?? 0;
-    }
-
-    if ( "0123456789".includes ( line[startIndex] ) ) {
-        return getValueOfMatchedString(line[startIndex]);
     }
 
     return null;
