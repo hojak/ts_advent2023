@@ -79,10 +79,39 @@ export class Schematic {
             ! (Schematic.digitChars + ".\n").includes( this.schematic[index]);
     }
 
-
-
     getSumOfGearRatios(): number {
-        return 0;
+        let result : number[] = [0];
+        let column = 0;
+        let line = 0;
+        
+        while (column + line * this.lineLength < this.schematic.length) {
+            const currentChar = this.schematic[line * this.lineLength + column];
+
+            if (currentChar == "*") {
+                let ratio = this.getGearRatio ( line, column )
+                if ( ratio != null ) {
+                    result.push(ratio);
+                } 
+                column++;
+            } else if (currentChar == "\n") {
+                line++;
+                column = 0;
+            } else {
+                column++;
+            }
+        }
+
+        return result.reduce( (prev, curr, index) => prev + curr);
+    }
+
+    getGearRatio(line: number, column: number): number | null {
+        const charBefore = this.schematic[line * this.lineLength + column - 1];
+        const charAfter = this.schematic[line * this.lineLength + column + 1];
+        if ( this.isDigit( charBefore) && this.isDigit(charAfter)) {
+            return Number(charBefore) * Number(charAfter);
+        }
+        
+        return null;
     }
     
 }

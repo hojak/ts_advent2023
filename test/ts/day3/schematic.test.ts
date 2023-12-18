@@ -75,6 +75,11 @@ describe ("day 3", () => {
     describe ( "Gear Evaluation (part 2)", () => {
         it ( "should return a value", () => {
             expect ( new Schematic(".").getSumOfGearRatios()).to.be.equal (0)
-        })
+        });
+
+        it ( "should be 6 for a simple case", () => {
+            expect ( new Schematic("2*3").getSumOfGearRatios ()).to.be.equal (6);
+        });
+
     });
 });
