@@ -18,12 +18,15 @@ export class Schematic {
 
             if ( Schematic.digitChars.includes(currentChar)) {
                 let numberOfDigits = 1;
-                while ( Schematic.digitChars.includes(this.schematic[column + numberOfDigits])) {
+                while ( Schematic.digitChars.includes(this.schematic[line*this.lineLength + column + numberOfDigits])) {
                     numberOfDigits++;
                 }
 
                 if ( this.hasNeighboringSymbol(line, column, numberOfDigits) ) {
-                    found.push ( Number ( this.schematic.substring(line*this.lineLength + column, line*this.lineLength + column+numberOfDigits)));
+                    found.push ( Number ( this.schematic.substring(
+                        line*this.lineLength + column, 
+                        line*this.lineLength + column+numberOfDigits
+                    )));
                 }
 
                 column += numberOfDigits;
@@ -39,10 +42,15 @@ export class Schematic {
     }
 
     hasNeighboringSymbol(line: number, column: number, numberOfDigits: number) : boolean {
+        for ( let checkColumn = column-1; checkColumn <= column+numberOfDigits; checkColumn ++ ) {
+            if ( this.isSymbolCharacter( line-1, checkColumn)
+                || this.isSymbolCharacter( line+1, checkColumn)) {
+                return true;
+            }
+        }
+
         return this.isSymbolCharacter(line, column+numberOfDigits)
-            || this.isSymbolCharacter(line, column-1)
-            || this.isSymbolCharacter((line+1), column)
-            || this.isSymbolCharacter((line-1), column);
+            || this.isSymbolCharacter(line, column-1);
     }
 
     private isSymbolCharacter(line: number, column: number) {
@@ -51,7 +59,5 @@ export class Schematic {
         return line >= 0 && index >= 0 && index < this.schematic.length &&
             ! (Schematic.digitChars + ".\n").includes( this.schematic[index]);
     }
-
-
     
 }
