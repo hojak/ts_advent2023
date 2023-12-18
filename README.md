@@ -8,7 +8,7 @@ Typescript solution for the first task in the advent of code 2024
 ## Steps to solve the puzzle
 
 ```(bash)
-uvm use
+nvm use
 npm install
 npm run build
 cat data/input.txt | node out/src/ts/main.js 
