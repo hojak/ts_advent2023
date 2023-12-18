@@ -73,4 +73,15 @@ describe("SetOfCubes", () =>{
             .to.be.deep.equal(new SetOfCubes(0,0,1));
     })
 
+    describe ("Power", () => {
+        it ( "should be 0 for an empty set", () => {
+            expect ( new SetOfCubes ( 0,0,0).getPower()).to.be.equal(0);
+        })
+
+        it ( "should be the sum of the number of cubes", () => {
+            expect ( new SetOfCubes ( 10,20,30).getPower()).to.be.equal(60);
+        })
+
+    })
+
 })

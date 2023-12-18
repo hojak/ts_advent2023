@@ -16,6 +16,9 @@ export class SetOfCubes {
             && compareTo.green <= this.green;
     }
 
+    getPower(): any {
+        return this.red + this.blue + this.green;
+    }
 
     static createFromString(representation: string): any {
         let splitted = representation.split(",").map( str => str.trim());
