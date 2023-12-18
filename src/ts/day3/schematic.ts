@@ -105,13 +105,35 @@ export class Schematic {
     }
 
     getGearRatio(line: number, column: number): number | null {
-        const charBefore = this.schematic[line * this.lineLength + column - 1];
-        const charAfter = this.schematic[line * this.lineLength + column + 1];
-        if ( this.isDigit( charBefore) && this.isDigit(charAfter)) {
-            return Number(charBefore) * Number(charAfter);
-        }
+        const charBefore = this.getCharAt(line, column-1);
+        const charAfter = this.getCharAt(line, column+1);
         
+        if ( this.isDigit( charBefore) && this.isDigit(charAfter)) {
+            return this.getPartNumberOfDigitAt(line, column-1) 
+                * this.getPartNumberOfDigitAt(line, column+1)
+        }
+
         return null;
     }
     
+
+    private getCharAt(line: number, column: number) {
+        return this.schematic[line * this.lineLength + column];
+    }
+
+    private getPartNumberOfDigitAt(line: number, column: number) : number {
+        let startColumn = column;
+        while (this.isDigit(this.getCharAt(line, startColumn-1))) {
+            startColumn--;
+        }
+        let numberOfDigits = column-startColumn+1;
+        while ( this.isDigit(this.getCharAt(line,startColumn+numberOfDigits))) {
+            numberOfDigits++;
+        }
+        let numberSubstring = this.schematic.substring(
+            line*this.lineLength+startColumn, 
+            line*this.lineLength+startColumn+numberOfDigits
+        );
+        return Number(numberSubstring);
+    }
 }

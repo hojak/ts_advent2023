@@ -81,5 +81,8 @@ describe ("day 3", () => {
             expect ( new Schematic("2*3").getSumOfGearRatios ()).to.be.equal (6);
         });
 
+        it ( "should recognize a value right to left", () => {
+            expect ( new Schematic("11*3").getSumOfGearRatios ()).to.be.equal (33);
+        });
     });
 });
