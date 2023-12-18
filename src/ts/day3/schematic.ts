@@ -18,7 +18,7 @@ export class Schematic {
                     numberOfDigits++;
                 }
 
-                if ( this.schematic[index+numberOfDigits] == '*') {
+                if ( this.isSymbolCharacter(index + numberOfDigits)) {
                     found.push ( Number ( this.schematic.substring(index, index+numberOfDigits)));
                 }
 
@@ -29,5 +29,9 @@ export class Schematic {
         }
 
         return found.reduce( (prev, curr, index) => prev + curr);
+    }
+
+    private isSymbolCharacter(index: number) {
+        return ! (Schematic.digitChars + ".\n").includes( this.schematic[index]);
     }
 }

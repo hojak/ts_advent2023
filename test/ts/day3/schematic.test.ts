@@ -14,5 +14,22 @@ describe ("day 3", () => {
             expect ( testee.getSumOfMissingParts ()).to.be.equal(123);
         })
 
+        
+        it ( "should also recognize # as a symbol", () => {
+            const testee = new Schematic ("123#");
+            expect ( testee.getSumOfMissingParts ()).to.be.equal(123);
+        })
+
+        it ( "should not recognize . as a symbol", () => {
+            const testee = new Schematic ("123.");
+            expect ( testee.getSumOfMissingParts ()).to.be.equal(0);
+        })
+
+        it ( "should not recognize \n as a symbol", () => {
+            const testee = new Schematic ("123\n");
+            expect ( testee.getSumOfMissingParts ()).to.be.equal(0);
+        })
+
+
     });
 })
