@@ -56,6 +56,22 @@ describe ("day 3", () => {
             expect ( testee.getSumOfMissingParts ()).to.be.equal(123);
         })
 
+        it ( "should compute the correct test value", () => {
+            const testee = new Schematic (
+                "467..114..\n"+
+                "...*......\n"+
+                "..35..633.\n"+
+                "......#...\n"+
+                "617*......\n"+
+                ".....+.58.\n"+
+                "..592.....\n"+
+                "......755.\n"+
+                "...$.*....\n"+
+                ".664.598..\n"
+            );
+            expect ( testee.getSumOfMissingParts ()).to.be.equal(4361);
+        });
+
 
 
     });
