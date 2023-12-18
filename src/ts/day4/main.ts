@@ -6,3 +6,18 @@ export function rateCards ( input : string ) {
         .map(card => card.rate())
         .reduce((prev, curr, index) => prev+curr);
 }
+
+
+let input = '';
+
+process.stdin.resume();
+process.stdin.setEncoding('utf8');
+
+process.stdin.on ('data', function (part) {
+    input += part
+})
+
+process.stdin.on ('end', function () {
+    console.log ( "compute rating of al cards:");
+    console.log ( rateCards( input ) );
+})
