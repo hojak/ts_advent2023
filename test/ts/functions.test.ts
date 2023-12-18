@@ -9,7 +9,8 @@ describe ('findCalibrationValue', () => {
         ["asdhka7jdadhuawd9iad", 79],
         ["23", 23],
         ["asdhkasjd22", 22],
-        ["blaonetest1", 11]
+        ["blaonetest1", 11],
+        ["blaonetest", 11]
     ].forEach( (inputAndExpected : (string|number)[] ) => {
         it ( inputAndExpected[0] + ' should calibrate to ' + inputAndExpected[0], () => {
             expect(findCalibrationValue (""+inputAndExpected[0])).to.be.deep.equal(inputAndExpected[1]);

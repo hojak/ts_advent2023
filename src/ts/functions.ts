@@ -26,14 +26,9 @@ export function findCalibrationValue (line: string) : number {
 function findFirstLeftDigit ( line: string ) : number {
     let startIndex = 0;
     while (startIndex < line.length ) {
-        let match = digitMatcher .exec(line.substring(startIndex));
-
-        if ( match != null ) {
-            return digitNamesToValues.get(match[0]) ?? 0;
-        }
-
-        if ( "0123456789".includes ( line[startIndex] ) ) {
-            return getValueOfMatchedString(line[startIndex]);
+        let matchedValue = findMatchingValueForStartposition ( line, startIndex);
+        if ( matchedValue != null) {
+            return matchedValue;
         }
         startIndex ++;
     }
@@ -48,12 +43,28 @@ function getValueOfMatchedString(matchingString: string): number {
 function findFirstRightDigit ( line: string ) : number {
     let startIndex = line.length-1;
     while (startIndex >= 0 ) {
-        if ( "0123456789".includes ( line[startIndex] ) ) {
-            return getValueOfMatchedString (line[startIndex]);
+        let matchedValue = findMatchingValueForStartposition(line, startIndex);
+        if ( matchedValue != null) {
+            return matchedValue;
         }
         startIndex --;
     }
 
     throw new Error ( "input does not contain digit");    
+}
+
+
+function findMatchingValueForStartposition(line: string, startIndex: number ) : number | null {
+    let match = digitMatcher .exec(line.substring(startIndex));
+
+    if ( match != null ) {
+        return digitNamesToValues.get(match[0]) ?? 0;
+    }
+
+    if ( "0123456789".includes ( line[startIndex] ) ) {
+        return getValueOfMatchedString(line[startIndex]);
+    }
+
+    return null;
 }
 
