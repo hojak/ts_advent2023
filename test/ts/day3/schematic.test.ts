@@ -45,12 +45,17 @@ describe ("day 3", () => {
             const testee = new Schematic ("..*..\n..1..\n");
             expect ( testee.getSumOfMissingParts ()).to.be.equal(1);
         })
-
         
-        it ( "should recognize a symbol diagonal of a part", () => {
+        it ( "should recognize a symbol top right of a part", () => {
             const testee = new Schematic ("....*\n.123.\n");
             expect ( testee.getSumOfMissingParts ()).to.be.equal(123);
         })
+
+        it ( "should recognize a symbol bottom left of a part", () => {
+            const testee = new Schematic (".....\n.123.\n*....");
+            expect ( testee.getSumOfMissingParts ()).to.be.equal(123);
+        })
+
 
 
     });
