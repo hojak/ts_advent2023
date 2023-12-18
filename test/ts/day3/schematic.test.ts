@@ -8,5 +8,11 @@ describe ("day 3", () => {
             const testee = new Schematic ("1*");
             expect ( testee.getSumOfMissingParts ()).to.be.equal(1);
         })
+
+        it ( "should recognize a multichar number", () => {
+            const testee = new Schematic ("123*");
+            expect ( testee.getSumOfMissingParts ()).to.be.equal(123);
+        })
+
     });
 })
