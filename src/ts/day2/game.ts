@@ -1,7 +1,12 @@
 import { SetOfCubes } from "./setOfCubes";
 
-export class SetOfDraws {
+export class Game {
     draws: SetOfCubes[] = [];
+    number: any = 0;
+
+    getNumber(): any {
+        return this.number;
+    }
 
     isPossibleWith ( setOfCubes: SetOfCubes ) : boolean {
         return this.draws
@@ -9,10 +14,16 @@ export class SetOfDraws {
             .reduce((prev, current, index) => prev && current);
     }
 
-    static createFromString(representation: string): SetOfDraws {
-        let result = new SetOfDraws();
+    static createFromString(representation: string): Game {
+        let result = new Game();
 
-        representation
+        let splitHeader = representation.split(":");
+        let matchHader = /^Game +(\d+)$/.exec ( splitHeader[0]);
+        if ( matchHader != null ) {
+            result.number = Number ( matchHader[1]);
+        }
+
+        splitHeader[1]
             .split(";")
             .map( draw => SetOfCubes.createFromString(draw.trim()))
             .forEach( set => result.draws.push(set) )
