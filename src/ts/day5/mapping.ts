@@ -15,7 +15,7 @@ export class Mapping {
 
     map(source: number): number {
         let mapIndex = this.mappings.length-1;
-        while (this.mappings[mapIndex].getSourceStart() > source ) {
+        while (mapIndex > 0 && this.mappings[mapIndex].getSourceStart() > source ) {
             mapIndex--;
         }
         if ( this.mappings[mapIndex].isCovered(source) ) {
