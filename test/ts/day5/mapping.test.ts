@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { Mapping } from "../../../src/ts/day5/mapping";
+import { SingleMap } from "../../../src/ts/day5/singleMap";
 
 describe ("day 5: mapping", () => {
 
@@ -29,5 +30,10 @@ describe ("day 5: mapping", () => {
             expect( testee.map(expectedMapping[0])).to.be.equal(expectedMapping[1]);
         })
     });
+
+    it ( "should return the correct single map", () => {
+        expect ( testee.findMapFor ( 25 )).to.be.deep.equal ( new SingleMap(10, 100, 20));
+    })
+
 
 })
