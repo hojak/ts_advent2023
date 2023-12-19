@@ -5,10 +5,10 @@ import { Mapping } from "../../../src/ts/day5/mapping";
 describe ("day 5: mapping", () => {
 
     let testee = new Mapping ( 
-        "0 10 2\n"+
-        "10 100 20\n"+
-        "1000 500 10\n"+
-        "500 600 100"
+        "10 0 2\n"+
+        "100 10 20\n"+
+        "500 1000 10\n"+
+        "600 500 100"
     );
 
     [31, 32, 600, 999].forEach ( (source: number) => {

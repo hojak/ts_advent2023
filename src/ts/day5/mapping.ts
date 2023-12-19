@@ -8,8 +8,6 @@ export class Mapping {
             .filter (line => line.trim() != "")
             .map( line => SingleMap.createFromString(line))
             .sort( (map1: SingleMap, map2: SingleMap) => map1.getSourceStart() - map2.getSourceStart());
-
-        console.log(this.mappings );
     }
 
 

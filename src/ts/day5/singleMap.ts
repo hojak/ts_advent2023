@@ -28,8 +28,8 @@ export class SingleMap {
     static createFromString(representation: string): any {
         let splitted = representation.split(" ");
         return new SingleMap ( 
-            Number(splitted[0].trim()),
             Number(splitted[1].trim()),
+            Number(splitted[0].trim()),
             Number(splitted[2].trim())
         )
     }

@@ -44,7 +44,6 @@ describe ( "day 5: almanach", () => {
     });
 
     it ( "lowest location number should be 35", () => {        
-        console.log ( testee );
         expect ( testee.getLowestLocationNumber() ).to.be.equal(35);
     });
 

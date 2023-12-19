@@ -35,7 +35,7 @@ describe("day 5", () => {
 
     describe ("singleMap.createFromString", () => {
         it ( "should create a correct map", () => {
-            expect ( SingleMap.createFromString("1 2 3")).to.be.deep.equal ( new SingleMap (1, 2, 3));
+            expect ( SingleMap.createFromString("1 2 3")).to.be.deep.equal ( new SingleMap (2, 1, 3));
         })
     })
 });

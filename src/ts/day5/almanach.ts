@@ -13,8 +13,6 @@ export class Almanach {
         this.maps = splitInput
             .map ( mapWithHeader => mapWithHeader.split(":")[1].trim())
             .map ( mapDefinition => new Mapping(mapDefinition));
-
-        this.maps.forEach ( map => console.log ( map ));
     }
 
     getLowestLocationNumber(): number {
@@ -22,7 +20,6 @@ export class Almanach {
 
         for ( let mapIndex = 0; mapIndex<this.maps.length; mapIndex ++ ) {
             workNumbers = workNumbers.map ( nr => this.maps[mapIndex].map(nr));
-            console.log ( "step " + (mapIndex+1) + ": " + workNumbers );
         }
 
         return workNumbers.reduce( (prev, curr, index) => Math.min (prev, curr));
