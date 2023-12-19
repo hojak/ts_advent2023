@@ -40,4 +40,13 @@ export class Mapping {
         }
     }
 
+    mapInterval(interval: number[]): number[][] {
+        let result :number [][] = [];
+        let map = this.findMapFor(interval[0]);
+
+        result.push ( [map.map(interval[0]), interval[1]]);
+        return result;
+    }
+
+
 }

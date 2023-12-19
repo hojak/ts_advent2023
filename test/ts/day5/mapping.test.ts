@@ -53,4 +53,14 @@ describe ("day 5: mapping", () => {
         })
     })
 
+    describe ( "mapInterval", () => {
+        let testee = new Mapping ( 
+            "50 0 50\n"+
+            "0 50 50"
+        );
+        it ( "should map interval", () => {
+            expect ( testee.mapInterval ( [10,10])).to.be.deep.equal ( [[60, 10]]);
+        })
+    })
+
 })
