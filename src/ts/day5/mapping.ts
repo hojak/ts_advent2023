@@ -11,10 +11,10 @@ export class Mapping {
     }
 
     map(source: number): number {
-        return this.findMapFor ( source )?.map(source) ?? source;
+        return this.findMapFor ( source ).map(source);
     }
 
-    findMapFor( source: number ) : SingleMap | null {
+    findMapFor( source: number ) : SingleMap {
         let mapIndex = this.mappings.length-1;
         while (mapIndex > 0 && this.mappings[mapIndex].getSourceStart() > source ) {
             mapIndex--;
