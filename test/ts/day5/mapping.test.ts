@@ -35,5 +35,21 @@ describe ("day 5: mapping", () => {
         expect ( testee.findMapFor ( 25 )).to.be.deep.equal ( new SingleMap(10, 100, 20));
     })
 
+    it ( "should return an intermediate identity mapping", () => {
+        expect ( testee.findMapFor ( 45 )).to.be.deep.equal(
+            new SingleMap(30, 30, 499-30+1)
+        );
+    })
+
+    it ( "should return an additional identity mapping with asked number as end", () => {
+        expect ( testee.findMapFor ( 1200 )).to.be.deep.equal(
+            new SingleMap(1010, 1010, 191)
+        );
+    })
+
+    it ( "should return an identity mapping from 0 to the start of the mappings", () => {
+        expect ( new Mapping("10 10 10").findMapFor(1)).to.be.deep.equal( new SingleMap (0,0,10));
+
+    })
 
 })
