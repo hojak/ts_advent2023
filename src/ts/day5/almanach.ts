@@ -35,6 +35,5 @@ export class Almanach {
             .split(" ")
             .filter( part => part != "")
             .map ( (seedString: string) => Number ( seedString.trim() ))
-            .sort ( (a: number,b: number) => a-b);
     }
 }
