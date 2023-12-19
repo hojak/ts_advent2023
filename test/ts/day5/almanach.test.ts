@@ -47,4 +47,9 @@ describe ( "day 5: almanach", () => {
         expect ( testee.getLowestLocationNumber() ).to.be.equal(35);
     });
 
+    it ( "lowest location number for ragnes should be 46", () => {        
+        expect ( testee.getLowestLocationNumberForRanges() ).to.be.equal(46);
+    });
+
+
 })
