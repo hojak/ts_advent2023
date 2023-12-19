@@ -10,6 +10,10 @@ describe("day 5", () => {
             expect( testee.getSourceStart()).to.be.equal(1);
         });
 
+        it ( "should return the correct end", () => {
+            expect( testee.getSourceEnd()).to.be.equal(5);
+        });
+
         [
             [1, 10],
             [5, 14]
