@@ -11,13 +11,7 @@ export class Mapping {
     }
 
     map(source: number): number {
-        let foundMap = this.findMapFor ( source );
-        
-        if ( foundMap != null ) {
-            return foundMap.map(source);
-        } else {
-            return source;
-        }
+        return this.findMapFor ( source )?.map(source) ?? source;
     }
 
     findMapFor( source: number ) : SingleMap | null {
