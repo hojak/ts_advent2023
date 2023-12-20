@@ -10,7 +10,7 @@ export class Hand {
 
         this.determineCardType();
     }
-    
+
     determineCardType() {
         let numberOfDifferentCards = Object.keys(this.cardCount).length;
         let counts = Object.values ( this.cardCount ).sort ( (a,b) => b-a);
@@ -60,4 +60,8 @@ export enum HandType {
     FullHouse,
     FourOfAKind,
     FiveOfAKind
+}
+
+export function getValueOfCard ( card: string ) : number {
+    return  "--23456789TJQKA".indexOf ( card );
 }

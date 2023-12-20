@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Hand, HandType } from "../../../src/ts/day7/Hand";
+import { Hand, HandType, getValueOfCard } from "../../../src/ts/day7/Hand";
 
 describe ("day 7: hand", () => {
     describe ( "finding type", () => {
@@ -31,8 +31,20 @@ describe ("day 7: hand", () => {
             expect ( new Hand ("BJT23").getType()).to.be.equal ( HandType.HighCard);
         })
 
-
-
-
     } )
+
+
+    describe ("getValueOfCard", () => {
+        it ( "should return 10", () => {
+            expect ( getValueOfCard("T")).to.be.equal (10);
+        })
+
+        it ( "should return 5", () => {
+            expect ( getValueOfCard("5")).to.be.equal (5);
+        })
+
+        it ( "should return 14", () => {
+            expect ( getValueOfCard("A")).to.be.equal (14);
+        })
+    });
 });
