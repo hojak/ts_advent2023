@@ -43,6 +43,7 @@ export class Almanach {
             let newRanges : number[][] = [];
 
             newRanges=currentRanges.flatMap( range => this.maps[mapIndex].mapRange ( range ) );
+            // possible improvement: unify resulting neighboring ranges
 
             currentRanges = newRanges.sort ( (a,b)=>a[0]-b[0]);
         }

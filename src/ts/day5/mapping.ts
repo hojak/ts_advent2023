@@ -41,6 +41,12 @@ export class Mapping {
     }
 
     mapRange(interval: number[]): number[][] {
+        // easier version of this idea:
+        //  - fill gaps in mapping with identies in construction phase
+        //  - just find first and last mapping and adapt the target ranges
+        //  - use all target ranges of the maps "between" the first and the last mapping
+        // -> introduce SingleMap.getTargetRange() for convenience
+
         let result :number [][] = [];
 
         let start = interval[0];
