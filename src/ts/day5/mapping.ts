@@ -42,10 +42,29 @@ export class Mapping {
 
     mapInterval(interval: number[]): number[][] {
         let result :number [][] = [];
-        let map = this.findMapFor(interval[0]);
 
-        result.push ( [map.map(interval[0]), interval[1]]);
-        return result;
+        let start = interval[0];
+        let end = start + interval[1] -1;
+
+        let largestSourceCoveredByMapping = this.mappings[this.mappings.length-1].getSourceEnd();
+
+        do {
+            let map = this.findMapFor(start);
+
+            if ( map.getSourceEnd() >= end ) {
+                result.push ( [map.map(start), end-start+1]);
+                start = end+1;
+            } else {
+                let length = map.length - (start-map.getSourceStart()) ;
+                if ( start > largestSourceCoveredByMapping ) {
+                    length = end - start+1;
+                }
+                result.push ( [map.map(start), length ] );
+                start += length;
+            }
+        } while (start <= end);
+
+        return result.sort ( (a,b) => a[0] - b[0]);
     }
 
 
