@@ -18,4 +18,8 @@ describe ( "Day 6: Races", () => {
         expect( testee.getWinningPossibilitiesOfRace(2)).to.be.equal(9);
     });
 
+    it ( "should return the correct total value", () => {
+        expect(testee.getRating()).to.be.equal(288);
+    })
+
 })

@@ -11,8 +11,6 @@ export class Races {
         console.log(this);
     }
 
-
-
     getWinningPossibilitiesOfRace(raceNumber: number): number {
         let t = this.times[raceNumber];
         let s = this.records[raceNumber];
@@ -24,5 +22,12 @@ export class Races {
         return Math.floor(t/2+sqrt) - Math.ceil(t/2-sqrt) +1 - correctionForEqualDistance;
     }
 
-    
+    getRating(): any {
+        let result = 1;
+        for ( let i=0; i<this.times.length; i++) {
+            result *= this.getWinningPossibilitiesOfRace(i);
+        }
+        return result;
+    }
+
 }
