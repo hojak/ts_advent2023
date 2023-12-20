@@ -33,22 +33,21 @@ export class Almanach {
 
 
     getLowestLocationNumberForRanges(): any {
-        let currentMinimum = NaN;
-        let checked = 0;
-
-        for ( let rangeStart = 0; rangeStart < this.seeds.length; rangeStart+=2 ) {
-            for ( let i=0; i< this.seeds[rangeStart+1]; i++) {
-                checked++;
-                let value = this.getLowestLocationNumberForArrayOfSeeds([ this.seeds[rangeStart] +i ])
-                if ( isNaN(currentMinimum) || value < currentMinimum ) {
-                    currentMinimum = value;
-                }
-            }    
+        let currentRanges : number[][] = [];
+        
+        for ( let i=0; i<this.seeds.length; i+=2) {
+            currentRanges.push ( [ this.seeds[i], this.seeds[i+1]]);
         }
 
-        console.log ( "we checked for " + checked + " seeds" );
+        for ( let mapIndex = 0; mapIndex<this.maps.length; mapIndex ++ ) {
+            let newRanges : number[][] = [];
 
-		return currentMinimum;
+            newRanges=currentRanges.flatMap( range => this.maps[mapIndex].mapRange ( range ) );
+
+            currentRanges = newRanges.sort ( (a,b)=>a[0]-b[0]);
+        }
+
+        return currentRanges[0][0];
 	}
 
 

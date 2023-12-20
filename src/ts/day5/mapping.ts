@@ -40,7 +40,7 @@ export class Mapping {
         }
     }
 
-    mapInterval(interval: number[]): number[][] {
+    mapRange(interval: number[]): number[][] {
         let result :number [][] = [];
 
         let start = interval[0];

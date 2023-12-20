@@ -59,15 +59,15 @@ describe ("day 5: mapping", () => {
             "0 50 50"
         );
         it ( "should map interval", () => {
-            expect ( testee.mapInterval ( [10,10])).to.be.deep.equal ( [[60, 10]]);
+            expect ( testee.mapRange ( [10,10])).to.be.deep.equal ( [[60, 10]]);
         })
 
         it ( "should cut the interval into two", () => {
-            expect ( testee.mapInterval ( [40, 20])).to.be.deep.equal ([[0,10],[90,10]]);
+            expect ( testee.mapRange ( [40, 20])).to.be.deep.equal ([[0,10],[90,10]]);
         })
         
         it ( "shoule cut the interval into three", () => {
-            expect ( testee.mapInterval ( [40, 70])).to.be.deep.equal ([[0,50],[90,10],[100,10]]);
+            expect ( testee.mapRange ( [40, 70])).to.be.deep.equal ([[0,50],[90,10],[100,10]]);
         })
 
     })
