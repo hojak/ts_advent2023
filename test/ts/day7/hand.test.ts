@@ -47,4 +47,41 @@ describe ("day 7: hand", () => {
             expect ( getValueOfCard("A")).to.be.equal (14);
         })
     });
+
+    describe ("getDistanceTo", () => {
+        [
+            "66678",
+            "55576",
+            "81117",
+            "19999",
+            "11221"
+        ].forEach ( (compareTo) => {
+            it ( "55567 should be smaller " + compareTo, () => {
+                expect ( new Hand("55567").compareTo(new Hand(compareTo))).to.be.lessThan ( 0 );
+            })
+        });
+
+        [
+            "23456",
+            "11167",
+            "55543",
+            "19219"
+        ].forEach ( (compareTo) => {
+            it ( "55567 should be larger " + compareTo, () => {
+                expect ( new Hand("55567").compareTo(new Hand(compareTo))).to.be.greaterThan ( 0 );
+            })
+        });
+
+        [
+            "23456",
+            "11167",
+            "55543",
+            "19219"
+        ].forEach ( (compareTo) => {
+            it ( compareTo + " should be equal to itself", () => {
+                expect ( new Hand(compareTo).compareTo(new Hand(compareTo))).to.be.equal ( 0 );
+            })
+        });
+        
+    })
 });

@@ -49,6 +49,23 @@ export class Hand {
     getType () : HandType {
         return this.type;
     }
+
+    compareTo(otherHand: Hand): number {
+        if ( this.cards == otherHand.cards ) {
+            return 0;
+        }
+        if( this.type != otherHand.type ) {
+            return (this.type - otherHand.type) * 100000;
+        }
+        let differentIndex = 0;
+        while ( this.cards[differentIndex] == otherHand.cards[differentIndex]) {
+            differentIndex++;
+        }
+
+        return (getValueOfCard(this.cards[differentIndex]) - getValueOfCard(otherHand.cards[differentIndex]))
+            *Math.pow(10,5-differentIndex);
+    }
+
 }
 
 
