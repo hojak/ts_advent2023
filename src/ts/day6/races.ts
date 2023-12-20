@@ -7,8 +7,6 @@ export class Races {
 
         this.times = (lines[0].trim().split (":"))[1].split(" ").filter ( s => s!= "").map ( part => Number ( part));
         this.records = (lines[1].trim().split (":"))[1].split(" ").filter(s => s != "").map ( part => Number ( part));
-
-        console.log(this);
     }
 
     getWinningPossibilitiesOfRace(raceNumber: number): number {
