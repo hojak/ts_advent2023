@@ -25,6 +25,10 @@ export class SingleMap {
         return source >= this.sourceStart && source <= this.sourceStart + this.length-1
     }
 
+    getSourceEnd(): number {
+        return this.sourceStart + this.length -1;
+    }
+
     static createFromString(representation: string): any {
         let splitted = representation.split(" ");
         return new SingleMap ( 

@@ -40,11 +40,16 @@ describe ( "day 5: almanach", () => {
     );
 
     it ( "should look for the defined seeds", () => {
-        expect ( testee.getSeeds()).to.be.deep.equal([13, 14, 55, 79]);
+        expect ( testee.getSeeds()).to.be.deep.equal([79,14,55,13]);
     });
 
     it ( "lowest location number should be 35", () => {        
         expect ( testee.getLowestLocationNumber() ).to.be.equal(35);
     });
+
+    it ( "lowest location number for ragnes should be 46", () => {        
+        expect ( testee.getLowestLocationNumberForRanges() ).to.be.equal(46);
+    });
+
 
 })
