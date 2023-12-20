@@ -65,7 +65,6 @@ export class Hand {
         return (getValueOfCard(this.cards[differentIndex]) - getValueOfCard(otherHand.cards[differentIndex]))
             *Math.pow(10,5-differentIndex);
     }
-
 }
 
 
