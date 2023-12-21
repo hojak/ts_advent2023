@@ -1,5 +1,6 @@
 export class PipeMap {
     description: string;
+    mainLoop: string = "";
     private _cols: number;
     private _rows: number;
 
@@ -29,6 +30,7 @@ export class PipeMap {
     }
 
     getLoopLength () : number {
+        this.mainLoop = " ".repeat(this.description.length);
         let startPosition = this.getStartingPosition();
         let steps = 0;
 
@@ -45,12 +47,18 @@ export class PipeMap {
         } while ( isNaN ( nextDirection ) && currentDirection < 4);
 
         do {
+            this.markMainLoopTile ( currentPosition );
             currentPosition = this.getNextPosition ( currentPosition, currentDirection );
             currentDirection = this.getExitDirection ( currentPosition, (currentDirection+2)%4 );
             steps ++;
         } while ( this.getSymbolAt ( currentPosition ) != "S" && ! isNaN (currentDirection));
 
         return steps;
+    }
+
+    markMainLoopTile(position: number[]) {
+        let index = this.getOffsetFor(position);
+        this.mainLoop = this.mainLoop.substring(0, index ) + this.getSymbolAt(position) + this.mainLoop.substring(index+1);
     }
 
     getExitDirection(position: number[], enteringFromDirection: number): number {
@@ -99,5 +107,18 @@ export class PipeMap {
     getMaximalDistance(): any {
         return Math.floor ( this.getLoopLength() / 2);
     }
+
+
+    countNumberOfSurroundedTiles(): number {
+        let result = 0;
+        let openingChar = "";
+
+        for ( let i=0; i<this.description.length; i++ ) {
+            let currentChar = this.description[i];
+        }
+
+        return result;
+    }
+
 
 }

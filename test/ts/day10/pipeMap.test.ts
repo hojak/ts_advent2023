@@ -51,4 +51,53 @@ describe("Day 10", () => {
             expect ( testee.getMaximalDistance()).to.be.equal(4);
         })
     })
+
+    describe ( "find surrounded tiles", () => {
+        it ( "should return 4", () => {
+            let testee = new PipeMap ( 
+                "...........\n"+
+                ".S-------7.\n"+
+                ".|F-----7|.\n"+
+                ".||.....||.\n"+
+                ".||.....||.\n"+
+                ".|L-7.F-J|.\n"+
+                ".|..|.|..|.\n"+
+                ".L--J.L--J.\n"+
+                "..........."
+            );
+            expect(testee.countNumberOfSurroundedTiles()).to.be.equal(4);
+        })
+    });
+
+    describe ("map loop", () => {
+        it ( "should be a valid loop map", () => {console
+            let map = 
+            "...........\n"+
+            ".S-------7.\n"+
+            ".|F-----7|.\n"+
+            ".||.....||.\n"+
+            ".||.....||.\n"+
+            ".|L-7.F-J|.\n"+
+            ".|..|.|..|.\n"+
+            ".L--J.L--J.\n"+
+            "...........";
+
+            let expected = 
+            "           "+
+            " S-------7 "+
+            " |F-----7| "+
+            " ||     || "+
+            " ||     || "+
+            " |L-7 F-J| "+
+            " |  | |  | "+
+            " L--J L--J "+
+            "           ";
+
+            let testee = new PipeMap(map);
+            testee.getLoopLength();
+            expect ( testee.mainLoop ).to.be.equal ( expected);
+
+        })
+    })
 });
+
