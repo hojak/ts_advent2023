@@ -17,8 +17,6 @@ export function next_step ( sequence : number[] ): number {
 
 
 export function sum_of_next_steps ( input: string ) : number {
-    let sum = 0;
-
     return input.split("\n").filter(line => line.trim() >= "")
         .map ( line => line.split(" ").filter ( part => part.trim() != "").map ( part => Number(part)))
         .map ( sequence => next_step(sequence ))
