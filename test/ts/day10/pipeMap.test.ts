@@ -33,5 +33,16 @@ describe("Day 10", () => {
         it ( "should return 8", () => {
             expect ( testee.getLoopLength()).to.be.equal(8);
         })
+
+        testee = new PipeMap (
+            "7-F7-\n"+
+            ".FJ|7\n"+
+            "SJLL7\n"+
+            "|F--J\n"+
+            "LJ.LJ"
+        );
+        it ( "should return 14", () => {
+            expect ( testee.getLoopLength()).to.be.equal(16);
+        })
     })
 });
