@@ -46,6 +46,15 @@ describe ("day 7: hand", () => {
         it ( "should return 14", () => {
             expect ( getValueOfCard("A")).to.be.equal (14);
         })
+
+        it ( "should return 11 when J is not a Joker", () => {
+            expect ( getValueOfCard("J")).to.be.equal (11);
+        })
+
+        it ( "should return 1 when J is a Joker", () => {
+            expect ( getValueOfCard("J", true)).to.be.equal (1);
+        })
+
     });
 
     describe ("getDistanceTo", () => {

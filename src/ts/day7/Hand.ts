@@ -78,6 +78,10 @@ export enum HandType {
     FiveOfAKind
 }
 
-export function getValueOfCard ( card: string ) : number {
-    return  "--23456789TJQKA".indexOf ( card );
+export function getValueOfCard ( card: string, jIsJoker: boolean = false ) : number {
+    let compareString = "--23456789TJQKA";
+    if ( jIsJoker ) {
+        compareString = "-J23456789T-QKA"
+    }
+    return  compareString.indexOf ( card );
 }
