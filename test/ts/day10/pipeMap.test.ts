@@ -34,7 +34,7 @@ describe("Day 10", () => {
             expect ( testee.getLoopLength()).to.be.equal(8);
         })
 
-        testee = new PipeMap (
+        let testee2 = new PipeMap (
             "7-F7-\n"+
             ".FJ|7\n"+
             "SJLL7\n"+
@@ -42,7 +42,13 @@ describe("Day 10", () => {
             "LJ.LJ"
         );
         it ( "should return 14", () => {
-            expect ( testee.getLoopLength()).to.be.equal(16);
+            expect ( testee2.getLoopLength()).to.be.equal(16);
+        })
+    })
+
+    describe ( "get maximal distance in loop", () => {
+        it ("should return 4", () => {
+            expect ( testee.getMaximalDistance()).to.be.equal(4);
         })
     })
 });

@@ -95,4 +95,9 @@ export class PipeMap {
     getSymbolAt(position: number[]): string {
         return this.description[  this.getOffsetFor( position ) ];
     }
+
+    getMaximalDistance(): any {
+        return Math.floor ( this.getLoopLength() / 2);
+    }
+
 }
