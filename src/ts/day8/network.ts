@@ -68,6 +68,8 @@ export class Network {
 
             currentNodes = this.getNextPositions(currentNodes, direction == "L" ? 0 : 1);
 
+            console.log ( numberOfSteps + " " + direction + ": " + currentNodes);
+
             currentDirectionIndex ++;
             if ( currentDirectionIndex >= this.directions.length) {
                 currentDirectionIndex = 0;
