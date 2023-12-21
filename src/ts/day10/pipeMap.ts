@@ -53,7 +53,26 @@ export class PipeMap {
             steps ++;
         } while ( this.getSymbolAt ( currentPosition ) != "S" && ! isNaN (currentDirection));
 
+        this.replaceSInMainLoop();
+
         return steps;
+    }
+
+    replaceSInMainLoop() {
+        let index = this.mainLoop.indexOf("S");
+
+        let connections : number [] = [];
+        if ( this.mainLoop[index-this._cols] != " " ) { connections.push(0); }
+        if ( this.mainLoop[index+1] != " ") {connections.push (1)}
+        if ( this.mainLoop[index+this._cols] != " ") {connections.push (2)}
+        if ( this.mainLoop[index-1] != " ") {connections.push (3)}
+        
+        PipeMap.symbolDirections
+        let replaceWith = ["|","-","F","L","J","7"].filter( 
+            symbol => PipeMap.symbolDirections[symbol][0] == connections[0] && PipeMap.symbolDirections[symbol][1] == connections[1]
+        ).at(0) ?? '*';
+
+        this.mainLoop = this.mainLoop.replace ( "S", replaceWith )
     }
 
     markMainLoopTile(position: number[]) {
@@ -61,8 +80,7 @@ export class PipeMap {
         this.mainLoop = this.mainLoop.substring(0, index ) + this.getSymbolAt(position) + this.mainLoop.substring(index+1);
     }
 
-    getExitDirection(position: number[], enteringFromDirection: number): number {
-        let symbolDirections : { [symbol: string] : number[] } = {
+    static readonly symbolDirections : { [symbol: string] : number[] } = {
             "|" : [0,2],
             "-" : [1,3],
             "F" : [1,2],
@@ -70,7 +88,9 @@ export class PipeMap {
             "7" : [2,3],
             "J" : [0,3]
         }
-        let direction = symbolDirections[ this.getSymbolAt( position )];
+
+    getExitDirection(position: number[], enteringFromDirection: number): number {
+        let direction = PipeMap.symbolDirections[ this.getSymbolAt( position )];
         if ( direction == undefined ) {
             return NaN;
         }
