@@ -45,13 +45,6 @@ export class PipeMap {
         } while ( isNaN ( nextDirection ) && currentDirection < 4);
 
         do {
-            console.log(
-                steps + ": " +
-                " symbol: " + this.getSymbolAt(currentPosition) +
-                " -> position: " + currentPosition
-                + " direction: " + currentDirection
-            )
-
             currentPosition = this.getNextPosition ( currentPosition, currentDirection );
             currentDirection = this.getExitDirection ( currentPosition, (currentDirection+2)%4 );
             steps ++;
@@ -73,8 +66,6 @@ export class PipeMap {
         if ( direction == undefined ) {
             return NaN;
         }
-
-        console.log ( "       exit direction for " + this.getSymbolAt(position ) + " at " + position + " coming from direction " + enteringFromDirection );
 
         if ( direction[0] == enteringFromDirection ) {
             return direction[1];
