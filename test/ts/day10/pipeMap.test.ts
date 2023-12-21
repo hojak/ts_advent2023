@@ -24,5 +24,8 @@ describe("Day 10", () => {
             expect ( testee.getSymbolAt(3,3)).to.be.equal ( "J");
         })
 
+        it ( "should return starting position 1/1", () => {
+            expect ( testee.getStartingPosition()).to.be.deep.equal ( [1,1]);
+        })
     });
 });

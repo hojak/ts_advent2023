@@ -21,4 +21,15 @@ export class PipeMap {
         return this.description[column + row * this._cols];
     }
 
+    getStartingPosition(): number[] {
+        let index = this.description.indexOf("S");
+        if ( index == undefined ) {
+            throw Error ( "No start position found!");
+        }
+        return [
+            index % this._cols,
+            Math.floor ( index / this._cols) 
+        ];
+    }
+
 }
