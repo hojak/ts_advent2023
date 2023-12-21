@@ -14,18 +14,22 @@ export class Hand {
     }
 
     determineCardType() {
-        let localCardCount = this.cardCount;
+        let localCardCount = Object.assign({}, this.cardCount);
         let numberOfJokers = 0;
 
         if ( this.jAsJoker && (localCardCount['J'] > 0) ) {
-           numberOfJokers = this.cardCount['J'];
-           delete (localCardCount['J']);
+            numberOfJokers = localCardCount['J'];
+            delete (localCardCount['J']);
         }
 
         let counts = Object.values ( localCardCount ).sort ( (a,b) => b-a);
-        counts[0] += numberOfJokers;
+        if ( numberOfJokers == 5 ) {
+            counts[0] = 5;
+        } else {
+            counts[0] += numberOfJokers;
+        }
 
-        let numberOfDifferentCards = Object.keys(localCardCount).length;
+        let numberOfDifferentCards = Object.keys(counts).length;
         switch ( numberOfDifferentCards ) {
             case 5: this.type = HandType.HighCard; break;
             case 1: this.type = HandType.FiveOfAKind; break;
