@@ -1,5 +1,3 @@
-import { transpileModule } from "typescript";
-
 export function next_step ( sequence : number[] ): number {
     if ( sequence.length == 0 ) {
         return 0;
