@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { Network } from "../../../src/ts/day8/network";
+import { LoopSearchResult, Network } from "../../../src/ts/day8/network";
 
 describe ( "Day 8: Network", () => {
 

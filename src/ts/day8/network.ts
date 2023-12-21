@@ -35,16 +35,7 @@ export class Network {
             currentStep++;
             let direction = this.directions[currentDirectionIndex];
 
-            let nodeDescription = this.map.get(currentNode);
-            if ( nodeDescription == undefined ) {
-                throw new Error ( "reached node with no further directions: " + currentNode);
-            }
-
-            if ( direction == "L") {
-                currentNode = nodeDescription [0];
-            } else {
-                currentNode = nodeDescription [1];
-            }
+            currentNode = this.getNextNodeFor ( currentNode, direction=="L" ? 0 : 1);
 
             currentDirectionIndex++;
             if ( currentDirectionIndex >= this.directions.length) {
@@ -53,6 +44,14 @@ export class Network {
         }
 
         return currentStep;
+    }
+
+    getNextNodeFor(node: string, directionIndex: number): string {
+        let nodeDescription = this.map.get(node);
+        if ( nodeDescription == undefined ) {
+            throw new Error ( "reached node with no further directions: " + node);
+        }
+        return nodeDescription [directionIndex];
     }
 
 
@@ -99,10 +98,81 @@ export class Network {
     getStartingNodes() : string[] {
         return Array.from(this.map.keys()).filter ( node => node[2] == "A");
     }
+
+    findLoopStartingWithSoureNode(node: string): LoopSearchResult {
+        let currentDirectionIndex = 0;
+        let currentStepNumber = 0;
+        let currentNode = node;
+
+        let visited = new Map<string, number>();
+
+        do {
+            visited.set ( currentNode + "/" + currentDirectionIndex, currentStepNumber);
+
+            let direction = this.directions[currentDirectionIndex] == "L" ? 0 : 1;
+
+            currentNode = this.getNextNodeFor(currentNode, direction);
+
+            currentStepNumber++;
+            currentDirectionIndex++;
+            if ( currentDirectionIndex >= this.directions.length) {
+                currentDirectionIndex = 0;
+            }
+        } while ( !visited.has(currentNode + "/" + currentDirectionIndex) );
+        
+        let firstNodeInLoop = currentNode;
+        let directionIndexOfFirstNodeInLoop = currentDirectionIndex;
+        let stepsIntoLoop = visited.get(firstNodeInLoop + "/" + directionIndexOfFirstNodeInLoop) ?? 1;
+
+        let result : LoopSearchResult = {
+            stepsIntoLoop: stepsIntoLoop,
+            loopLength: visited.size - stepsIntoLoop,
+            endPositions:  Array.from(visited.keys())
+                .filter ( key => key[2] == "Z" )
+                .map ( keyOfEndNode => visited.get(keyOfEndNode) ?? -1)
+                .map ( steps => steps - stepsIntoLoop)
+        }
+
+        return result;
     }
+
+    solveSimultaneousStepsFor1EndPositionPerLoop () : number {
+        let staringNodes = this.getStartingNodes();
+        let loopDescriptions = staringNodes.map ( node => this.findLoopStartingWithSoureNode( node ));
+
+        let worker = loopDescriptions.map ( desc => desc.stepsIntoLoop + desc.endPositions[0]);
+
+        let steps = 0;
+        while ( ! isEndReached (worker)) {
+            let indexOfSmallest = 0;
+            for ( let i=1; i<worker.length; i++) {
+                if ( worker[i] < worker[indexOfSmallest ]) {
+                    indexOfSmallest = i;
+                }
+            }
+
+            worker[indexOfSmallest] += loopDescriptions[indexOfSmallest].loopLength;
+            steps ++;
+
+            if ( steps % 1000000 == 0) {
+                console.log ( steps + ": " + worker);
+            }
+        }
+
+        return worker[0];
+    }
+}
 
 export interface LoopSearchResult {
     stepsIntoLoop: number;
     loopLength: number;
     endPositions: number[]
+}
+
+function isEndReached(worker: number[]) {
+    let result = true;
+    for ( let i=1; i<worker.length; i++) {
+        result = result && ( worker[i-1] == worker[i]);
+    }
+    return result;
 }
