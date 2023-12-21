@@ -55,4 +55,48 @@ export class Network {
         return currentStep;
     }
 
+
+    getNumberOfNecessarySimultaneousSteps(): number {
+        let currentNodes = this.getStartingNodes();
+        let numberOfSteps = 0;
+        let currentDirectionIndex = 0;
+
+        while ( !this.isEndPosition(currentNodes)) {
+            numberOfSteps ++;
+
+            let direction = this.directions[currentDirectionIndex];
+
+            currentNodes = this.getNextPositions(currentNodes, direction == "L" ? 0 : 1);
+
+            currentDirectionIndex ++;
+            if ( currentDirectionIndex >= this.directions.length) {
+                currentDirectionIndex = 0;
+            }
+        }
+
+        return numberOfSteps;
+    }
+
+    getNextPositions(currentNodes: string[], useDirectionIndex : number): string[] {
+        return currentNodes.map (
+            node => {
+                let nodeDescription = this.map.get(node);
+                if ( nodeDescription == undefined ) {
+                    throw new Error ( "reached node with no further directions: " + node);
+                }
+                return nodeDescription[useDirectionIndex];
+            }
+        );
+    }
+
+    isEndPosition(currentNodes: string[]) : boolean {
+        return currentNodes.map ( node => node[2] == "Z" )
+            .reduce ( (prev, curr, index ) => prev && curr );
+    }
+
+    getStartingNodes() : string[] {
+        return Array.from(this.map.keys()).filter ( node => node[2] == "A");
+    }
+
+
 }
