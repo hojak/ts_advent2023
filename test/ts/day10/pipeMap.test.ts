@@ -21,11 +21,17 @@ describe("Day 10", () => {
         })
 
         it ( "should find the correct symbol", () => {
-            expect ( testee.getSymbolAt(3,3)).to.be.equal ( "J");
+            expect ( testee.getSymbolAt([3,3])).to.be.equal ( "J");
         })
 
         it ( "should return starting position 1/1", () => {
             expect ( testee.getStartingPosition()).to.be.deep.equal ( [1,1]);
         })
     });
+
+    describe ( "get Loop length", () => {
+        it ( "should return 8", () => {
+            expect ( testee.getLoopLength()).to.be.equal(8);
+        })
+    })
 });
