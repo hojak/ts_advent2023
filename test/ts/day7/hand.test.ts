@@ -30,8 +30,35 @@ describe ("day 7: hand", () => {
         it ("should be of type High Card", () => {
             expect ( new Hand ("BJT23").getType()).to.be.equal ( HandType.HighCard);
         })
-
     } )
+
+    describe ( "finding type with J as Joker", () => {
+
+        it ("rate normal when no jokers are present", () => {
+            expect ( new Hand ("BJT23").getType()).to.be.equal ( HandType.HighCard);
+        })
+
+        it ("should be of type five of a kind", () => {
+            expect ( new Hand ("AAAJJ", true).getType()).to.be.equal ( HandType.FiveOfAKind);
+        })
+
+        it ("should be of type four of a kind", () => {
+            expect ( new Hand ("AJJAK", true).getType()).to.be.equal ( HandType.FourOfAKind);
+        })
+
+        it ("should be of type full house", () => {
+            expect ( new Hand ("1212J", true).getType()).to.be.equal ( HandType.FullHouse);
+        })
+
+        it ("should be of type three of a kind", () => {
+            expect ( new Hand ("J2B3B", true).getType()).to.be.equal ( HandType.ThreeOfAKind);
+        })
+
+        it ("should be of type one pair", () => {
+            expect ( new Hand ("TA23J", true).getType()).to.be.equal ( HandType.OnePair);
+        })
+    });
+
 
 
     describe ("getValueOfCard", () => {
