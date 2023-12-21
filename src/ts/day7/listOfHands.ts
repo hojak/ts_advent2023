@@ -3,12 +3,15 @@ import { Hand } from "./Hand";
 
 export class ListOfHands {
     handsWithBids : [Hand, number][] = [];
+    jAsJoker: boolean;
 
-    constructor( input: string ) {
+
+    constructor( input: string, jAsJoker: boolean = false ) {
+        this.jAsJoker = jAsJoker;
         this.handsWithBids = input.split("\n").filter(s => s.trim() != "").map ( line => {
             let split = line.split(" ");
             return [
-                new Hand ( split[0 ]),
+                new Hand ( split[0], jAsJoker),
                 Number(split[1])
             ];
         });

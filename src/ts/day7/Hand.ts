@@ -2,9 +2,11 @@ export class Hand {
     cards: string;
     cardCount: { [card: string]: number } = {};
     type: HandType = HandType.HighCard;
+    jAsJoker: boolean = false;
 
-    constructor ( cards: string ) {
+    constructor ( cards: string, jAsJoker: boolean = false ) {
         this.cards = cards;
+        this.jAsJoker = jAsJoker;
 
         this.countCards(cards);
 
@@ -12,9 +14,22 @@ export class Hand {
     }
 
     determineCardType() {
-        let numberOfDifferentCards = Object.keys(this.cardCount).length;
-        let counts = Object.values ( this.cardCount ).sort ( (a,b) => b-a);
+        let localCardCount = Object.assign({}, this.cardCount);
+        let numberOfJokers = 0;
 
+        if ( this.jAsJoker && (localCardCount['J'] > 0) ) {
+            numberOfJokers = localCardCount['J'];
+            delete (localCardCount['J']);
+        }
+
+        let counts = Object.values ( localCardCount ).sort ( (a,b) => b-a);
+        if ( numberOfJokers == 5 ) {
+            counts[0] = 5;
+        } else {
+            counts[0] += numberOfJokers;
+        }
+
+        let numberOfDifferentCards = Object.keys(counts).length;
         switch ( numberOfDifferentCards ) {
             case 5: this.type = HandType.HighCard; break;
             case 1: this.type = HandType.FiveOfAKind; break;
@@ -62,7 +77,7 @@ export class Hand {
             differentIndex++;
         }
 
-        return (getValueOfCard(this.cards[differentIndex]) - getValueOfCard(otherHand.cards[differentIndex]))
+        return (getValueOfCard(this.cards[differentIndex], this.jAsJoker) - getValueOfCard(otherHand.cards[differentIndex], this.jAsJoker))
             *Math.pow(10,5-differentIndex);
     }
 }
@@ -78,6 +93,10 @@ export enum HandType {
     FiveOfAKind
 }
 
-export function getValueOfCard ( card: string ) : number {
-    return  "--23456789TJQKA".indexOf ( card );
+export function getValueOfCard ( card: string, jIsJoker: boolean = false ) : number {
+    let compareString = "--23456789TJQKA";
+    if ( jIsJoker ) {
+        compareString = "-J23456789T-QKA"
+    }
+    return  compareString.indexOf ( card );
 }
