@@ -81,13 +81,13 @@ export class PipeMap {
     }
 
     static readonly symbolDirections : { [symbol: string] : number[] } = {
-            "|" : [0,2],
-            "-" : [1,3],
-            "F" : [1,2],
-            "L" : [0,1],
-            "7" : [2,3],
-            "J" : [0,3]
-        }
+        "|" : [0,2],
+        "-" : [1,3],
+        "F" : [1,2],
+        "L" : [0,1],
+        "7" : [2,3],
+        "J" : [0,3]
+    }
 
     getExitDirection(position: number[], enteringFromDirection: number): number {
         let direction = PipeMap.symbolDirections[ this.getSymbolAt( position )];
@@ -133,8 +133,38 @@ export class PipeMap {
         let result = 0;
         let openingChar = "";
 
+        // compute main loop
+        this.getLoopLength();
+        let open = false;
+
         for ( let i=0; i<this.description.length; i++ ) {
-            let currentChar = this.description[i];
+            let currentChar = this.mainLoop[i];
+
+            switch ( currentChar ) {
+                case "|": open = ! open; break;
+                case "F": openingChar = "F"; break;
+                case "J":
+                    if ( openingChar == "F") {
+                        open = ! open;
+                    } 
+                    openingChar = "";
+                    break;
+                case "L": openingChar = "L"; break;
+                case "7": 
+                    if ( openingChar == "L") {
+                        open = ! open;
+                    }
+                    openingChar = "";
+                    break;
+
+                case " ": 
+                    if ( open ) {
+                        result ++;
+                    }
+                    break;
+
+                case "-": break;
+            }
         }
 
         return result;
