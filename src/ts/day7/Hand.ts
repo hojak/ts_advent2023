@@ -73,7 +73,7 @@ export class Hand {
             differentIndex++;
         }
 
-        return (getValueOfCard(this.cards[differentIndex]) - getValueOfCard(otherHand.cards[differentIndex]))
+        return (getValueOfCard(this.cards[differentIndex], this.jAsJoker) - getValueOfCard(otherHand.cards[differentIndex], this.jAsJoker))
             *Math.pow(10,5-differentIndex);
     }
 }

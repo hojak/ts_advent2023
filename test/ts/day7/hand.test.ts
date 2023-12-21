@@ -117,7 +117,19 @@ describe ("day 7: hand", () => {
             it ( compareTo + " should be equal to itself", () => {
                 expect ( new Hand(compareTo).compareTo(new Hand(compareTo))).to.be.equal ( 0 );
             })
+        });        
+    });
+
+    describe ("getDistanceTo using J as Joker", () => {
+        [
+            "JJJJ7",
+            "655J1"
+        ].forEach ( (compareTo) => {
+            it ( "55567 should be smaller than " + compareTo, () => {
+                expect ( new Hand("55567", true).compareTo(new Hand(compareTo, true))).to.be.lessThan ( 0 );
+            })
         });
-        
-    })
+
+    });
+
 });
