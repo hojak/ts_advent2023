@@ -67,6 +67,35 @@ export class Universe {
     public get rows(): number {
         return this._rows;
     }
+
+    getSumOfDistances(): number {
+        let result = 0;
+        let galaxies = this.getGalaxyCoordinates();
+
+        for ( let index1=0; index1 < galaxies.length-1; index1++ ) {
+            let galaxy1 = galaxies[index1];
+            for ( let index2=index1+1; index2 < galaxies.length; index2++ ) {
+                let galaxy2 = galaxies[index2];
+                let distance = Math.abs(galaxy2[0]-galaxy1[0]) + Math.abs(galaxy2[1]-galaxy1[1]);
+                result += distance;
+            }
+        }
+
+        return result;
+    }
+
+    getGalaxyCoordinates(): number[][] {
+        let result : number[][] = [];
+        for ( let col=0; col<this._cols; col ++) {
+            for ( let row = 0; row<this._rows; row++) {
+                if ( this.getSymbolAt(col, row) == "#") {
+                    result.push ( [col, row]);
+                }
+            }
+        }
+        return result;
+    }
+
 }
 
 function isEmpty(row: string) {

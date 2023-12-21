@@ -30,4 +30,22 @@ describe ( "day 11", () => {
 
     });
 
+    describe ( "getSumOfDistances", () => {
+        it ( "should return 374", () => {
+            let testee = new Universe (
+                "...#......\n"+
+                ".......#..\n"+
+                "#.........\n"+
+                "..........\n"+
+                "......#...\n"+
+                ".#........\n"+
+                ".........#\n"+
+                "..........\n"+
+                ".......#..\n"+
+                "#...#.....\n"
+            );
+            expect ( testee.getSumOfDistances()).to.be.equal(374);
+        })
+    });
+
 });
