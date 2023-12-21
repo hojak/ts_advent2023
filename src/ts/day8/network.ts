@@ -99,6 +99,10 @@ export class Network {
     getStartingNodes() : string[] {
         return Array.from(this.map.keys()).filter ( node => node[2] == "A");
     }
+    }
 
-
+export interface LoopSearchResult {
+    stepsIntoLoop: number;
+    loopLength: number;
+    endPositions: number[]
 }
