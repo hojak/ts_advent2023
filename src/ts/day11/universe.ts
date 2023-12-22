@@ -76,12 +76,11 @@ export class Universe {
             let galaxy1 = galaxies[index1];
             for ( let index2=index1+1; index2 < galaxies.length; index2++ ) {
                 let galaxy2 = galaxies[index2];
-                let distance = Math.abs(galaxy2[0]-galaxy1[0]) + Math.abs(galaxy2[1]-galaxy1[1]);
-                result += distance;
-            }
-        }
 
-        return result;
+        let sumOfVisits = columnVisits.reduce ( (prev, curr, index) => prev+curr) + 
+            rowVisits.reduce ((prev, curr, index) => prev+curr);
+
+        return sumOfVisits;
     }
 
     getGalaxyCoordinates(): number[][] {
