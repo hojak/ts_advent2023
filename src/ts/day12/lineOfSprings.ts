@@ -35,9 +35,9 @@ export class LineOfSprings {
 
         let currentGroup = 0;
         let groupOpen = false;
-        let hasQuestionmarks = false;
 
-        for ( let i=0; i<springs.length; i++) {
+        let i = 0;
+        while ( i<springs.length && springs[i] != "?") {
             switch ( springs[i]) {
                 case "#":
                     if ( groupOpen ) {
@@ -47,9 +47,6 @@ export class LineOfSprings {
                         currentGroup = 1;
                     }
                     break;
-                case "?":
-                  hasQuestionmarks = true;
-                  break;
                 case ".":
                     if ( groupOpen ) {
                         foundGroups.push(currentGroup);
@@ -58,14 +55,23 @@ export class LineOfSprings {
                     }
                 
             }
+            i++;
         }
         if ( groupOpen ) {
             foundGroups.push( currentGroup);
         }
 
-        if ( hasQuestionmarks ) {
-            // todo
-            return true;
+        if ( springs[i] == "?" ) {
+            if ( foundGroups.length == 0 ) {
+                return true;
+            }
+
+            for ( let i=0; i<foundGroups.length-1; i++) {
+                if ( foundGroups[i] != groups[i]) {
+                    return false;
+                }
+            }
+            return foundGroups[foundGroups.length-1] <= groups[foundGroups.length-1];
         }
 
         if ( foundGroups.length != groups.length ) {
@@ -87,8 +93,12 @@ function getNumberOfPossibleSolutions ( springs: string, groups : number[] ) : n
     let numberOfSprings = groups.reduce( (prev, curr, index) => prev+curr);
     let numberOfKnownSprings = springs.length - springs.replace ( /#/g, "").length;
 
+    if ( ! LineOfSprings.isValid(springs, groups) ) {
+        return 0;
+    }
+
     if ( numberOfUnknowns == 0 ) {
-        return LineOfSprings.isValid(springs, groups) ? 1 : 0;
+        return 1;
     }
 
     if (numberOfUnknowns < numberOfSprings - numberOfKnownSprings) {
