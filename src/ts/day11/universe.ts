@@ -3,10 +3,16 @@ export class Universe {
     private _cols: number;
     private _rows: number;
 
-    constructor( input: string ) {
+    emptyRows : number[] = [];
+    emptyCols : number[] = [];
+    expansionFactor: number = 2;
+
+    constructor( input: string, expansionFactor : number = 2 ) {
         this.description = input.replace(/\n/g, "");
         this._cols = input.indexOf("\n");
         this._rows = this.description.length / this._cols;
+
+        this.expansionFactor = expansionFactor;
 
         this.expand();
     }
@@ -15,16 +21,14 @@ export class Universe {
         for (let i=0; i<this._rows; i++ ) {
             let row = this.getRow (i);
             if ( isEmpty(row)) {
-                this.insertEmptyRow ( i );
-                i++;
+                this.emptyRows.push(i);
             }
         }
 
         for ( let i=0; i<this._cols; i++) {
             let col = this.getCol(i);
             if ( isEmpty ( col )) {
-                this.insertEmptyCol(i);
-                i++
+                this.emptyCols.push(i);
             }
         }
     }
@@ -69,19 +73,48 @@ export class Universe {
     }
 
     getSumOfDistances(): number {
-        let result = 0;
+        let columnVisits: number[] = new Array ( this._cols);
+        let rowVisits: number[] = new Array ( this._rows );
+
+        for ( let col=0; col < this._cols; col ++ ) {
+            columnVisits[col] = 0;
+        }
+        for ( let row=0; row < this._rows; row ++ ) {
+            rowVisits[row] = 0;
+        }
+
         let galaxies = this.getGalaxyCoordinates();
 
         for ( let index1=0; index1 < galaxies.length-1; index1++ ) {
             let galaxy1 = galaxies[index1];
             for ( let index2=index1+1; index2 < galaxies.length; index2++ ) {
                 let galaxy2 = galaxies[index2];
-                let distance = Math.abs(galaxy2[0]-galaxy1[0]) + Math.abs(galaxy2[1]-galaxy1[1]);
-                result += distance;
+
+                let from = Math.min ( galaxy1[0], galaxy2[0]);
+                let to = Math.max ( galaxy1[0], galaxy2[0]);
+                for ( let col=from; col<to; col ++ ) {
+                    columnVisits[col]++;
+                }
+
+                from = Math.min ( galaxy1[1], galaxy2[1]);
+                to = Math.max ( galaxy1[1], galaxy2[1]);
+                for ( let row=from; row<to; row ++ ) {
+                    rowVisits[row]++;
+                }
             }
         }
 
-        return result;
+        this.emptyCols.forEach ( emptyCol => {
+            columnVisits[emptyCol] *= this.expansionFactor;
+        });
+        this.emptyRows.forEach ( emptyRow => {
+            rowVisits[emptyRow] *= this.expansionFactor;
+        });
+
+        let sumOfVisits = columnVisits.reduce ( (prev, curr, index) => prev+curr) + 
+            rowVisits.reduce ((prev, curr, index) => prev+curr);
+
+        return sumOfVisits;
     }
 
     getGalaxyCoordinates(): number[][] {

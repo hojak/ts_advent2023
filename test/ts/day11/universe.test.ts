@@ -13,21 +13,15 @@ describe ( "day 11", () => {
     })
 
     describe ( "expanding universe", () => {
-
-        it ( "should enlarge rows", () => {
+        it ( "should find empty rows", () => {
             let testee = new Universe ( "...#...\n.......\n#######");
-            expect(testee.rows).to.be.equal (4);
-            expect(testee.cols).to.be.equal (7);
-            expect(testee.description).to.be.equal("...#.................#######")
+            expect(testee.emptyRows).to.be.deep.equal ([1]);
         });
 
-        it ( "should enlarge cols", () => {
+        it ( "should find empty cols", () => {
             let testee = new Universe ( ".#.#\n..##");
-            expect(testee.rows).to.be.equal (2);
-            expect(testee.cols).to.be.equal (5);
-            expect(testee.description).to.be.equal("..#.#...##")
+            expect(testee.emptyCols).to.be.deep.equal ([0]);
         });
-
     });
 
     describe ( "getSumOfDistances", () => {
@@ -45,6 +39,16 @@ describe ( "day 11", () => {
                 "#...#.....\n"
             );
             expect ( testee.getSumOfDistances()).to.be.equal(374);
+        })
+
+
+        it ( "should return 6", () => {
+            let testee = new Universe (
+                "#..\n"+
+                "...\n"+
+                "..#"
+            );
+            expect ( testee.getSumOfDistances()).to.be.equal(6);
         })
     });
 
