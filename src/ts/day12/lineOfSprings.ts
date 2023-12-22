@@ -8,6 +8,15 @@ export class LineOfSprings {
         this.groups = split[1].split(",").map ( str => Number(str));
     }
 
+    unfold () {
+        this.springs = this.springs + ("?" + this.springs).repeat(4);
+        this.groups = this.groups.concat(this.groups).concat(this.groups).concat(this.groups).concat(this.groups);
+    }
+
+    toString() : string {
+        return this.springs + " " + this.groups.join(",");
+    }
+
     getNumberOfPossibleSolutions () : number {
         return getNumberOfPossibleSolutions ( this.springs, this.groups );
     }
@@ -101,3 +110,4 @@ function getNumberOfPossibleSolutions ( springs: string, groups : number[] ) : n
 
     return result;
 }
+

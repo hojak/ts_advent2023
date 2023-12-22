@@ -48,6 +48,17 @@ describe ( "Day 12", () => {
 
     })
 
+    describe ( "unfold", () => {
+        it ( "should unfold", () => {
+            let testee = new LineOfSprings("#.# 1,1");
+            testee.unfold();
+
+            expect ( testee.toString()).to.be.equal(
+                "#.#?#.#?#.#?#.#?#.# 1,1,1,1,1,1,1,1,1,1"
+            )
+        })
+    })
+
 
 
 
