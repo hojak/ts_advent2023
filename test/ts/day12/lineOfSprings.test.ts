@@ -5,12 +5,20 @@ import { LineOfSprings } from "../../../src/ts/day12/lineOfSprings";
 describe ( "Day 12", () => {
 
     describe ("count possibilities", () => {
-        it ( "should return 1", () => {
-            expect ( new LineOfSprings ("? 1").getNumberOfPossibleSolutions()).to.be.equal(1);
-        });
 
-        it ( "should return 2", () => {
-            expect ( new LineOfSprings ("?? 1").getNumberOfPossibleSolutions()).to.be.equal(1);
+        [
+            ["? 1", 1],
+            ["?? 1", 2],
+            ["???.### 1,1,3", 1],
+            [".??..??...?##. 1,1,3", 4],
+            ["?#?#?#?#?#?#?#? 1,3,1,6", 1],
+            ["????.#...#... 4,1,1", 1],
+            ["????.######..#####. 1,6,5", 4],
+            ["?###???????? 3,2,1", 10]
+        ].forEach ( input => {
+            it ( input[0] + " should have " + input[1] + " possibilities", () => {
+                expect ( new LineOfSprings (""+input[0]).getNumberOfPossibleSolutions()).to.be.equal(input[1]);    
+            });
         });
     })
 
@@ -20,6 +28,7 @@ describe ( "Day 12", () => {
             ".# 1",
             ".#. 1",
             ".## 2",
+            "#.#.### 1,1,3"
         ].forEach ( line => {
             it ( line + " should be valid", () => {
                 expect ( LineOfSprings.isValidString ( line )).to.be.true;

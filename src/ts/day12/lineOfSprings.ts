@@ -1,15 +1,15 @@
 export class LineOfSprings {
     springs: string;
-    groups: string[];
+    groups: number[];
 
     constructor( line: string ) {
         let split = line.trim().split(" ");
         this.springs = split[0];
-        this.groups = split[1].split(",");
+        this.groups = split[1].split(",").map ( str => Number(str));
     }
 
     getNumberOfPossibleSolutions () : number {
-        return 1;
+        return getNumberOfPossibleSolutions ( this.springs, this.groups );
     }
 
 
@@ -73,3 +73,31 @@ export class LineOfSprings {
         
 }
 
+function getNumberOfPossibleSolutions ( springs: string, groups : number[] ) : number {
+    let numberOfUnknowns = springs.length - springs.replace ( /\?/g, "").length;
+    let numberOfSprings = groups.reduce( (prev, curr, index) => prev+curr);
+    let numberOfKnownSprings = springs.length - springs.replace ( /#/g, "").length;
+
+    if ( numberOfUnknowns == 0 ) {
+        return LineOfSprings.isValid(springs, groups) ? 1 : 0;
+    }
+
+    if (numberOfUnknowns < numberOfSprings - numberOfKnownSprings) {
+        return 0;
+    }
+
+    let worker = springs; 
+    let result = 0;
+    let index = 0;
+
+    while ( worker[index]!="?" && index < worker.length) {
+        index ++;
+    }
+
+    if ( index< worker.length ) {
+        result += getNumberOfPossibleSolutions ( worker.substring(0,index) + "#" + worker.substring(index+1), groups );
+        result += getNumberOfPossibleSolutions ( worker.substring(0,index) + "." + worker.substring(index+1), groups );
+    }
+
+    return result;
+}
