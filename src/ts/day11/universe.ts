@@ -5,12 +5,14 @@ export class Universe {
 
     emptyRows : number[] = [];
     emptyCols : number[] = [];
-    private expansionFactor: number = 2;
+    expansionFactor: number = 2;
 
-    constructor( input: string ) {
+    constructor( input: string, expansionFactor : number = 2 ) {
         this.description = input.replace(/\n/g, "");
         this._cols = input.indexOf("\n");
         this._rows = this.description.length / this._cols;
+
+        this.expansionFactor = expansionFactor;
 
         this.expand();
     }
