@@ -27,4 +27,15 @@ describe( "Day 13: area", () => {
         })
     })
 
+    describe ( "getFirstColumns", () => {
+        let testee = new Area ( "1111\n2232\n3343");
+
+        it ( "should return the first column", () => {
+            expect ( testee.getFirstColumns(1)).to.be.deep.equal(["123"]);
+        })
+        it ( "should return three first columns", () => {
+            expect ( testee.getFirstColumns(3)).to.be.deep.equal(["123", "123", "134"]);
+        })
+    })
+
 })
