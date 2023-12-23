@@ -1,16 +1,17 @@
 import { CompletionInfoFlags } from "typescript";
 
 export class Platform {
-    lines: string[];
+    lines: string[] = [];
     columns: string[] = [];
 
     constructor ( input : string ) {
         this.lines = input.split("\n").filter ( line => line.trim() >= "");
 
-        this.initColumns ();
+        this.refreshColumnsFromLines ();
     }
 
-    initColumns() {
+    refreshColumnsFromLines() {
+        this.columns = [];
         if (this.lines.length == 0) {
             return;
         }
@@ -57,6 +58,22 @@ export class Platform {
                 .reduce ( (prev, curr, index) => prev + curr * (this.lines.length - index), 0);
     }
 
+
+    rotateRight() : this {
+        this.lines = this.columns.map(s => reverseString(s));
+        this.refreshColumnsFromLines();
+        return this;
+    }
+
+    cylce (): this {
+        for ( let i=0; i<4; i++ ) {
+            this.tilt();
+            this.rotateRight();
+        }
+
+        return this;
+    }
+
 }
 
 export function tiltColumn(col: string): string {
@@ -78,5 +95,13 @@ export function tiltColumn(col: string): string {
 
 export function moveBlock(column: string, index: number, tiltTo: number): string {
     return column.substring(0, tiltTo) + "O" + column.substring(tiltTo+1, index) + "." + column.substring(index+1);
+}
+
+function reverseString(s: string): string {
+    let result = "";
+    for ( let char of s ) {
+        result = char + result;
+    }
+    return result;
 }
 

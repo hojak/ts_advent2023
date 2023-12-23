@@ -74,4 +74,41 @@ describe ("day 14: platform", () => {
             ).getTotalLoad()).to.be.equal(136);
         })
     })
+
+    describe ("rotateRight", () => {
+        it ( "should rotate the platform 90 degrees to the right", () => {
+            expect ( new Platform ( "1-2\n---\n4-3").rotateRight().getDescription()).to.be.equal (
+                "4-1\n---\n3-2"
+            );
+        })
+    })
+
+    describe ("cycle", () => {
+
+        it ( "should cycle the test input as given", () => {
+            expect ( new Platform (
+                "O....#....\n"+
+                "O.OO#....#\n"+
+                ".....##...\n"+
+                "OO.#O....O\n"+
+                ".O.....O#.\n"+
+                "O.#..O.#.#\n"+
+                "..O..#O..O\n"+
+                ".......O..\n"+
+                "#....###..\n"+
+                "#OO..#...."
+            ).cylce().getDescription()).to.be.equal (
+                ".....#....\n"+
+                "....#...O#\n"+
+                "...OO##...\n"+
+                ".OO#......\n"+
+                ".....OOO#.\n"+
+                ".O#...O#.#\n"+
+                "....O#....\n"+
+                "......OOOO\n"+
+                "#...O###..\n"+
+                "#..OO#...."
+            );
+        });
+    })
 })
