@@ -28,4 +28,28 @@ describe( "Day 13: list of areas", () => {
         });
     });
 
+    
+    describe("rate list of areas (with one flaw!)", () => {
+        it ( "should return 405", () => {
+            let testee = new ListOfAreas ( 
+                "#.##..##.\n"+
+                "..#.##.#.\n"+
+                "##......#\n"+
+                "##......#\n"+
+                "..#.##.#.\n"+
+                "..##..##.\n"+
+                "#.#.##.#.\n"+
+                "\n"+
+                "#...##..#\n"+
+                "#....#..#\n"+
+                "..##..###\n"+
+                "#####.##.\n"+
+                "#####.##.\n"+
+                "..##..###\n"+
+                "#....#..#"
+            );
+            expect(testee.getRateWithOneFlaw()).to.be.equal(400);
+        });
+    });
+
 })

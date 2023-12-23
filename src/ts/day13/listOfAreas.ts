@@ -11,5 +11,9 @@ export class ListOfAreas {
         return this.areas.map( area => area.getRate() ).reduce ( (prev, curr, index) => prev + curr);
     }
 
+    getRateWithOneFlaw(): any {
+        return this.areas.map( area => area.getRateWithOneFlaw() ).reduce ( (prev, curr, index) => prev + curr);
+    }
+
 
 }

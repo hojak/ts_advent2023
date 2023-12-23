@@ -62,10 +62,16 @@ export class Area {
     }
 
 
-    getRate(): any {
+    getRate(): number {
         return this.findHorizontalReflections().reduce((prev, curr, index) => prev+(curr+1)*100, 0)
          + this.findVerticalReflections().reduce((prev, curr, index) => prev+(curr+1), 0)
     }
+
+    getRateWithOneFlaw(): number {
+        return this.findHorizontalReflectionsWithExactlyOneFlaw().reduce((prev, curr, index) => prev+(curr+1)*100, 0)
+         + this.findVerticalReflectionsWithExactlyOneFlaw().reduce((prev, curr, index) => prev+(curr+1), 0)
+    }
+
 
     findHorizontalReflectionsWithExactlyOneFlaw(): number[] {
         return findReflectionsWithExactlyOneFlaw(this.lines);
