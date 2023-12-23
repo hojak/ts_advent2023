@@ -84,7 +84,6 @@ describe ("day 14: platform", () => {
     })
 
     describe ("cycle", () => {
-
         it ( "should cycle the test input as given", () => {
             expect ( new Platform (
                 "O....#....\n"+
@@ -108,6 +107,32 @@ describe ("day 14: platform", () => {
                 "......OOOO\n"+
                 "#...O###..\n"+
                 "#..OO#...."
+            );
+        });
+
+        it ( "should cycle 2 times the test input as given", () => {
+            expect ( new Platform (
+                "O....#....\n"+
+                "O.OO#....#\n"+
+                ".....##...\n"+
+                "OO.#O....O\n"+
+                ".O.....O#.\n"+
+                "O.#..O.#.#\n"+
+                "..O..#O..O\n"+
+                ".......O..\n"+
+                "#....###..\n"+
+                "#OO..#...."
+            ).cylce().cylce().getDescription()).to.be.equal (
+                ".....#....\n"+
+                "....#...O#\n"+
+                ".....##...\n"+
+                "..O#......\n"+
+                ".....OOO#.\n"+
+                ".O#...O#.#\n"+
+                "....O#...O\n"+
+                ".......OOO\n"+
+                "#..OO###..\n"+
+                "#.OOO#...O"
             );
         });
     })
