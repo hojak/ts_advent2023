@@ -67,6 +67,13 @@ export class Area {
          + this.findVerticalReflections().reduce((prev, curr, index) => prev+(curr+1), 0)
     }
 
+    findHorizontalReflectionsWithExactlyOneFlaw(): number[] {
+        return findReflectionsWithExactlyOneFlaw(this.lines);
+    }
+
+    findVerticalReflectionsWithExactlyOneFlaw(): number[] {
+        return findReflectionsWithExactlyOneFlaw(this.columns);
+    }
 
 }
 
@@ -104,3 +111,33 @@ function getAreaOfStringArray(strings: string[], start: number, end: number): st
     return result;
 
 }
+
+
+function findReflectionsWithExactlyOneFlaw(arrayOfStrings: string[]): any {
+    let result: number[] = [];
+
+    for (let index = 0; index < arrayOfStrings.length - 1; index++) {
+        let { left, right } = getReflectionStrings(index, arrayOfStrings);
+
+        if ( hasExactlyOneDifferentChar ( left.join(""), right.join(""))) {
+            result.push(index);
+        }
+    }
+    return result;
+}
+
+function hasExactlyOneDifferentChar ( s1: string, s2: string ) {
+    let differences = 0;
+    for (let i=0; i<s1.length; i++ ) {
+        if ( s1[i] != s2[i] ) {
+            differences ++;
+
+            if ( differences > 1 ) {
+                return false;
+            }
+        }
+    }
+
+    return differences == 1;
+}
+

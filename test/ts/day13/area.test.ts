@@ -87,7 +87,7 @@ describe( "Day 13: area", () => {
 
     
     describe ( "findHorizontalReflections", () => {
-        it ( "should return 3", () => {
+        it ( "should return 0", () => {
             let testee = new Area ( 
                 "#...##..#\n"+
                 "#....#..#\n"+
@@ -96,8 +96,37 @@ describe( "Day 13: area", () => {
                 "#####.##.\n"+
                 "..##..###\n"+
                 "#....#..#");
-            expect ( testee.findHorizontalReflections()).to.be.deep.equal([3]);
+            expect ( testee.findHorizontalReflections()).to.be.deep.equal([0]);
         })
+        
     })
+
+
+       
+    describe ( "findHorizontalReflectionsWithExactlyOneFlaw", () => {
+        it ( "should return 0", () => {
+            let testee = new Area ( 
+                "#...##..#\n"+
+                "#....#..#\n"+
+                "..##..###\n"+
+                "#####.##.\n"+
+                "#####.##.\n"+
+                "..##..###\n"+
+                "#....#..#");
+            expect ( testee.findHorizontalReflectionsWithExactlyOneFlaw()).to.be.deep.equal([0]);
+        })
+
+        it ( "should return 2", () => {
+            let testee = new Area ( 
+                "#.##..##.\n"+
+                "..#.##.#.\n"+
+                "##......#\n"+
+                "##......#\n"+
+                "..#.##.#.\n"+
+                "..##..##.\n"+
+                "#.#.##.#.");
+            expect ( testee.findHorizontalReflectionsWithExactlyOneFlaw()).to.be.deep.equal([2]);
+        })
+    }) 
 
 })
