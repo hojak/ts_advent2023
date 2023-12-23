@@ -52,8 +52,10 @@ export class Platform {
         return this.lines.join ( "\n");
     }
 
-
-
+    getTotalLoad(): number {
+        return this.lines.map ( line => line.length - line.replace(/O/g, "").length )
+                .reduce ( (prev, curr, index) => prev + curr * (this.lines.length - index), 0);
+    }
 
 }
 

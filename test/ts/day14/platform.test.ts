@@ -23,4 +23,28 @@ describe ("day 14: platform", () => {
             expect (tiltColumn (".O")).to.be.equal ("O.");
         })
     })
+
+    describe("getTotalLoad", () => {
+        it ( "should rate a simple case", () => {
+            expect ( new Platform(
+                "O#\n"+
+                ".O"
+            ).getTotalLoad()).to.be.equal(3);
+        })
+
+        it ("should rate the sample case", () => {
+            expect ( new Platform(
+                "OOOO.#.O..\n"+
+                "OO..#....#\n"+
+                "OO..O##..O\n"+
+                "O..#.OO...\n"+
+                "........#.\n"+
+                "..#....#.#\n"+
+                "..O..#.O.O\n"+
+                "..O.......\n"+
+                "#....###..\n"+
+                "#....#...."
+            ).getTotalLoad()).to.be.equal(136);
+        })
+    })
 })
