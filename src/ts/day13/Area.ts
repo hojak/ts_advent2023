@@ -75,17 +75,22 @@ function findReflectionsInArray(arrayOfStrings: string[]) : number[] {
     let result: number[] = [];
 
     for (let index = 0; index < arrayOfStrings.length - 1; index++) {
-        let startLeft = Math.max(0, 2 * index + 2 - arrayOfStrings.length);
-        let endRight = Math.min(index + 1 + index, arrayOfStrings.length - 1);
-
-        let left = getAreaOfStringArray(arrayOfStrings, index, startLeft);
-        let right = getAreaOfStringArray(arrayOfStrings, index + 1, endRight);
+        let { left, right } = getReflectionStrings(index, arrayOfStrings);
 
         if (left.join("") == right.join("")) {
             result.push(index);
         }
     }
     return result;
+}
+
+function getReflectionStrings(index: number, arrayOfStrings: string[]) {
+    let startLeft = Math.max(0, 2 * index + 2 - arrayOfStrings.length);
+    let endRight = Math.min(index + 1 + index, arrayOfStrings.length - 1);
+
+    let left = getAreaOfStringArray(arrayOfStrings, index, startLeft);
+    let right = getAreaOfStringArray(arrayOfStrings, index + 1, endRight);
+    return { left, right };
 }
 
 function getAreaOfStringArray(strings: string[], start: number, end: number): string[] {
