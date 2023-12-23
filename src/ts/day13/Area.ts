@@ -63,8 +63,8 @@ export class Area {
 
 
     getRate(): any {
-        return this.findHorizontalReflections().reduce((prev, curr, index) => prev+curr+1)
-         + this.findVerticalReflections().reduce((prev, curr, index) => prev+(curr+1)*100)
+        return this.findHorizontalReflections().reduce((prev, curr, index) => prev+(curr+1)*100, 0)
+         + this.findVerticalReflections().reduce((prev, curr, index) => prev+(curr+1), 0)
     }
 
 

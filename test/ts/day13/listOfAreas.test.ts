@@ -1,15 +1,31 @@
-import { Area } from "../../../src/ts/day13/Area";
+import { expect } from "chai";
+import { describe } from "mocha";
+import { ListOfAreas } from "../../../src/ts/day13/listOfAreas";
 
-export class ListOfAreas {
-    areas: Area[];
-
-    constructor ( input: string ) {
-        this.areas = input.split("\n\n").map(area => new Area (area));
-    }
-
-    getRate(): any {
-        return this.areas.map( area => area.getRate() ).reduce ( (prev, curr, index) => prev + curr);
-    }
+describe( "Day 13: list of areas", () => {
 
 
-}
+    describe("rate list of areas", () => {
+        it ( "should return 405", () => {
+            let testee = new ListOfAreas ( 
+                "#.##..##.\n"+
+                "..#.##.#.\n"+
+                "##......#\n"+
+                "##......#\n"+
+                "..#.##.#.\n"+
+                "..##..##.\n"+
+                "#.#.##.#.\n"+
+                "\n"+
+                "#...##..#\n"+
+                "#....#..#\n"+
+                "..##..###\n"+
+                "#####.##.\n"+
+                "#####.##.\n"+
+                "..##..###\n"+
+                "#....#..#"
+            );
+            expect(testee.getRate()).to.be.equal(405);
+        });
+    });
+
+})
