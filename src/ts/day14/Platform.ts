@@ -61,16 +61,15 @@ export class Platform {
 
 export function tiltColumn(col: string): string {
     let result = col;
-    for ( let index = 1; index < col.length; index++) {
+    for ( let index = 1; index < result.length; index++) {
         if ( col[index] == "O") {
             let tiltTo = index;
-            while ( tiltTo > 0 && col[tiltTo-1] == "." ) {
+            while ( tiltTo > 0 && result[tiltTo-1] == "." ) {
                 tiltTo--;
             }
             if ( tiltTo != index ) {
-                result = moveBlock ( col, index, tiltTo );
+                result = moveBlock ( result, index, tiltTo );
             }
-
         }
     }
 

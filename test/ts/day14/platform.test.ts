@@ -6,7 +6,34 @@ describe ("day 14: platform", () => {
     describe ( "tilting", () => {
         it ( "should tilt correctly", () => {
             expect ( new Platform ( "..\nOO").tilt().getDescription()).to.be.equal( "OO\n..");
+            expect ( new Platform ( "..\nOO\nOO").tilt().getDescription()).to.be.equal( "OO\nOO\n..");
         } );
+
+        it ( "should tilt the test input", () => {
+            expect ( new Platform (
+                "O....#....\n"+
+                "O.OO#....#\n"+
+                ".....##...\n"+
+                "OO.#O....O\n"+
+                ".O.....O#.\n"+
+                "O.#..O.#.#\n"+
+                "..O..#O..O\n"+
+                ".......O..\n"+
+                "#....###..\n"+
+                "#OO..#...."
+            ).tilt().getDescription()).to.be.equal(
+                "OOOO.#.O..\n"+
+                "OO..#....#\n"+
+                "OO..O##..O\n"+
+                "O..#.OO...\n"+
+                "........#.\n"+
+                "..#....#.#\n"+
+                "..O..#.O.O\n"+
+                "..O.......\n"+
+                "#....###..\n"+
+                "#....#...."
+            );
+        })
     })
 
     describe ( "moveBlock", () => {
