@@ -88,36 +88,112 @@ export class LineOfSprings {
         
 }
 
-function getNumberOfPossibleSolutions ( springs: string, groups : number[] ) : number {
+function getNumberOfPossibleSolutions ( springs: string, groups : number[], l: number = 1 ) : number {
+    springs = trimSprings(springs);
+    let copyOfGroups = Object.assign([], groups);
+
+    const indent = "  ".repeat(l);
+    console.log ( indent+ "tackling " + springs + " " + groups.join(","));
+    if ( groups.length == 0) {
+        console.log ( indent+ "empty groups for " + springs + " => " +( springs.indexOf("#") == -1 ? 1 : 0));
+        return ( springs.indexOf("#") == -1 ) ? 1 : 0;
+    }
+
     let numberOfUnknowns = springs.length - springs.replace ( /\?/g, "").length;
     let numberOfSprings = groups.reduce( (prev, curr, index) => prev+curr);
     let numberOfKnownSprings = springs.length - springs.replace ( /#/g, "").length;
 
+
     if ( ! LineOfSprings.isValid(springs, groups) ) {
+        console.log ( indent + "invalid -> 0");
         return 0;
     }
 
     if ( numberOfUnknowns == 0 ) {
+        console.log ( indent + "finished -> 1");
         return 1;
     }
 
     if (numberOfUnknowns < numberOfSprings - numberOfKnownSprings) {
+        console.log ( indent + "not enough unknowns -> 0");
         return 0;
     }
 
-    let worker = springs; 
+
+    let sizeOfFirstGroup = copyOfGroups.shift() ?? 0;
+    let sizeOfRemainingGroups = numberOfSprings - sizeOfFirstGroup;
+
+    let firstPossibleStart = getSmallesStartIndexForABlock(springs);
+    let lastPossibleStart = Math.min (
+        springs.length - sizeOfFirstGroup - sizeOfRemainingGroups - copyOfGroups.length,
+        getFirstKnownSpring(springs)
+    );
+
     let result = 0;
-    let index = 0;
-
-    while ( worker[index]!="?" && index < worker.length) {
-        index ++;
+    for ( let tryStartForFirstGroup = firstPossibleStart; tryStartForFirstGroup <= lastPossibleStart; tryStartForFirstGroup ++) {
+        let springsWithPlacedGroup = placeGroup ( springs, sizeOfFirstGroup, tryStartForFirstGroup );
+        if ( springsWithPlacedGroup != null ) {
+            console.log ( indent + "  " + tryStartForFirstGroup +" -> " + springsWithPlacedGroup );
+            result += getNumberOfPossibleSolutions(springsWithPlacedGroup.substring(tryStartForFirstGroup + sizeOfFirstGroup + 1), copyOfGroups, l+1);
+        } else {
+            console.log ( indent + tryStartForFirstGroup + " is not possible for a group of " + sizeOfFirstGroup + " in " + springs);
+        }
     }
 
-    if ( index< worker.length ) {
-        result += getNumberOfPossibleSolutions ( worker.substring(0,index) + "#" + worker.substring(index+1), groups );
-        result += getNumberOfPossibleSolutions ( worker.substring(0,index) + "." + worker.substring(index+1), groups );
+    console.log ( indent + "found " + result + " possibilities for " + springs + " " + sizeOfFirstGroup + ","+copyOfGroups.join(","))
+    return result;
+}
+
+function getSmallesStartIndexForABlock(springs: string) {
+    let firstPossibleStart = 0;
+    while (springs[firstPossibleStart] == ".") {
+        firstPossibleStart++;
     }
+    return firstPossibleStart;
+}
+
+function getFirstKnownSpring(springs: string): number {
+    let index = springs.indexOf("#");
+    if ( index == -1 ) {
+        index = springs.length;
+    }
+    return index;
+}
+
+function placeGroup(springs: string, sizeOfFirstGroup: number, startingAtIndex: number) : string | null {
+    let result = springs.substring(0,startingAtIndex) + "#".repeat(sizeOfFirstGroup) + "." + springs.substring (startingAtIndex + sizeOfFirstGroup+ 1);
+
+    console.log ( "       trying to place a group of " + sizeOfFirstGroup + " at position " + startingAtIndex + " of " + springs);
+    console.log ( "         -> checking " +  springs.substring(startingAtIndex, startingAtIndex+sizeOfFirstGroup) );
+
+
+    if ( springs.substring(startingAtIndex, startingAtIndex+sizeOfFirstGroup).indexOf(".") != -1 ) {
+        // block starting at the given point would overlap "." and is therefore not possible
+        console.log ( "        -> nope");
+        return null;
+    }
+
+    if ( springs.length >= startingAtIndex + sizeOfFirstGroup +1 && springs[startingAtIndex+sizeOfFirstGroup] == "#" ){
+        // next char after the new group is a #, so we have no separation of this group
+        console.log ( "     -> nope, no space between this an next group");
+        return null;
+    }
+
+    console.log ( "        -> ok");
 
     return result;
+}
+
+function trimSprings(springs: string): string {
+    let trimmedStart = 0;
+    while ( springs[trimmedStart] == "." ) {
+        trimmedStart ++;
+    }
+
+    let trimmedEnd = springs.length-1;
+    while ( springs[trimmedEnd ] == ".") {
+        trimmedEnd--;
+    }
+    return springs.substring(trimmedStart, trimmedEnd+1);
 }
 
