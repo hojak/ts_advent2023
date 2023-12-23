@@ -8,3 +8,8 @@ export function hash ( input: string ) : number {
     }
     return result;
 }
+
+
+export function checksum ( input: string ) : number {
+    return input.split (",").filter( str => str.trim() != "").map ( part => hash (part)).reduce ( (prev, curr, index) => prev+curr, 0);
+}
