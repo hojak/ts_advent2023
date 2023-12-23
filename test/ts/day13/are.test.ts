@@ -27,6 +27,10 @@ describe( "Day 13: area", () => {
         it ( "should return center lines", () => {
             expect ( testee.getLines(1,1)).to.be.deep.equal(["2222"]);
         })
+
+        it ( "should return two first lines in reverse order", () => {
+            expect ( testee.getLines(1,0)).to.be.deep.equal(["2222", "1111"]);
+        })
     });
 
 
@@ -60,6 +64,10 @@ describe( "Day 13: area", () => {
         })
         it ( "should return columns 2 and 3", () => {
             expect ( testee.getColumns(2,3)).to.be.deep.equal(["134", "125"]);
+        })
+
+        it ( "should return columns 3 and 2 (reverse order)", () => {
+            expect ( testee.getColumns(3,2)).to.be.deep.equal(["125","134"]);
         })
     })
 

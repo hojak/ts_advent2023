@@ -34,14 +34,14 @@ export class Area {
 
     getLines(startWithLine: number, endWithLine: number): string[] {
         let result: string[] = [];
-        for ( let line = startWithLine; line <= endWithLine; line ++ ) {
+        let increment = (startWithLine <= endWithLine) ? 1 : -1
+
+        for ( let line = startWithLine; Math.sign(line - endWithLine) != Math.sign(increment); line +=increment ) {
             result.push ( this.lines[line]);
         }
 
         return result;
     }
-
-
 
     getFirstColumns(numberOfColumns: number): string[] {
         return this.getColumns(0, numberOfColumns-1);
@@ -50,7 +50,9 @@ export class Area {
 
     getColumns(startWithColumn: number, endWithColumn: number): string[] {
         let result: string[] = [];
-        for ( let line = startWithColumn; line <= endWithColumn; line ++ ) {
+        let increment = (startWithColumn <= endWithColumn) ? 1 : -1
+
+        for ( let line = startWithColumn; Math.sign(line - endWithColumn) != Math.sign(increment); line +=increment ) {
             result.push ( this.columns[line]);
         }
 
