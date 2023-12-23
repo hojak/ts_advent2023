@@ -43,14 +43,19 @@ export class Area {
 
 
 
-    getFirstColumns(numberOfColumns: number): any {
-        let result: string[] = [];
+    getFirstColumns(numberOfColumns: number): string[] {
+        return this.getColumns(0, numberOfColumns-1);
+    }
 
-        for ( let column = 0; column < numberOfColumns; column ++) {
-            result[column] = this.columns[column];
+
+    getColumns(startWithColumn: number, endWithColumn: number): string[] {
+        let result: string[] = [];
+        for ( let line = startWithColumn; line <= endWithColumn; line ++ ) {
+            result.push ( this.columns[line]);
         }
 
         return result;
     }
+
 
 }
