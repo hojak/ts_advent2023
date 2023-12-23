@@ -72,7 +72,7 @@ describe( "Day 13: area", () => {
     })
 
     describe ( "findVerticalReflections", () => {
-        it ( "should return ", () => {
+        it ( "should return 4", () => {
             let testee = new Area ( 
                 "#.##..##.\n"+
                 "..#.##.#.\n"+
@@ -82,6 +82,21 @@ describe( "Day 13: area", () => {
                 "..##..##.\n"+
                 "#.#.##.#.");
             expect ( testee.findVerticalReflections()).to.be.deep.equal([4]);
+        })
+    })
+
+    
+    describe ( "findHorizontalReflections", () => {
+        it ( "should return 3", () => {
+            let testee = new Area ( 
+                "#...##..#\n"+
+                "#....#..#\n"+
+                "..##..###\n"+
+                "#####.##.\n"+
+                "#####.##.\n"+
+                "..##..###\n"+
+                "#....#..#");
+            expect ( testee.findHorizontalReflections()).to.be.deep.equal([3]);
         })
     })
 

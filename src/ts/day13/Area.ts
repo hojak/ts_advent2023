@@ -33,14 +33,7 @@ export class Area {
     }
 
     getLines(startWithLine: number, endWithLine: number): string[] {
-        let result: string[] = [];
-        let increment = (startWithLine <= endWithLine) ? 1 : -1
-
-        for ( let line = startWithLine; Math.sign(line - endWithLine) != Math.sign(increment); line +=increment ) {
-            result.push ( this.lines[line]);
-        }
-
-        return result;
+        return getAreaOfStringArray ( this.lines, startWithLine, endWithLine);        
     }
 
     getFirstColumns(numberOfColumns: number): string[] {
@@ -61,23 +54,41 @@ export class Area {
 
 
     findVerticalReflections(): number[] {
-        let result : number[] = [];
-
-        for ( let column = 0; column < this.columns.length-1; column++ ) {
-            let startLeft = Math.max (0,  2*column+2-this.columns.length)
-            let endRight = Math.min ( column+1+column, this.columns.length-1);
-
-            let left = this.getColumns(column, startLeft);
-            let right = this.getColumns( column+1,endRight);
-
-            if ( left.join("") == right.join("") ) {
-                result.push ( column );
-            }
-        }
-
-        return result;
+        return findReflectionsInArray(this.columns);
     }
 
+    findHorizontalReflections(): number[] {
+        return findReflectionsInArray(this.lines);
+    }
 
+}
+
+
+function findReflectionsInArray(arrayOfStrings: string[]) : number[] {
+    let result: number[] = [];
+
+    for (let index = 0; index < arrayOfStrings.length - 1; index++) {
+        let startLeft = Math.max(0, 2 * index + 2 - arrayOfStrings.length);
+        let endRight = Math.min(index + 1 + index, arrayOfStrings.length - 1);
+
+        let left = getAreaOfStringArray(arrayOfStrings, index, startLeft);
+        let right = getAreaOfStringArray(arrayOfStrings, index + 1, endRight);
+
+        if (left.join("") == right.join("")) {
+            result.push(index);
+        }
+    }
+    return result;
+}
+
+function getAreaOfStringArray(strings: string[], start: number, end: number): string[] {
+    let result: string[] = [];
+    let increment = (start <= end) ? 1 : -1
+
+    for ( let line = start; Math.sign(line - end) != Math.sign(increment); line +=increment ) {
+        result.push ( strings[line]);
+    }
+
+    return result;
 
 }
