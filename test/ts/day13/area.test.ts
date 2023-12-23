@@ -71,4 +71,18 @@ describe( "Day 13: area", () => {
         })
     })
 
+    describe ( "findVerticalReflections", () => {
+        it ( "should return ", () => {
+            let testee = new Area ( 
+                "#.##..##.\n"+
+                "..#.##.#.\n"+
+                "##......#\n"+
+                "##......#\n"+
+                "..#.##.#.\n"+
+                "..##..##.\n"+
+                "#.#.##.#.");
+            expect ( testee.findVerticalReflections()).to.be.deep.equal([4]);
+        })
+    })
+
 })

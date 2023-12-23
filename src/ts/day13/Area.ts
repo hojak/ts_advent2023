@@ -60,4 +60,24 @@ export class Area {
     }
 
 
+    findVerticalReflections(): number[] {
+        let result : number[] = [];
+
+        for ( let column = 0; column < this.columns.length-1; column++ ) {
+            let startLeft = Math.max (0,  2*column+2-this.columns.length)
+            let endRight = Math.min ( column+1+column, this.columns.length-1);
+
+            let left = this.getColumns(column, startLeft);
+            let right = this.getColumns( column+1,endRight);
+
+            if ( left.join("") == right.join("") ) {
+                result.push ( column );
+            }
+        }
+
+        return result;
+    }
+
+
+
 }
