@@ -11,9 +11,19 @@ export class Area {
         for ( let line = 0; line < numberOfLines; line ++) {
             result[line] = this.lines[line];
         }
-        
+
         return result;
     }
 
+    getLastLines(numberOfLines: number): string[] {
+        let result: string[] = [];
+
+        const startingWithLine = this.lines.length - numberOfLines;
+        for ( let line = startingWithLine; line < this.lines.length; line ++) {
+            result[line-startingWithLine] = this.lines[line];
+        }
+
+        return result;
+    }
 
 }
