@@ -45,6 +45,17 @@ export class Area {
         return result;
     }
 
+    getLines(startWithLine: number, endWithLine: number): string[] {
+        let result: string[] = [];
+        for ( let line = startWithLine; line <= endWithLine; line ++ ) {
+            result.push ( this.lines[line]);
+        }
+
+        return result;
+    }
+
+
+
     getFirstColumns(numberOfColumns: number): any {
         let result: string[] = [];
 

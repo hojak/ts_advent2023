@@ -15,6 +15,20 @@ describe( "Day 13: area", () => {
         })
     })
 
+    describe ("getLines", () => {
+        let testee = new Area ( "1111\n2222\n3333");
+
+        it ( "should return the first line", () => {
+            expect ( testee.getLines(0,0)).to.be.deep.equal(["1111"]);
+        })
+        it ( "should return two first lines", () => {
+            expect ( testee.getLines(0,1)).to.be.deep.equal(["1111", "2222"]);
+        })
+        it ( "should return center lines", () => {
+            expect ( testee.getLines(1,1)).to.be.deep.equal(["2222"]);
+        })
+    });
+
 
     describe ( "getLastLines", () => {
         let testee = new Area ( "1111\n2222\n3333");
