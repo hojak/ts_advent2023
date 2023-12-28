@@ -20,10 +20,10 @@ export class Box {
 
     removeLens(label: string) : this {
         let index = 0;
-        while ( this._lenses[index].label != label && index < this._lenses.length ) {
+        while ( index < this._lenses.length && this._lenses[index].label != label ) {
             index ++;
         }
-        if ( this._lenses[index].label == label ) {
+        if ( index < this._lenses.length && this._lenses[index].label == label ) {
             this._lenses.splice(index, 1);
         }
 

@@ -31,6 +31,17 @@ describe ( "Day 15: Box", () => {
                 .sumOfFocusingPower()
             ).to.be.equal(10);
         });
+
+        it ("removing a non existing label should not change anything", () => {
+            it ( "should replace a lens with the same label", () => {
+                expect (
+                    new Box()
+                        .addOrReplaceLens("aa", 4).addOrReplaceLens("cc", 10).addOrReplaceLens("aa", 6)
+                        .removeLens("xxx")
+                        .sumOfFocusingPower()
+                ).to.be.equal(26);
+            })    
+        })
     });
 
 });
