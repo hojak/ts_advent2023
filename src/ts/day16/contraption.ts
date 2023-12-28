@@ -2,7 +2,7 @@ export class Contraption {
     private _lines : string[];
     private _numberOfLines : number;
     private _numberOfColumns: number;
-    private _tileActivated: boolean[][] = [];
+    private _tileEnergized: boolean[][] = [];
     private _visitations : Set<string> = new Set<string>();
 
     constructor( input: string ) {
@@ -20,13 +20,13 @@ export class Contraption {
 
     numberOfEnergizedTiles(): number {
         this.walkTheBeam();
-        return this._tileActivated.flat().filter ( tile => tile ).length;
+        return this._tileEnergized.flat().filter ( tile => tile ).length;
     }
 
 
     walkTheBeam () {
         // begin walkTheBeam
-        this._tileActivated = [];
+        this._tileEnergized = [];
         this._visitations = new Set<string>();
         let queue : Step[] = [{toColumn: 0, toRow: 0, direction: Direction.right }];
 
@@ -50,10 +50,10 @@ export class Contraption {
 
         this._visitations.add (step.toColumn + "/" + step.toRow + "/" + step.direction );
 
-        if ( this._tileActivated[step.toRow ] == undefined ) {
-            this._tileActivated[step.toRow ] = [];
+        if ( this._tileEnergized[step.toRow ] == undefined ) {
+            this._tileEnergized[step.toRow ] = [];
         }
-        this._tileActivated[step.toRow][step.toColumn] = true;
+        this._tileEnergized[step.toRow][step.toColumn] = true;
 
         let upcoming : Step[] = [];
         let tile = this.getSymbolAt ( step.toColumn, step.toRow );
