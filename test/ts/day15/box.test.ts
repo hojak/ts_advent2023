@@ -31,7 +31,6 @@ describe ( "Day 15: Box", () => {
                 .sumOfFocusingPower()
             ).to.be.equal(10);
         });
-
     });
 
 });
