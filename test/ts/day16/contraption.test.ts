@@ -20,4 +20,21 @@ describe ("Day 16: Contraption", () => {
             ).numberOfEnergizedTiles()).to.be.equal(46)
         })
     })
+
+    describe ("findBestEnergization", () => {
+        it ( "should return 46 for the test input", () => {
+            expect ( new Contraption (
+                ".|...\\....\n"+
+                "|.-.\\.....\n"+
+                ".....|-...\n"+
+                "........|.\n"+
+                "..........\n"+
+                ".........\\\n"+
+                "..../.\\\\..\n"+
+                ".-.-/..|..\n"+
+                ".|....-|.\\\n"+
+                "..//.|...."
+            ).findBestEnergization()).to.be.equal(51)
+        })
+    })
 });

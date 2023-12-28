@@ -18,17 +18,45 @@ export class Contraption {
         return this._lines [row][col];
     }
 
-    numberOfEnergizedTiles(): number {
-        this.walkTheBeam();
+    numberOfEnergizedTiles(startStep : Step | null = null ): number {
+        this.walkTheBeam( startStep );
         return this._tileEnergized.flat().filter ( tile => tile ).length;
     }
 
 
-    walkTheBeam () {
+    findBestEnergization(): number {
+        let currentMaximum = 0;
+        for ( let row = 0; row < this._numberOfLines; row ++  ) {
+            currentMaximum = Math.max ( 
+                currentMaximum,
+                this.numberOfEnergizedTiles({toColumn : 0, toRow: row, direction: Direction.right }),
+                this.numberOfEnergizedTiles({toColumn : this._numberOfColumns-1, toRow: row, direction: Direction.left }),
+            );
+        }
+
+        for (let col = 0; col < this._numberOfColumns; col ++ ) {
+            currentMaximum = Math.max ( 
+                currentMaximum,
+                this.numberOfEnergizedTiles({toColumn : col, toRow: 0, direction: Direction.down }),
+                this.numberOfEnergizedTiles({toColumn : col, toRow: this._numberOfLines-1, direction: Direction.up }),
+            );
+        }
+        
+        return currentMaximum;
+    }
+
+
+
+    walkTheBeam ( startStep : Step | null = null ) {
         // begin walkTheBeam
         this._tileEnergized = [];
         this._visitations = new Set<string>();
-        let queue : Step[] = [{toColumn: 0, toRow: 0, direction: Direction.right }];
+        let queue : Step[] = [];
+        if ( startStep == null ) {
+            queue.push ( {toColumn: 0, toRow: 0, direction: Direction.right } );
+        } else {
+            queue.push ( startStep ); 
+        }
 
         while ( queue.length > 0 ) {
             let nextStep = queue.shift();
