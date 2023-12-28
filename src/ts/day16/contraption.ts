@@ -59,58 +59,20 @@ export class Contraption {
         let tile = this.getSymbolAt ( step.toColumn, step.toRow );
         switch ( tile ) {
             case ".": 
-                upcoming.push ( getNextStep(step.toColumn, step.toRow, step.direction ));
+                upcoming = [getNextStep(step.toColumn, step.toRow, step.direction )];
                 break;
             case "\\":
-                switch (step.direction) {
-                    case Direction.down:
-                        upcoming.push ( getNextStep ( step.toColumn, step.toRow, Direction.right));
-                        break;
-                    case Direction.up:
-                        upcoming.push ( getNextStep ( step.toColumn, step.toRow, Direction.left));
-                        break;
-                    case Direction.left:
-                        upcoming.push ( getNextStep ( step.toColumn, step.toRow, Direction.up))
-                        break;
-                    case Direction.right:
-                        upcoming.push ( getNextStep ( step.toColumn, step.toRow, Direction.down));
-                        break;
-                }
+                upcoming = this.nextStepForReverseReflection(step);
                 break;
             case "/":
-                switch (step.direction) {
-                    case Direction.down:
-                        upcoming.push ( getNextStep ( step.toColumn, step.toRow, Direction.left));
-                        break;
-                    case Direction.up:
-                        upcoming.push ( getNextStep ( step.toColumn, step.toRow, Direction.right));
-                        break;
-                    case Direction.left:
-                        upcoming.push ( getNextStep ( step.toColumn, step.toRow, Direction.down))
-                        break;
-                    case Direction.right:
-                        upcoming.push ( getNextStep ( step.toColumn, step.toRow, Direction.up));
-                        break;
-                }
+                upcoming = this.nextStepForReflection(step);
                 break;
             case "-":
-                if ( step.direction == Direction.left || step.direction == Direction.right) {
-                    upcoming.push ( getNextStep(step.toColumn, step.toRow, step.direction ));
-                } else {
-                    upcoming.push ( getNextStep(step.toColumn, step.toRow, Direction.right ));
-                    upcoming.push ( getNextStep(step.toColumn, step.toRow, Direction.left ));
-                }
+                upcoming = this.nextStepsForHorizontalSplitter(step);
                 break;
             case "|": 
-                if ( step.direction == Direction.up || step.direction == Direction.down) {
-                    upcoming.push ( getNextStep(step.toColumn, step.toRow, step.direction ));
-                } else {
-                    upcoming.push ( getNextStep(step.toColumn, step.toRow, Direction.down ));
-                    upcoming.push ( getNextStep(step.toColumn, step.toRow, Direction.up ));
-                }
+                upcoming = this.nextStepsForVerticalSplitter(step);
             break;
-            case "#":
-                // marks a visitation out of bounds
                 break;
         }
 
@@ -124,6 +86,54 @@ export class Contraption {
         return upcoming;
     }
 
+
+    private nextStepsForVerticalSplitter(step: Step): Step[] {
+        if (step.direction == Direction.up || step.direction == Direction.down) {
+            return [getNextStep(step.toColumn, step.toRow, step.direction)];
+        } else {
+            return [
+                getNextStep(step.toColumn, step.toRow, Direction.down),
+                getNextStep(step.toColumn, step.toRow, Direction.up)
+            ];
+        }
+    }
+
+    private nextStepsForHorizontalSplitter(step: Step): Step[] {
+        if (step.direction == Direction.left || step.direction == Direction.right) {
+            return [getNextStep(step.toColumn, step.toRow, step.direction)];
+        } else {
+            return [
+                getNextStep(step.toColumn, step.toRow, Direction.right),
+                getNextStep(step.toColumn, step.toRow, Direction.left)
+            ];
+        }
+    }
+
+    private nextStepForReflection(step: Step): Step[] {
+        switch (step.direction) {
+            case Direction.down:
+                return [getNextStep(step.toColumn, step.toRow, Direction.left)];
+            case Direction.up:
+                return [getNextStep(step.toColumn, step.toRow, Direction.right)];
+            case Direction.left:
+                return [getNextStep(step.toColumn, step.toRow, Direction.down)];
+            case Direction.right:
+                return [getNextStep(step.toColumn, step.toRow, Direction.up)];
+        }
+    }
+
+    private nextStepForReverseReflection(step: Step) : Step[] {
+        switch (step.direction) {
+            case Direction.down:
+                return [getNextStep(step.toColumn, step.toRow, Direction.right)];
+            case Direction.up:
+                return [getNextStep(step.toColumn, step.toRow, Direction.left)];
+            case Direction.left:
+                return [getNextStep(step.toColumn, step.toRow, Direction.up)];
+            case Direction.right:
+                return [getNextStep(step.toColumn, step.toRow, Direction.down)];
+        }
+    }
 }
 
 
