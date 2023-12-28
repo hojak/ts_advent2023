@@ -22,6 +22,16 @@ describe ( "Day 15: Box", () => {
                 .to.be.equal(26);
         })
 
+        it ( "should return 10 after removing a lens", () => {
+            expect ( 
+                new Box().addOrReplaceLens ( "aa", 4)
+                .addOrReplaceLens("remove", 10)
+                .addOrReplaceLens("bb", 3)
+                .removeLens ( "remove")
+                .sumOfFocusingPower()
+            ).to.be.equal(10);
+        });
+
     });
 
 });
