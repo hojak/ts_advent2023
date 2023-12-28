@@ -2,8 +2,14 @@ export class Box {
 
     private _lenses: Lens[] = [];
 
-    addLens(label: string, focalLength: number) : this {
-        this._lenses.push ( { label: label, focalLength: focalLength } );
+    addOrReplaceLens(label: string, focalLength: number) : this {
+        let found = this._lenses.filter( lens => lens.label == label );
+        if ( found.length > 0 ) {
+            found[0].focalLength = focalLength;
+        } else {
+            this._lenses.push ( { label: label, focalLength: focalLength } );
+        }
+
         return this;
     }
 
