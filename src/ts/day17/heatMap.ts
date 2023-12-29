@@ -54,7 +54,7 @@ export class HeatMap {
                 ).filter ( step => 
                     ! alreadyBeenHereBetter ( visited, step )
                 ).forEach ( step => {
-                    stack.push ( currentRoute.concat([step]));
+                    stack.push ( [step]);
                 });
         }
 
