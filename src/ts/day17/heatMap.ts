@@ -16,24 +16,27 @@ export class HeatMap {
     findHeatLossForBestRoute(): number {
         let visited = new Map<string, number>();
 
-        let bestKnownRoute : Step[] = [];
         let heatLossOfBestKownRoute : number = NaN;
 
         // start top left
-        let stack : Step[][]= this.getInitialRouteStarts();
+        let stack : Step[]= this.getInitialRouteStarts();
 
+        let iteration = 0;
         while ( stack.length > 0 ) {
-            let currentRoute = stack.pop() ?? [];
-            if (currentRoute.length == 0 ) {
+            iteration++;
+            let lastStepOfCurrentRoute : Step = stack.pop() ?? {toColumn: -1, toRow: -1, direction: Direction.down, numberOfStraightSteps: 1, sumOfHeatLoss: -1};
+            if (lastStepOfCurrentRoute.toColumn == -1) {
                 continue;
             }
-            let lastStepOfCurrentRoute = currentRoute[currentRoute.length-1];
+
+            if ( iteration % 250000 == 0) {
+                console.log ( "loop: " + iteration);
+                console.log ( "  stack: " + stack.length);
+                console.log ( "  current best solution: " + heatLossOfBestKownRoute );
+            }
+
             if ( ! isNaN(heatLossOfBestKownRoute) && lastStepOfCurrentRoute.sumOfHeatLoss >= heatLossOfBestKownRoute ) {
                 // we're already more expensive than the currently best known solution
-                continue;
-            }
-
-            if ( alreadyBeenHereBetter ( visited, lastStepOfCurrentRoute )) {
                 continue;
             }
             
@@ -41,7 +44,7 @@ export class HeatMap {
                 // reached the finish line!
                 if ( isNaN(heatLossOfBestKownRoute) || lastStepOfCurrentRoute.sumOfHeatLoss < heatLossOfBestKownRoute) {
                     heatLossOfBestKownRoute = lastStepOfCurrentRoute.sumOfHeatLoss;
-                    bestKnownRoute = currentRoute;
+                    //console.log ( " -> found solution with heat loss: " + heatLossOfBestKownRoute);
                 }
                 continue;
             }
@@ -50,11 +53,14 @@ export class HeatMap {
                 .filter ( step => 
                     !isOppositeDirection ( step.direction, lastStepOfCurrentRoute.direction)
                     && step.numberOfStraightSteps <= 3
-                    && ! this.outOfBounts(step.toColumn, step.toRow)
+                    && ! this.outOfBounds(step.toColumn, step.toRow)
                 ).filter ( step => 
                     ! alreadyBeenHereBetter ( visited, step )
+                ).reverse(
+                    // push in reverse order tp prefer down right
+                    // go for a first solution without detours
                 ).forEach ( step => {
-                    stack.push ( [step]);
+                    stack.push ( step);
                 });
         }
 
@@ -63,29 +69,51 @@ export class HeatMap {
 
 
     private getNextPossibleSteps(lastStepOfCurrentRoute: Step): Step[] {
-        return [{
-            toColumn: lastStepOfCurrentRoute.toColumn, toRow: lastStepOfCurrentRoute.toRow + 1,
-            direction: Direction.down, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.down ? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
-            sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn, lastStepOfCurrentRoute.toRow + 1)
-        }, {
-            toColumn: lastStepOfCurrentRoute.toColumn + 1, toRow: lastStepOfCurrentRoute.toRow,
-            direction: Direction.right, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.right ? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
-            sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn + 1, lastStepOfCurrentRoute.toRow)
-        }, {
+        let result : Step[];
+
+        // prefer going straight right or straight down
+        if ( lastStepOfCurrentRoute.direction == Direction.right ) {
+            result = [{
+                toColumn: lastStepOfCurrentRoute.toColumn + 1, toRow: lastStepOfCurrentRoute.toRow,
+                direction: Direction.right, numberOfStraightSteps: lastStepOfCurrentRoute.numberOfStraightSteps + 1,
+                sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn + 1, lastStepOfCurrentRoute.toRow)
+            },{
+                toColumn: lastStepOfCurrentRoute.toColumn, toRow: lastStepOfCurrentRoute.toRow + 1,
+                direction: Direction.down, numberOfStraightSteps: 1,
+                sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn, lastStepOfCurrentRoute.toRow + 1)
+            }];
+        } else {
+            result = [{
+                toColumn: lastStepOfCurrentRoute.toColumn, toRow: lastStepOfCurrentRoute.toRow + 1,
+                direction: Direction.down, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.down ? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
+                sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn, lastStepOfCurrentRoute.toRow + 1)
+            }, {
+                toColumn: lastStepOfCurrentRoute.toColumn + 1, toRow: lastStepOfCurrentRoute.toRow,
+                direction: Direction.right, numberOfStraightSteps: 1,
+                sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn + 1, lastStepOfCurrentRoute.toRow)
+            }];
+        }
+
+        result.push ({
             toColumn: lastStepOfCurrentRoute.toColumn - 1, toRow: lastStepOfCurrentRoute.toRow,
             direction: Direction.left, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.left ? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
             sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn - 1, lastStepOfCurrentRoute.toRow)
-        }, {
+        });
+        result.push ( {
             toColumn: lastStepOfCurrentRoute.toColumn, toRow: lastStepOfCurrentRoute.toRow - 1,
             direction: Direction.up, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.up ? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
             sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn, lastStepOfCurrentRoute.toRow - 1)
-        }];
+        });
+
+
+
+        return result;
     }
 
-    private getInitialRouteStarts(): Step[][] {
+    private getInitialRouteStarts(): Step[] {
         return [
-            [{ toColumn: 1, toRow: 0, direction: Direction.right, numberOfStraightSteps: 1, sumOfHeatLoss: this.getHeatLossAt(1, 0) }],
-            [{ toColumn: 0, toRow: 1, direction: Direction.down, numberOfStraightSteps: 1, sumOfHeatLoss: this.getHeatLossAt(0, 1) }]
+            { toColumn: 1, toRow: 0, direction: Direction.right, numberOfStraightSteps: 1, sumOfHeatLoss: this.getHeatLossAt(1, 0) },
+            { toColumn: 0, toRow: 1, direction: Direction.down, numberOfStraightSteps: 1, sumOfHeatLoss: this.getHeatLossAt(0, 1) }
         ];
     }
 
@@ -100,14 +128,14 @@ export class HeatMap {
     }
 
     getHeatLossAt(col: number, row: number) : number {
-        if ( this.outOfBounts( col, row)) {
+        if ( this.outOfBounds( col, row)) {
             return NaN;
         } else {
             return Number(this._lines [row][col]);
         }
     }
 
-    outOfBounts(toColumn: number, toRow: number) : boolean {
+    outOfBounds(toColumn: number, toRow: number) : boolean {
         return toColumn < 0 || toRow < 0 || toColumn >= this._numberOfCols || toRow >= this._numberOfLines;
     }
 }
@@ -131,6 +159,7 @@ interface Step {
 function stepToString(step: Step): string {
     return `${step.toColumn}/${step.toRow}/${step.direction}/${step.numberOfStraightSteps}`;
 }
+
 function isOppositeDirection(direction: Direction, direction1: Direction) : boolean {
     return (direction + 2) % 4 == direction1
 }
@@ -138,7 +167,6 @@ function isOppositeDirection(direction: Direction, direction1: Direction) : bool
 
 function alreadyBeenHereBetter(visited: Map<string, number>, step: Step) : boolean {
     for ( let checkNumberOfSteps = step.numberOfStraightSteps; checkNumberOfSteps >=1; checkNumberOfSteps--) {
-        let checkStep = step;
         let bestVisitOfCurrentStepTile = visited.get(stepToString( {
             toColumn: step.toColumn,
             toRow: step.toRow,
