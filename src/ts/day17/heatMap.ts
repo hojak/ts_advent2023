@@ -14,87 +14,93 @@ export class HeatMap {
 
 
     findHeatLossForBestRoute(): number {
-        this._visits = new Map<string, number>();
-        let route1 = this.findBestRoute ( { toColumn: 1, toRow: 0, direction: Direction.right, numberOfStraightSteps: 1}, 0);
-        let route2 = this.findBestRoute ( { toColumn: 0, toRow: 1, direction: Direction.down, numberOfStraightSteps: 1}, 0);
+        let visited = new Map<string, number>();
 
-        console.log ( "best routes");
-        console.log ( route1 );
-        console.log ( route2 );
+        let bestKnownRoute : Step[] = [];
+        let heatLossOfBestKownRoute : number = NaN;
 
-        return Math.min ( this.getHeatLoss(route1), this.getHeatLoss ( route2 ));
+        // start top left
+        let stack : Step[][]= [ 
+            [{ toColumn: 1, toRow: 0, direction: Direction.right, numberOfStraightSteps: 1, sumOfHeatLoss: this.getHeatLossAt(1,0)}],
+            [{ toColumn: 0, toRow: 1, direction: Direction.down, numberOfStraightSteps: 1, sumOfHeatLoss: this.getHeatLossAt(0,1)}]
+        ];
+
+        while ( stack.length > 0 ) {
+            let currentRoute = stack.pop() ?? [];
+            if (currentRoute.length == 0 ) {
+                continue;
+            }
+            let lastStepOfCurrentRoute = currentRoute[currentRoute.length-1];
+            if ( ! isNaN(heatLossOfBestKownRoute) && lastStepOfCurrentRoute.sumOfHeatLoss >= heatLossOfBestKownRoute ) {
+                // we're already more expensive than the currently best known solution
+                continue;
+            }
+
+            let bestVisitOfCurrentStepTile = visited.get(stepToString(lastStepOfCurrentRoute));
+            if ( bestVisitOfCurrentStepTile != undefined && bestVisitOfCurrentStepTile <= lastStepOfCurrentRoute.sumOfHeatLoss ) {
+                continue;
+            }
+            visited.set ( stepToString(lastStepOfCurrentRoute), lastStepOfCurrentRoute.sumOfHeatLoss);
+
+            if ( this.lastTileReached(lastStepOfCurrentRoute)) {
+                // reached the finish line!
+                if ( isNaN(heatLossOfBestKownRoute) || lastStepOfCurrentRoute.sumOfHeatLoss < heatLossOfBestKownRoute) {
+                    heatLossOfBestKownRoute = lastStepOfCurrentRoute.sumOfHeatLoss;
+                    bestKnownRoute = currentRoute;
+                }
+                continue;
+            }
+
+
+            let possibleNextSteps : Step[] = [{
+                toColumn: lastStepOfCurrentRoute.toColumn, toRow: lastStepOfCurrentRoute.toRow+1,
+                direction: Direction.down, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.down ? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
+                sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn, lastStepOfCurrentRoute.toRow+1 )
+            }, {
+                toColumn: lastStepOfCurrentRoute.toColumn+1, toRow: lastStepOfCurrentRoute.toRow,
+                direction: Direction.right, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.right? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
+                sumOfHeatLoss:  lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn+1, lastStepOfCurrentRoute.toRow )
+            },{
+                toColumn: lastStepOfCurrentRoute.toColumn-1, toRow: lastStepOfCurrentRoute.toRow,
+                direction: Direction.left, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.left? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
+                sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn-1, lastStepOfCurrentRoute.toRow )
+            },{
+                toColumn: lastStepOfCurrentRoute.toColumn, toRow: lastStepOfCurrentRoute.toRow-1,
+                direction: Direction.up, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.up? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
+                sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn, lastStepOfCurrentRoute.toRow-1 )
+            }];
+    
+            possibleNextSteps = possibleNextSteps.filter ( step => 
+                !isOppositeDirection ( step.direction, lastStepOfCurrentRoute.direction)
+                && step.numberOfStraightSteps <= 3
+                && ! this.outOfBounts(step.toColumn, step.toRow)
+            );
+
+            possibleNextSteps.forEach ( step => {
+                stack.push ( currentRoute.concat([step]));
+            })
+        }
+
+        return heatLossOfBestKownRoute;
     }
+
 
     getHeatLoss(route: Step[]): number {
         return route.map ( step =>this.getHeatLossAt(step.toColumn, step.toRow))
             .reduce ( (prev, curr, index) => prev+curr, 0);
     }
 
-    findBestRoute( nextStep: Step, weightUntilNow: number, recDepth: number = 1 ): Step[] {
-        if ( this.lastTileReached(nextStep)) {
-            return [nextStep];
-        }
-
-        const indent = " ".repeat(recDepth);
-        console.log ( indent + " visiting " + nextStep.toColumn+"/"+nextStep.toRow + " at depth " + recDepth);
-        console.log ( indent + "    size of visited: " + this._visits.size);
-
-        weightUntilNow += this.getHeatLossAt(nextStep.toColumn, nextStep.toRow);
-        let bestVisitedWeight = this._visits.get(stepToString(nextStep));
-
-        if ( bestVisitedWeight != undefined && weightUntilNow >= bestVisitedWeight) {
-            // already been here 
-            // todo: buit could be better now!
-            console.log ( indent + "   -> already been here with heat " + bestVisitedWeight + " (currently at " + weightUntilNow + ")")
-            return [];
-        }
-        this._visits.set(stepToString(nextStep), weightUntilNow);
-
-        let possibleNextSteps : Step[] = [{
-            toColumn: nextStep.toColumn, toRow: nextStep.toRow+1,
-            direction: Direction.down, numberOfStraightSteps: nextStep.direction == Direction.down? nextStep.numberOfStraightSteps + 1 : 1
-        }, {
-            toColumn: nextStep.toColumn+1, toRow: nextStep.toRow,
-            direction: Direction.right, numberOfStraightSteps: nextStep.direction == Direction.right? nextStep.numberOfStraightSteps + 1 : 1
-        },{
-            toColumn: nextStep.toColumn-1, toRow: nextStep.toRow,
-            direction: Direction.left, numberOfStraightSteps: nextStep.direction == Direction.left? nextStep.numberOfStraightSteps + 1 : 1
-        },{
-            toColumn: nextStep.toColumn, toRow: nextStep.toRow-1,
-            direction: Direction.up, numberOfStraightSteps: nextStep.direction == Direction.up? nextStep.numberOfStraightSteps + 1 : 1
-        }];
-
-        possibleNextSteps = possibleNextSteps.filter ( step => 
-            !isOppositeDirection ( step.direction, nextStep.direction)
-            && step.numberOfStraightSteps <= 3
-            && ! this.outOfBounts ( step.toColumn, step.toRow)
-        );
-        
-        let minWithNextSteps = NaN;
-        let bestRoute : Step[]= [];
-        possibleNextSteps.forEach ( step => {
-            let stepRoute = this.findBestRoute(step, weightUntilNow, recDepth +1);
-            let stepHeatLoss = this.getHeatLoss(stepRoute);
-
-            if ( stepRoute.length > 0 && (isNaN (minWithNextSteps) || stepHeatLoss<minWithNextSteps) ) {
-                minWithNextSteps = stepHeatLoss;
-                bestRoute = stepRoute;
-                bestRoute.unshift(nextStep);
-            }
-        });
-
-        console.log ( indent + "  ---> found best route with weight " + minWithNextSteps );
-        console.log ( indent + "  ---> " + bestRoute );
-
-        return bestRoute;
-    }
 
     private lastTileReached(nextStep: Step) {
         return nextStep.toColumn == this._numberOfCols - 1 && nextStep.toRow == this._numberOfLines - 1;
     }
 
-    getHeatLossAt(col: number, row: number) {
-        return Number(this._lines [row][col]);
+    getHeatLossAt(col: number, row: number) : number {
+        if ( this.outOfBounts( col, row)) {
+            return NaN;
+        } else {
+            return Number(this._lines [row][col]);
+        }
     }
 
     outOfBounts(toColumn: number, toRow: number) : boolean {
@@ -114,7 +120,8 @@ interface Step {
     toColumn : number;
     toRow : number;
     direction: Direction;
-    numberOfStraightSteps : number
+    numberOfStraightSteps : number,
+    sumOfHeatLoss: number
 }
 
 function stepToString(step: Step): string {
