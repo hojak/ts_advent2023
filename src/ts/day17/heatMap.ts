@@ -136,15 +136,22 @@ function isOppositeDirection(direction: Direction, direction1: Direction) : bool
 }
 
 
-function alreadyBeenHereBetter(visited: Map<string, number>, lastStepOfCurrentRoute: Step) : boolean {
-    let result = false;
-
-    let bestVisitOfCurrentStepTile = visited.get(stepToString(lastStepOfCurrentRoute));
-    if ( bestVisitOfCurrentStepTile != undefined && bestVisitOfCurrentStepTile <= lastStepOfCurrentRoute.sumOfHeatLoss ) {
-        result = true;
-    } else {   
-        visited.set ( stepToString(lastStepOfCurrentRoute), lastStepOfCurrentRoute.sumOfHeatLoss);
+function alreadyBeenHereBetter(visited: Map<string, number>, step: Step) : boolean {
+    for ( let checkNumberOfSteps = step.numberOfStraightSteps; checkNumberOfSteps >=1; checkNumberOfSteps--) {
+        let checkStep = step;
+        let bestVisitOfCurrentStepTile = visited.get(stepToString( {
+            toColumn: step.toColumn,
+            toRow: step.toRow,
+            numberOfStraightSteps: checkNumberOfSteps,
+            direction: step.direction,
+            sumOfHeatLoss: step.sumOfHeatLoss
+        }));
+        if ( bestVisitOfCurrentStepTile != undefined && bestVisitOfCurrentStepTile <= step.sumOfHeatLoss ) {
+            return true;
+        }
     }
-    return result;
+
+    visited.set ( stepToString(step), step.sumOfHeatLoss);
+    return false;
 }
 
