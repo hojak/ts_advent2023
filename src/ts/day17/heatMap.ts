@@ -13,7 +13,7 @@ export class HeatMap {
     }
 
 
-    findHeatLossForBestRoute(): number {
+    findHeatLossForBestRoute( ultraCubicle : boolean = false ): number {
         let visited = new Map<string, number>();
 
         let heatLossOfBestKownRoute : number = NaN;
@@ -34,7 +34,8 @@ export class HeatMap {
             
             if ( this.lastTileReached(lastStepOfCurrentRoute)) {
                 // reached the finish line!
-                if ( isNaN(heatLossOfBestKownRoute) || lastStepOfCurrentRoute.sumOfHeatLoss < heatLossOfBestKownRoute) {
+                if ( (!ultraCubicle || lastStepOfCurrentRoute.numberOfStraightSteps >= 4) &&
+                    (isNaN(heatLossOfBestKownRoute) || lastStepOfCurrentRoute.sumOfHeatLoss < heatLossOfBestKownRoute)) {
                     heatLossOfBestKownRoute = lastStepOfCurrentRoute.sumOfHeatLoss;
                 }
                 continue;
@@ -42,9 +43,8 @@ export class HeatMap {
 
             this.getNextPossibleSteps(lastStepOfCurrentRoute)
                 .filter ( step => 
-                    !isOppositeDirection ( step.direction, lastStepOfCurrentRoute.direction)
-                    && step.numberOfStraightSteps <= 3
-                    && ! this.outOfBounds(step.toColumn, step.toRow)
+                    (ultraCubicle && this.isStepAllowedForUltra(step, lastStepOfCurrentRoute))
+                    || (! ultraCubicle && this.isStepAllowed(step, lastStepOfCurrentRoute))
                 ).filter ( step => 
                     ! alreadyBeenHereBetter ( visited, step )
                 ).reverse(
@@ -56,6 +56,38 @@ export class HeatMap {
         }
 
         return heatLossOfBestKownRoute;
+    }
+
+
+    private isStepAllowed(nextStep: Step, previousStep: Step): boolean {
+        if ( isOppositeDirection(nextStep.direction, previousStep.direction )) {
+            return false;
+        }
+
+        if ( this.outOfBounds(nextStep.toColumn, nextStep.toRow)) {
+            return false;
+        }
+
+        return nextStep.numberOfStraightSteps <= 3;
+    }
+
+    private isStepAllowedForUltra(nextStep: Step, previousStep: Step): boolean {
+        if ( isOppositeDirection(nextStep.direction, previousStep.direction )) {
+            return false;
+        }
+        if ( this.outOfBounds(nextStep.toColumn, nextStep.toRow)) {
+            return false;
+        }
+
+        if ( previousStep.numberOfStraightSteps < 4 && nextStep.direction != previousStep.direction ) {
+            return false;
+        }
+
+        if ( previousStep.numberOfStraightSteps >= 10 && nextStep.direction == previousStep.direction ) {
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -157,7 +189,7 @@ function isOppositeDirection(direction: Direction, direction1: Direction) : bool
 
 
 function alreadyBeenHereBetter(visited: Map<string, number>, step: Step) : boolean {
-    for ( let checkNumberOfSteps = step.numberOfStraightSteps; checkNumberOfSteps >=1; checkNumberOfSteps--) {
+    for ( let checkNumberOfSteps = step.numberOfStraightSteps; checkNumberOfSteps >=step.numberOfStraightSteps; checkNumberOfSteps--) {
         let bestVisitOfCurrentStepTile = visited.get(stepToString( {
             toColumn: step.toColumn,
             toRow: step.toRow,
