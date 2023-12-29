@@ -51,6 +51,8 @@ export class HeatMap {
                     !isOppositeDirection ( step.direction, lastStepOfCurrentRoute.direction)
                     && step.numberOfStraightSteps <= 3
                     && ! this.outOfBounts(step.toColumn, step.toRow)
+                ).filter ( step => 
+                    ! alreadyBeenHereBetter ( visited, step )
                 ).forEach ( step => {
                     stack.push ( currentRoute.concat([step]));
                 });
