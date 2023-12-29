@@ -20,10 +20,7 @@ export class HeatMap {
         let heatLossOfBestKownRoute : number = NaN;
 
         // start top left
-        let stack : Step[][]= [ 
-            [{ toColumn: 1, toRow: 0, direction: Direction.right, numberOfStraightSteps: 1, sumOfHeatLoss: this.getHeatLossAt(1,0)}],
-            [{ toColumn: 0, toRow: 1, direction: Direction.down, numberOfStraightSteps: 1, sumOfHeatLoss: this.getHeatLossAt(0,1)}]
-        ];
+        let stack : Step[][]= this.getInitialRouteStarts();
 
         while ( stack.length > 0 ) {
             let currentRoute = stack.pop() ?? [];
@@ -36,12 +33,10 @@ export class HeatMap {
                 continue;
             }
 
-            let bestVisitOfCurrentStepTile = visited.get(stepToString(lastStepOfCurrentRoute));
-            if ( bestVisitOfCurrentStepTile != undefined && bestVisitOfCurrentStepTile <= lastStepOfCurrentRoute.sumOfHeatLoss ) {
+            if ( alreadyBeenHereBetter ( visited, lastStepOfCurrentRoute )) {
                 continue;
             }
-            visited.set ( stepToString(lastStepOfCurrentRoute), lastStepOfCurrentRoute.sumOfHeatLoss);
-
+            
             if ( this.lastTileReached(lastStepOfCurrentRoute)) {
                 // reached the finish line!
                 if ( isNaN(heatLossOfBestKownRoute) || lastStepOfCurrentRoute.sumOfHeatLoss < heatLossOfBestKownRoute) {
@@ -51,39 +46,46 @@ export class HeatMap {
                 continue;
             }
 
-
-            let possibleNextSteps : Step[] = [{
-                toColumn: lastStepOfCurrentRoute.toColumn, toRow: lastStepOfCurrentRoute.toRow+1,
-                direction: Direction.down, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.down ? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
-                sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn, lastStepOfCurrentRoute.toRow+1 )
-            }, {
-                toColumn: lastStepOfCurrentRoute.toColumn+1, toRow: lastStepOfCurrentRoute.toRow,
-                direction: Direction.right, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.right? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
-                sumOfHeatLoss:  lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn+1, lastStepOfCurrentRoute.toRow )
-            },{
-                toColumn: lastStepOfCurrentRoute.toColumn-1, toRow: lastStepOfCurrentRoute.toRow,
-                direction: Direction.left, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.left? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
-                sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn-1, lastStepOfCurrentRoute.toRow )
-            },{
-                toColumn: lastStepOfCurrentRoute.toColumn, toRow: lastStepOfCurrentRoute.toRow-1,
-                direction: Direction.up, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.up? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
-                sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn, lastStepOfCurrentRoute.toRow-1 )
-            }];
-    
-            possibleNextSteps = possibleNextSteps.filter ( step => 
-                !isOppositeDirection ( step.direction, lastStepOfCurrentRoute.direction)
-                && step.numberOfStraightSteps <= 3
-                && ! this.outOfBounts(step.toColumn, step.toRow)
-            );
-
-            possibleNextSteps.forEach ( step => {
-                stack.push ( currentRoute.concat([step]));
-            })
+            this.getNextPossibleSteps(lastStepOfCurrentRoute)
+                .filter ( step => 
+                    !isOppositeDirection ( step.direction, lastStepOfCurrentRoute.direction)
+                    && step.numberOfStraightSteps <= 3
+                    && ! this.outOfBounts(step.toColumn, step.toRow)
+                ).forEach ( step => {
+                    stack.push ( currentRoute.concat([step]));
+                });
         }
 
         return heatLossOfBestKownRoute;
     }
 
+
+    private getNextPossibleSteps(lastStepOfCurrentRoute: Step): Step[] {
+        return [{
+            toColumn: lastStepOfCurrentRoute.toColumn, toRow: lastStepOfCurrentRoute.toRow + 1,
+            direction: Direction.down, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.down ? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
+            sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn, lastStepOfCurrentRoute.toRow + 1)
+        }, {
+            toColumn: lastStepOfCurrentRoute.toColumn + 1, toRow: lastStepOfCurrentRoute.toRow,
+            direction: Direction.right, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.right ? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
+            sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn + 1, lastStepOfCurrentRoute.toRow)
+        }, {
+            toColumn: lastStepOfCurrentRoute.toColumn - 1, toRow: lastStepOfCurrentRoute.toRow,
+            direction: Direction.left, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.left ? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
+            sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn - 1, lastStepOfCurrentRoute.toRow)
+        }, {
+            toColumn: lastStepOfCurrentRoute.toColumn, toRow: lastStepOfCurrentRoute.toRow - 1,
+            direction: Direction.up, numberOfStraightSteps: lastStepOfCurrentRoute.direction == Direction.up ? lastStepOfCurrentRoute.numberOfStraightSteps + 1 : 1,
+            sumOfHeatLoss: lastStepOfCurrentRoute.sumOfHeatLoss + this.getHeatLossAt(lastStepOfCurrentRoute.toColumn, lastStepOfCurrentRoute.toRow - 1)
+        }];
+    }
+
+    private getInitialRouteStarts(): Step[][] {
+        return [
+            [{ toColumn: 1, toRow: 0, direction: Direction.right, numberOfStraightSteps: 1, sumOfHeatLoss: this.getHeatLossAt(1, 0) }],
+            [{ toColumn: 0, toRow: 1, direction: Direction.down, numberOfStraightSteps: 1, sumOfHeatLoss: this.getHeatLossAt(0, 1) }]
+        ];
+    }
 
     getHeatLoss(route: Step[]): number {
         return route.map ( step =>this.getHeatLossAt(step.toColumn, step.toRow))
@@ -131,4 +133,16 @@ function isOppositeDirection(direction: Direction, direction1: Direction) : bool
     return (direction + 2) % 4 == direction1
 }
 
+
+function alreadyBeenHereBetter(visited: Map<string, number>, lastStepOfCurrentRoute: Step) : boolean {
+    let result = false;
+
+    let bestVisitOfCurrentStepTile = visited.get(stepToString(lastStepOfCurrentRoute));
+    if ( bestVisitOfCurrentStepTile != undefined && bestVisitOfCurrentStepTile <= lastStepOfCurrentRoute.sumOfHeatLoss ) {
+        result = true;
+    } else {   
+        visited.set ( stepToString(lastStepOfCurrentRoute), lastStepOfCurrentRoute.sumOfHeatLoss);
+    }
+    return result;
+}
 
