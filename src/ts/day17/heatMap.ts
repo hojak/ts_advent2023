@@ -21,18 +21,10 @@ export class HeatMap {
         // start top left
         let stack : Step[]= this.getInitialRouteStarts();
 
-        let iteration = 0;
         while ( stack.length > 0 ) {
-            iteration++;
             let lastStepOfCurrentRoute : Step = stack.pop() ?? {toColumn: -1, toRow: -1, direction: Direction.down, numberOfStraightSteps: 1, sumOfHeatLoss: -1};
             if (lastStepOfCurrentRoute.toColumn == -1) {
                 continue;
-            }
-
-            if ( iteration % 250000 == 0) {
-                console.log ( "loop: " + iteration);
-                console.log ( "  stack: " + stack.length);
-                console.log ( "  current best solution: " + heatLossOfBestKownRoute );
             }
 
             if ( ! isNaN(heatLossOfBestKownRoute) && lastStepOfCurrentRoute.sumOfHeatLoss >= heatLossOfBestKownRoute ) {
@@ -44,7 +36,6 @@ export class HeatMap {
                 // reached the finish line!
                 if ( isNaN(heatLossOfBestKownRoute) || lastStepOfCurrentRoute.sumOfHeatLoss < heatLossOfBestKownRoute) {
                     heatLossOfBestKownRoute = lastStepOfCurrentRoute.sumOfHeatLoss;
-                    //console.log ( " -> found solution with heat loss: " + heatLossOfBestKownRoute);
                 }
                 continue;
             }
