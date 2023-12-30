@@ -138,11 +138,17 @@ export class GroundPlan {
     }
 
     numberOfDiggedSquares(): number {
+        let topLeft = getTopLeftOfFloorPlan ( this._groundPlan );
+        let bottomRight = getBottomRightOfFloorPlan ( this._groundPlan );
+
         let result = 0;
         let lookAt: Position = {x: 0, y:0};
-        for ( lookAt.x = getMinimalKeyOf ( this._groundPlan); lookAt.x <= getMaximalKeyOf (this._groundPlan) ; lookAt.x++) {
-            for ( lookAt.y = getMinimalKeyOf(this._groundPlan[lookAt.x]); lookAt.y <= getMaximalKeyOf(this._groundPlan[lookAt.x]); lookAt.y ++ ) {
-                if ( this._groundPlan[lookAt.x][lookAt.y] != undefined ) {
+
+        for ( lookAt.y = topLeft.y; lookAt.y <= bottomRight.y; lookAt.y++ ) {
+            for ( lookAt.x = topLeft.x; lookAt.x <= bottomRight.x ; lookAt.x++) {
+
+                let symbol = this.getSymbolAt(lookAt);
+                if ( symbol != undefined && symbol != "." ) {
                     result ++;
                 }
             }
