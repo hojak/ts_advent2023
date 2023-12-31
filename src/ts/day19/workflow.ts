@@ -18,6 +18,8 @@ export class Workflow {
         for ( let step of this._steps) {
             if ( step.condition == null ) {
                 return step.target;
+            } else if ( isConditionMatched ( step.condition, part ) ) {
+                return step.target;
             }
         }
 
@@ -61,3 +63,23 @@ function createStep(stepDescription: string): Step {
         };
     }
 }
+function isConditionMatched(condition: Condition, part: Part) {
+    let partValue : number;
+    if ( condition.attribute == "a") {
+        partValue = part.a;
+    } else if ( condition.attribute == "x") {
+        partValue = part.x;
+    } else if ( condition.attribute == "m") {
+        partValue = part.m;
+    } else {
+        partValue = part.s;
+    }
+
+    if ( condition.larger ) {
+        return partValue > condition.value;
+    } else {
+        return partValue < condition.value;
+    }
+    
+}
+
