@@ -20,8 +20,6 @@ export class ListOfWorkflows {
         let currentWorkflow = "in";
 
         while ( this._workflows.has ( currentWorkflow) ) {
-            console.log ( "step: " + currentWorkflow);
-
             let workflow = this._workflows.get ( currentWorkflow );
             if ( workflow == undefined ) {
                 // cannot be possible, is necessary because of compiler...
