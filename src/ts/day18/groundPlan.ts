@@ -50,9 +50,6 @@ export class GroundPlan {
     }
 
     digOutInterior(): this {
-        console.log ( "before");
-        console.log ( this.planToString ());
-
         let topLeft = getTopLeftOfFloorPlan ( this._groundPlan );
         let bottomRight = getBottomRightOfFloorPlan ( this._groundPlan );
         
@@ -97,10 +94,6 @@ export class GroundPlan {
                 }
             }
         }
-
-        console.log ( "after");
-        console.log ( this.planToString ());
-
 
         return this;
     }
