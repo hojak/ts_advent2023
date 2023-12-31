@@ -253,3 +253,31 @@ function isDirectionSymbol(symbol: string | undefined) {
     return symbol == "R" || symbol == "L" || symbol == "D" || symbol == "U";
 }
 
+export function getPlanBoundaries ( digPlan : string ) : Position[] {
+    let topLeft : Position = {x: 0, y:0};
+    let bottomRight: Position = {x: 0, y: 0};
+    let diggerAt : Position = {x: 0, y: 0};
+
+    digPlan.split("\n").filter(line => line.length>0).forEach ( line => {
+        let lineSplit = line.split(" ").map ( part => part.trim()).filter ( part => part.length > 0);
+        let directionDelta = getDelta(lineSplit[0]);
+
+        for ( let steps=0; steps<Number(lineSplit[1]); steps++) {
+            diggerAt = sumOfPositions(diggerAt, directionDelta);
+            if ( diggerAt.x < topLeft.x) {
+                topLeft.x = diggerAt.x;
+            }
+            if ( diggerAt.x > bottomRight.x) {
+                bottomRight.x = diggerAt.x;
+            }
+            if ( diggerAt.y < topLeft.y) {
+                topLeft.y = diggerAt.y;
+            }
+            if ( diggerAt.y > bottomRight.y) {
+                bottomRight.y = diggerAt.y;
+            }
+        }
+    });
+
+    return [topLeft, bottomRight];
+}
