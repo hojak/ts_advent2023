@@ -19,7 +19,8 @@ cat data/dayX/input.txt | node out/src/ts/dayX/part1.js
 
 ## ToDo
 
-* Day 20 +
+* Day 21 - 24
+* Day 20 Part 2
 * Day 19 Part 2
 * Day 18 Part 2
 
