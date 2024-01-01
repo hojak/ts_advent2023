@@ -90,7 +90,6 @@ export class ConjunctionModule extends Module {
     rememberOnlyHighs() : boolean{
         for ( let input of this._inputs.keys() ) {
             if ( this._inputs.get ( input) == SignalType.Low ) {
-                console.log ( input  + " is low!")
                 return false;
             }
         }
