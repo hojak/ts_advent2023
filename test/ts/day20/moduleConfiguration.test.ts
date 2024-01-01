@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { ModuleConfiguration } from "../../../src/ts/day20/moduleConfiguration";
+import { ConjunctionModule } from "../../../src/ts/day20/module";
 
 describe("Day 20: ModuleConfiguration", () => {
     describe ("create configuration", () => {
@@ -15,6 +16,19 @@ describe("Day 20: ModuleConfiguration", () => {
 
         it ( "should have 5 modules", () => {
             expect(testee.getNumberOfModules()).to.be.equal (5);
+        })
+
+        it ( "inv should have c as input", () => {
+            expect((testee.getModule("inv") as ConjunctionModule).getInputModules()).to.be.deep.equal(["c"]);
+        })
+
+        
+        it ( "broadcast should have a,b,c as output", () => {
+            expect(testee.getModule("broadcaster")?.outputs).to.be.deep.equal(["a","b","c"]);
+        })
+        
+        it ( "a should have b as output", () => {
+            expect(testee.getModule("a")?.outputs).to.be.deep.equal(["b"]);
         })
 
     })

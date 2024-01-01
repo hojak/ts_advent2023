@@ -20,7 +20,6 @@ export abstract class Module {
 
     abstract process(signal: Signal): Signal[];
 
-
     static createFromString(definition: string) : Module {
         let split = definition.split ( " -> ");
         const outputs = split[1].split(",").map(output => output.trim()).filter(outpout => outpout != "");
@@ -76,12 +75,8 @@ export class FlipFlopModule extends Module {
 export class ConjunctionModule extends Module {
     private _inputs: Map<string, SignalType> = new Map();
 
-    setInputModules(inputs: string[]) {
-        this._inputs = new Map();
-
-        for ( let input of inputs ) {
-            this._inputs.set(input, SignalType.Low);
-        }
+    addInputModule(name: string) {
+        this._inputs.set(name, SignalType.Low);
     }
 
     process(signal: Signal): Signal[] {
@@ -100,5 +95,9 @@ export class ConjunctionModule extends Module {
             }
         }
         return true;
+    }
+
+    getInputModules () : string[] {
+        return Array.from(this._inputs.keys()).map( key => ""+key ).sort();
     }
 }

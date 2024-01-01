@@ -89,7 +89,8 @@ describe ( "Day 20: Module", () => {
 
     describe ("ConjunctionModule", () => {
         let testee = new ConjunctionModule ( "con", ["a", "b"]);
-        testee.setInputModules ( ["c", "d"]);
+        testee.addInputModule ( "c" );
+        testee.addInputModule ( "d" );
 
         it ( "should send a high pulse", () => {
             expect( testee.process ( {type: SignalType.Low, sender: "c", receiver: "con"}) ).to.be.deep.equal ([
