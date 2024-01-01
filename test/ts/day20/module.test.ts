@@ -10,6 +10,15 @@ describe ( "Day 20: Module", () => {
             expect(testee.constructor.name).to.be.equal("BroadcasterModule");
             expect(testee.outputs).to.deep.equal (["a", "b", "c"]);
         })
+
+
+        it ( "should create a flip-flip", () => {
+            let testee = Module.createFromString ("%xy -> c" );
+
+            expect(testee.constructor.name).to.be.equal("FlipFlopModule");
+            expect(testee.name).to.be.equal("xy");
+            expect(testee.outputs).to.deep.equal (["c"]);
+        })
     })
 })
 
