@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { BroadcasterModule, FlipFlopModule, Module } from "../../../src/ts/day20/module";
+import { BroadcasterModule, ConjunctionModule, FlipFlopModule, Module } from "../../../src/ts/day20/module";
 import { SignalType } from "../../../src/ts/day20/signal";
 
 describe ( "Day 20: Module", () => {
@@ -86,5 +86,37 @@ describe ( "Day 20: Module", () => {
         });
     })
 
+
+    describe ("ConjunctionModule", () => {
+        let testee = new ConjunctionModule ( "con", ["a", "b"]);
+        testee.setInputModules ( ["c", "d"]);
+
+        it ( "should send a high pulse", () => {
+            expect( testee.process ( {type: SignalType.Low, sender: "c", receiver: "con"}) ).to.be.deep.equal ([
+                {type: SignalType.High, sender: "con", receiver: "a"},
+                {type: SignalType.High, sender: "con", receiver: "b"},
+            ]);
+
+        })
+
+        it ( "should send a Low Pulse after all inputs have send a High", () => {
+            testee.process ( { type: SignalType.High, sender: "c", receiver: "con"});
+            let output = testee.process ( { type: SignalType.High, sender: "d", receiver: "con"});
+            expect( output ).to.be.deep.equal ([
+                {type: SignalType.Low, sender: "con", receiver: "a"},
+                {type: SignalType.Low, sender: "con", receiver: "b"},
+            ]);
+        })
+
+        it ( "should send a High Pulse after receiving a low from c", () => {
+            testee.process ( { type: SignalType.Low, sender: "c", receiver: "con"});
+            let output = testee.process ( { type: SignalType.High, sender: "d", receiver: "con"});
+            expect( output ).to.be.deep.equal ([
+                {type: SignalType.High, sender: "con", receiver: "a"},
+                {type: SignalType.High, sender: "con", receiver: "b"},
+            ]);
+        })
+
+    });
 })
 

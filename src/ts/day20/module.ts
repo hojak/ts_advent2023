@@ -48,8 +48,8 @@ export abstract class Module {
 
 export class BroadcasterModule extends Module {
 
-    process(signal: SignalType) : Signal[] {
-        return this.outputs.map ( name => { return {type: signal, destination: name }; } );
+    process(signal: Signal) : Signal[] {
+        return this.outputs.map ( name => { return {type: signal.type, sender: this.name, receiver: name }; } );
     }
 
 }
@@ -74,7 +74,31 @@ export class FlipFlopModule extends Module {
 }
 
 export class ConjunctionModule extends Module {
+    private _inputs: Map<string, SignalType> = new Map();
+
+    setInputModules(inputs: string[]) {
+        this._inputs = new Map();
+
+        for ( let input of inputs ) {
+            this._inputs.set(input, SignalType.Low);
+        }
+    }
+
     process(signal: Signal): Signal[] {
-        return [];
+        this._inputs.set ( signal.sender, signal.type);
+
+        let outSignal = this.rememberOnlyHighs() ? SignalType.Low : SignalType.High;
+        
+        return this.outputs.map ( name => { return {type: outSignal, receiver: name, sender: this.name }; } );
+    }
+
+    rememberOnlyHighs() : boolean{
+        for ( let input of this._inputs.keys() ) {
+            if ( this._inputs.get ( input) == SignalType.Low ) {
+                console.log ( input  + " is low!")
+                return false;
+            }
+        }
+        return true;
     }
 }
