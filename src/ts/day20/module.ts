@@ -1,6 +1,6 @@
 import { Signal, SignalType } from "./signal";
 
-export class Module {
+export abstract class Module {
     private _name: string;
     private _outputs: string[];
 
@@ -16,6 +16,9 @@ export class Module {
     public get outputs(): string[] {
         return this._outputs;
     }
+
+
+    abstract process(High: SignalType): Signal[];
 
 
     static createFromString(definition: string) : Module {
@@ -45,16 +48,33 @@ export class Module {
 
 export class BroadcasterModule extends Module {
 
-    process(signalType: SignalType) : Signal[] {
-        return this.outputs.map ( name => { return {type: signalType, destination: name }; } );
+    process(signal: SignalType) : Signal[] {
+        return this.outputs.map ( name => { return {type: signal, destination: name }; } );
     }
 
 }
 
 export class FlipFlopModule extends Module {
+    private _isOn: boolean = false;
 
+    public get isOn(): boolean {
+        return this._isOn;
+    }
+
+    process(signal: SignalType): Signal[] {
+        if( signal == SignalType.High) {
+            return [];        
+        }
+
+        this._isOn = ! this._isOn;
+        let outSignal = this._isOn ? SignalType.High : SignalType.Low;
+        
+        return this.outputs.map ( name => { return {type: outSignal, destination: name }; } );
+    }
 }
 
 export class ConjunctionModule extends Module {
-
+    process(High: SignalType): Signal[] {
+        return [];
+    }
 }
