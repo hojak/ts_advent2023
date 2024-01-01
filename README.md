@@ -19,7 +19,8 @@ cat data/dayX/input.txt | node out/src/ts/dayX/part1.js
 
 ## ToDo
 
-* Day 19+
+* Day 20 +
+* Day 19 Part 2
 * Day 18 Part 2
 
   The resulting floor plan is too large to fit in the memory. Even for the test input, we get a square of 1.186.328 x 1.186.328. The _real_ input results in an even larger area.
