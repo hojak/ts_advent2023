@@ -34,13 +34,19 @@ describe ( "Day 20: Module", () => {
     describe ( "BroadcaseModule", () => {
         let testee = new BroadcasterModule ( "B", ["a", "b"]);
         it ( "should distribute a Low Pulse to all outputs", () => {
-            let signals = testee.process ( SignalType.Low );
-            expect(signals).to.be.deep.equal ( [{type: SignalType.Low, destination: "a"}, {type: SignalType.Low, destination: "b"}])
+            let signals = testee.process ( {type: SignalType.Low, receiver: "B", sender: ""} );
+            expect(signals).to.be.deep.equal ( [
+                {type: SignalType.Low, receiver: "a", sender: "B"},
+                {type: SignalType.Low, receiver: "b", sender: "B"}
+            ])
         });
 
         it ( "should distribute a High Pulse to all outputs", () => {
-            let signals = testee.process ( SignalType.High );
-            expect(signals).to.be.deep.equal ( [{type: SignalType.High, destination: "a"}, {type: SignalType.High, destination: "b"}])
+            let signals = testee.process ( {type: SignalType.High, receiver: "B", sender: ""} );
+            expect(signals).to.be.deep.equal ( [
+                {type: SignalType.High, receiver: "a", sender: "B"}, 
+                {type: SignalType.High, receiver: "b", sender: "B"}
+            ])
         });
     })
 
@@ -51,27 +57,34 @@ describe ( "Day 20: Module", () => {
         })
 
         it ( "should ignore a HighPuls", () => {
-            expect(testee.process ( SignalType.High)).to.be.empty;
+            expect(testee.process ( {type: SignalType.High, receiver: "flip", sender: ""})).to.be.empty;
         })
 
         it ( "should turn on and send a High Pulse when receiving a LowPulse", () => {
-            let resultingSignals = testee.process ( SignalType.Low );
+            let resultingSignals = testee.process ( { type: SignalType.Low, receiver: "flip", sender: ""} );
 
             expect(testee.isOn).to.be.true;
-            expect(resultingSignals).to.be.deep.equal ( [{type: SignalType.High, destination: "a"}, {type: SignalType.High, destination: "b"}])
+            expect(resultingSignals).to.be.deep.equal ( [
+                {type: SignalType.High, receiver: "a", sender: "flip"}, 
+                {type: SignalType.High, receiver: "b", sender: "flip"}
+            ])
         });
 
         it ( "should still should ignore a HighPuls", () => {
-            expect(testee.process ( SignalType.High)).to.be.empty;
+            expect(testee.process (  { type: SignalType.High, receiver: "flip", sender: ""})).to.be.empty;
         })
 
         it ( "should turn off and send a Low Pulse when receiving a LowPulse", () => {
-            let resultingSignals = testee.process ( SignalType.Low );
+            let resultingSignals = testee.process ( {type: SignalType.Low, receiver: "flip", sender: ""} );
 
             expect(testee.isOn).to.be.false;
-            expect(resultingSignals).to.be.deep.equal ( [{type: SignalType.Low, destination: "a"}, {type: SignalType.Low, destination: "b"}])
+            expect(resultingSignals).to.be.deep.equal ( [
+                {type: SignalType.Low, receiver: "a", sender: "flip"}, 
+                {type: SignalType.Low, receiver: "b", sender: "flip"}
+            ])
 
         });
     })
+
 })
 

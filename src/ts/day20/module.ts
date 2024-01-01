@@ -18,7 +18,7 @@ export abstract class Module {
     }
 
 
-    abstract process(High: SignalType): Signal[];
+    abstract process(signal: Signal): Signal[];
 
 
     static createFromString(definition: string) : Module {
@@ -61,20 +61,20 @@ export class FlipFlopModule extends Module {
         return this._isOn;
     }
 
-    process(signal: SignalType): Signal[] {
-        if( signal == SignalType.High) {
+    process(signal: Signal): Signal[] {
+        if( signal.type == SignalType.High) {
             return [];        
         }
 
         this._isOn = ! this._isOn;
         let outSignal = this._isOn ? SignalType.High : SignalType.Low;
         
-        return this.outputs.map ( name => { return {type: outSignal, destination: name }; } );
+        return this.outputs.map ( name => { return {type: outSignal, receiver: name, sender: this.name }; } );
     }
 }
 
 export class ConjunctionModule extends Module {
-    process(High: SignalType): Signal[] {
+    process(signal: Signal): Signal[] {
         return [];
     }
 }
