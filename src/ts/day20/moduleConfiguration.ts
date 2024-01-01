@@ -1,6 +1,8 @@
 import { ConjunctionModule, Module } from "./module";
+import { Signal, SignalType } from "./signal";
 
 export class ModuleConfiguration {
+    
     
     private _modules: Map<string, Module> = new Map();
     
@@ -29,4 +31,33 @@ export class ModuleConfiguration {
     getModule( name: string ) : Module | undefined {
         return this._modules.get(name);
     }
+
+
+    process(initialSignal: Signal): number[] {
+        let queue : Signal[] = [ initialSignal ];
+        let lowSignals = 0;
+        let highSignals = 0;
+
+        while ( queue.length > 0 ) {
+            let currentSignal = queue.shift();
+            if ( currentSignal == undefined) {
+                continue;
+            }
+
+            if ( currentSignal?.type == SignalType.Low ) {
+                lowSignals ++;
+            } else {
+                highSignals++;
+            }
+
+            let newSignals = this._modules.get ( currentSignal.receiver )?.process(currentSignal);
+            newSignals?.forEach ( newSignal => queue.push ( newSignal ))
+        }
+ 
+        return [lowSignals, highSignals];
+    }
+}
+
+function queueToString(queue: Signal[]) :string {
+    return queue.map ( signal => signal.sender + ":" + signal.type + "->" + signal.receiver).join(",");
 }
