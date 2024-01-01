@@ -16,19 +16,24 @@ export class Module {
     }
 
 
-
     static createFromString(definition: string) : Module {
         let split = definition.split ( " -> ");
         const outputs = split[1].split(",").map(output => output.trim()).filter(outpout => outpout != "");
+        const name = split[0].trim();
 
-        if ( split[0][0] == "%" ) {
+        if ( name[0] == "%" ) {
             return new FlipFlopModule (
-                split[0].trim().substring(1),
+                name.substring(1),
+                outputs
+            );
+        } else if (name[0] == "&" ) {
+            return new ConjunctionModule (
+                name.substring(1),
                 outputs
             );
         } else {
             return new BroadcasterModule (
-                split[0].trim(),
+                name,
                 outputs
             );
         }
@@ -41,5 +46,9 @@ export class BroadcasterModule extends Module {
 }
 
 export class FlipFlopModule extends Module {
+
+}
+
+export class ConjunctionModule extends Module {
 
 }

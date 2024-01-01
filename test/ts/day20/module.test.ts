@@ -19,6 +19,15 @@ describe ( "Day 20: Module", () => {
             expect(testee.name).to.be.equal("xy");
             expect(testee.outputs).to.deep.equal (["c"]);
         })
+
+
+        it ( "should create a conjunction", () => {
+            let testee = Module.createFromString ("&xyz -> c, a" );
+
+            expect(testee.constructor.name).to.be.equal("ConjunctionModule");
+            expect(testee.name).to.be.equal("xyz");
+            expect(testee.outputs).to.deep.equal (["c", "a"]);
+        })
     })
 })
 
