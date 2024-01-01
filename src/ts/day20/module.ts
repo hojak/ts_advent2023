@@ -3,6 +3,7 @@ import { Signal, SignalType } from "./signal";
 export abstract class Module {
     private _name: string;
     private _outputs: string[];
+    private _hasReceivedLow = false;
 
     constructor ( name: string, outputs: string[] ) {
         this._name = name;
@@ -16,21 +17,29 @@ export abstract class Module {
     public get outputs(): string[] {
         return this._outputs;
     }
+    
+    public get hasReceivedLow() {
+        return this._hasReceivedLow;
+    }
 
-
-    abstract process(signal: Signal): Signal[];
+    public process(signal: Signal): Signal[] {
+        if ( signal.type == SignalType.Low ) {
+            this._hasReceivedLow = true;
+        }
+        return [];
+    }
 
     static createFromString(definition: string) : Module {
         let split = definition.split ( " -> ");
         const outputs = split[1].split(",").map(output => output.trim()).filter(outpout => outpout != "");
         const name = split[0].trim();
 
-        if ( name[0] == "%" ) {
+        if ( name.startsWith("%") ) {
             return new FlipFlopModule (
                 name.substring(1),
                 outputs
             );
-        } else if (name[0] == "&" ) {
+        } else if (name.startsWith("&") ) {
             return new ConjunctionModule (
                 name.substring(1),
                 outputs
@@ -48,6 +57,7 @@ export abstract class Module {
 export class BroadcasterModule extends Module {
 
     process(signal: Signal) : Signal[] {
+        super.process(signal);
         return this.outputs.map ( name => { return {type: signal.type, sender: this.name, receiver: name }; } );
     }
 
@@ -61,6 +71,8 @@ export class FlipFlopModule extends Module {
     }
 
     process(signal: Signal): Signal[] {
+        super.process(signal);
+
         if( signal.type == SignalType.High) {
             return [];        
         }
@@ -80,6 +92,8 @@ export class ConjunctionModule extends Module {
     }
 
     process(signal: Signal): Signal[] {
+        super.process(signal);
+
         this._inputs.set ( signal.sender, signal.type);
 
         let outSignal = this.rememberOnlyHighs() ? SignalType.Low : SignalType.High;

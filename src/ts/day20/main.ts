@@ -22,4 +22,24 @@ consoleApp (input => {
     console.log ( "Processed Low Signals: " + sumOfLow);
     console.log ( "Processed High Signale: " + sumOfHigh);
     console.log ( "Result: "+ (sumOfHigh *sumOfLow));
+
+
+    console.log ( "\ntrying to reach rx");
+    moduleConfiguration = new ModuleConfiguration(input + "\nrx -> ");
+    let numberOfStep = 0;
+    do  {
+        numberOfStep++;
+
+        if ( numberOfStep % 1000000 == 0) {
+            console.log ( numberOfStep );
+        }
+
+        moduleConfiguration.process ( {
+            type: SignalType.Low,
+            receiver: "broadcaster",
+            sender: "button"
+        });
+    } while ( ! moduleConfiguration.getModule("rx")?.hasReceivedLow );
+
+    console.log ( "Number of necessary steps: " + numberOfStep);
 })
