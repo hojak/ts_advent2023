@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { BroadcasterModule, Module } from "../../../src/ts/day20/module";
+import { SignalType } from "../../../src/ts/day20/signal";
 
 describe ( "Day 20: Module", () => {
     describe ("createFromString", () => {

@@ -1,3 +1,5 @@
+import { Signal, SignalType } from "./signal";
+
 export class Module {
     private _name: string;
     private _outputs: string[];
@@ -42,6 +44,10 @@ export class Module {
 }
 
 export class BroadcasterModule extends Module {
+
+    process(signalType: SignalType) : Signal[] {
+        return this.outputs.map ( name => { return {type: signalType, destination: name }; } );
+    }
 
 }
 
