@@ -22,7 +22,7 @@ cat data/dayX/input.txt | node out/src/ts/dayX/part1.js
 * Day 21 - 24
 * Day 20 Part 2
 
-  The graph of 58 modules has a number of different states in O(2^58). Reaching a certain state may cost around 10^19 button presses. It seams feasable to think of a differnt solution from pushing the button that often... :)
+  The graph of 58 modules has a number of different states in O(2^58). Reaching a certain state may cost around 10^19 pushes of the button. It seams feasable to think of a different solution from pushing the button that often... :)
 
 * Day 19 Part 2
 * Day 18 Part 2
