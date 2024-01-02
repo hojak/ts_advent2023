@@ -83,9 +83,8 @@ describe ( "Day 22: PileOfBricks", () => {
 
     describe ("getNumberOfRemovableBricks", () => {
         it ( "should return 5 for the test input", () => {
-
             let pile = new PileOfBricks();
-            pile.addMultipleBricks ( 
+            pile.initializeFromSnapshot ( 
                 "1,0,1~1,2,1"+"\n"+
                 "0,0,2~2,0,2"+"\n"+
                 "0,2,3~2,2,3"+"\n"+
@@ -99,4 +98,20 @@ describe ( "Day 22: PileOfBricks", () => {
 
         });
     });
+
+
+    describe ("initializeFromSnaphot", () => {
+        it ( "it should not use the order of bricks", () => {
+            let pile = new PileOfBricks();
+            pile.initializeFromSnapshot ( 
+                "0,1,2~2,1,2"+"\n"+
+                "1,1,1~1,1,1"
+            );
+
+            expect ( pile.isOccupied( new Coordinates ( 1,1,0)) ).to.be.true;
+            expect ( pile.isOccupied( new Coordinates ( 0,1,1)) ).to.be.true;
+            expect ( pile.isOccupied( new Coordinates ( 1,1,1)) ).to.be.true;
+            expect ( pile.isOccupied( new Coordinates ( 2,1,1)) ).to.be.true;
+        });
+    })
 });

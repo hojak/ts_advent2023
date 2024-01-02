@@ -36,10 +36,11 @@ export class PileOfBricks {
         return this;
     }
 
-    addMultipleBricks(brickLines: string) {
-        for ( let line of brickLines.split("\n")) {
-            this.add ( new Brick(line) );
-        }
+    initializeFromSnapshot(brickLines: string) {
+        let bricks = brickLines.split("\n")
+            .map ( line => new Brick(line))
+            .sort ( (a,b) => a.start.z - b.start.z )
+            .forEach ( brick => this.add ( brick ));
     }
 
     emptySpaceBelow(coordinates: Coordinates) : Coordinates {
