@@ -9,4 +9,35 @@ describe("Day 22: Brick", () => {
             expect( new Brick( "1,0,1~1,2,1" ).start).to.be.deep.equal ( new Coordinates ( 1,0,1));
         })
     })
-})
+
+    describe ("getBlocks", () => {
+        it ( "should return an array with all blocks of the brick", () => {
+            expect ( new Brick("0,0,0~0,0,10").getBlocks()).to.be.deep.equal ([
+                new Coordinates(0,0,0),
+                new Coordinates(0,0,1),
+                new Coordinates(0,0,2),
+                new Coordinates(0,0,3),
+                new Coordinates(0,0,4),
+                new Coordinates(0,0,5),
+                new Coordinates(0,0,6),
+                new Coordinates(0,0,7),
+                new Coordinates(0,0,8),
+                new Coordinates(0,0,9),
+                new Coordinates(0,0,10)
+            ])
+        })
+
+        it ( "should return an array with one block", () => {
+            expect ( new Brick("0,0,0~0,0,0").getBlocks()).to.be.deep.equal ([ new Coordinates(0,0,0)] ); 
+        });
+
+        it ( "should work in negative direction", () => {
+            expect ( new Brick("0,3,0~0,0,0").getBlocks()).to.be.deep.equal ([ 
+                new Coordinates(0,3,0),
+                new Coordinates(0,2,0),
+                new Coordinates(0,1,0),
+                new Coordinates(0,0,0)
+            ]); 
+        });
+    });
+});
