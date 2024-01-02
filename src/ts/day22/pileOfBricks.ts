@@ -2,6 +2,7 @@ import { Brick } from "./brick";
 import { Coordinates } from "./coordinates";
 
 export class PileOfBricks {
+
     private _occupied : Brick[][][] = [];
     private _bricks: Brick[] = [];
 
@@ -72,32 +73,42 @@ export class PileOfBricks {
     }
 
     isRemovable(candidate: Brick): boolean {
-        let needToCheck : Set<Brick> = new Set();
-
-        for ( let block of candidate.getBlocks() ) {
-            let brickAboveBlock = this.getBrickAt ( block.plus ( new Coordinates ( 0,0,1)));
-            if ( brickAboveBlock != undefined && brickAboveBlock != candidate ) {
-                if (brickAboveBlock.isOnlyOneBlock() || brickAboveBlock.isZDirection()) {
-                    return false;
-                }
-                needToCheck.add(brickAboveBlock);
-            }
-        }
+        let needToCheck : Set<Brick> = this.getListOfBricksToCheckForRemoval(candidate);
 
         for ( let brickToCheck of needToCheck ) {
-            let foundOtherSupport = false;
-            for ( let block of brickToCheck.getBlocks() ) {
-                let possibleBrickBelow = this.getBrickAt ( block.minus(new Coordinates(0,0,1)));
-                if ( possibleBrickBelow != undefined && possibleBrickBelow != candidate ) {
-                    foundOtherSupport = true;
-                }
-            }
+            let foundOtherSupport = this.stillHasSupportIfBricksAreRemoved(brickToCheck, new Set<Brick>([candidate]));
+
             if ( ! foundOtherSupport ) {
                 return false;
             }
         }
 
         return true;
+    }
+
+
+    private getListOfBricksToCheckForRemoval( candidate: Brick ): Set<Brick> {
+        let result : Set<Brick> =new Set();
+
+        for ( let block of candidate.getBlocks() ) {
+            let brickAboveBlock = this.getBrickAt ( block.plus ( new Coordinates ( 0,0,1)));
+            if ( brickAboveBlock != undefined && brickAboveBlock != candidate ) {
+                result.add(brickAboveBlock);
+            }
+        }
+
+        return result;
+    }
+
+    private stillHasSupportIfBricksAreRemoved(brickToCheck: Brick, removedBricks: Set<Brick>) {
+        let foundOtherSupport = false;
+        for (let block of brickToCheck.getBlocks()) {
+            let possibleBrickBelow = this.getBrickAt(block.minus(new Coordinates(0, 0, 1)));
+            if (possibleBrickBelow != undefined && possibleBrickBelow != brickToCheck && !removedBricks.has(possibleBrickBelow)) {
+                foundOtherSupport = true;
+            }
+        }
+        return foundOtherSupport;
     }
 
     getNumberOfRemovableBricks(): number {
@@ -110,6 +121,40 @@ export class PileOfBricks {
         }
 
         return result;
+    }
+
+
+    howManyBricksWouldFall(candidate: Brick): number {        
+        let result = 0;
+
+        let queueOfFallingOrRemovedBricks = [candidate];
+        let fallingOrRemoved = new Set<Brick>(queueOfFallingOrRemovedBricks);
+
+        while ( queueOfFallingOrRemovedBricks.length > 0 )  {
+            let brick = queueOfFallingOrRemovedBricks.shift();
+            if ( brick == undefined) {
+                continue;
+            }
+
+            let needToCheck = this.getListOfBricksToCheckForRemoval(brick);
+
+            for ( let possiblyFalling of needToCheck ) {
+                if ( ! fallingOrRemoved.has(possiblyFalling) && ! this.stillHasSupportIfBricksAreRemoved (possiblyFalling, fallingOrRemoved)) {
+                    fallingOrRemoved.add ( possiblyFalling );
+                    queueOfFallingOrRemovedBricks.push(possiblyFalling)
+                    result ++;
+                }
+            }
+        }
+
+        return result;
+    }
+
+
+    getSumOfPossibleChainReactions() : number {
+        return this._bricks
+            .map ( brick => this.howManyBricksWouldFall(brick))
+            .reduce( (prev, curr) => prev+curr, 0);
     }
 
 

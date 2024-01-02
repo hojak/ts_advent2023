@@ -100,6 +100,44 @@ describe ( "Day 22: PileOfBricks", () => {
     });
 
 
+    
+    describe ("howManyBricksWouldFall", () => {
+        it ( "should return 6 for the first brick of the test input", () => {
+            let pile = new PileOfBricks();
+            pile.initializeFromSnapshot ( 
+                "1,0,1~1,2,1"+"\n"+
+                "0,0,2~2,0,2"+"\n"+
+                "0,2,3~2,2,3"+"\n"+
+                "0,0,4~0,2,4"+"\n"+
+                "2,0,5~2,2,5"+"\n"+
+                "0,1,6~2,1,6"+"\n"+
+                "1,1,8~1,1,9"
+            );
+
+            expect ( pile.howManyBricksWouldFall( pile.bricks[0])).to.be.equal (6); // Brick A
+            expect ( pile.howManyBricksWouldFall( pile.bricks[5])).to.be.equal (1); // Brick F
+        });
+    });
+
+
+    describe ("getSumOfPossibleChainReactions", () => {
+        it ( "should return 7 for the test input", () => {
+            let pile = new PileOfBricks();
+            pile.initializeFromSnapshot ( 
+                "1,0,1~1,2,1"+"\n"+
+                "0,0,2~2,0,2"+"\n"+
+                "0,2,3~2,2,3"+"\n"+
+                "0,0,4~0,2,4"+"\n"+
+                "2,0,5~2,2,5"+"\n"+
+                "0,1,6~2,1,6"+"\n"+
+                "1,1,8~1,1,9"
+            );
+
+            expect ( pile.getSumOfPossibleChainReactions()).to.be.equal (7); 
+        });
+    });
+
+
     describe ("initializeFromSnaphot", () => {
         it ( "it should not use the order of bricks", () => {
             let pile = new PileOfBricks();
