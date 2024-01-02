@@ -7,7 +7,16 @@ export class Garden {
     }
 
     getSymbolAt(position: Position): String {
-        return this._lines[position.y][position.x];
+        let x = position.x % this.getWidth();
+        if ( x < 0 ) {
+            x += this.getWidth();
+        }
+
+        let y = position.y % this.getHeight();
+        if ( y < 0 ) {
+            y += this.getHeight();
+        }
+        return this._lines[y][x];
     }
     getHeight(): any {
         return this._lines.length;
@@ -16,7 +25,7 @@ export class Garden {
         return this._lines[0].length;
     }
 
-    getNumberOfReachablePots(numberOfSteps: number): number {
+    getNumberOfReachablePots(numberOfSteps: number, infiniteMap: boolean = false): number {
         let startPosition = this.findStartposition();
 
         let reachablePositions : Set<string> = new Set( [posToString(startPosition)]);
@@ -27,7 +36,8 @@ export class Garden {
                 let position = createPositionFromString ( positionString );
                 for ( let offset of stepOffsets ) {
                     let checkPosition = addPositions ( position, offset );
-                    if ( ! this.outOfBounds ( checkPosition ) && this.getSymbolAt (checkPosition) != "#") {
+                    if ( (infiniteMap || ! this.outOfBounds ( checkPosition )) 
+                            && this.getSymbolAt (checkPosition) != "#") {
                         nextSetOfReachablePositions.add ( posToString(checkPosition) );
                     }
                 }

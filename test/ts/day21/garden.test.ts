@@ -28,32 +28,39 @@ describe ("Day 21: Garden", () => {
         })
     });
 
-    describe ( "getNumberOfReachablePots", () => {
-        let testee = new Garden ( 
-            "..........."+"\n"+
-            ".....###.#."+"\n"+
-            ".###.##..#."+"\n"+
-            "..#.#...#.."+"\n"+
-            "....#.#...."+"\n"+
-            ".##..S####."+"\n"+
-            ".##..#...#."+"\n"+
-            ".......##.."+"\n"+
-            ".##.#.####."+"\n"+
-            ".##..##.##."+"\n"+
-            "..........."
-        );
 
+    let testee = new Garden ( 
+        "..........."+"\n"+
+        ".....###.#."+"\n"+
+        ".###.##..#."+"\n"+
+        "..#.#...#.."+"\n"+
+        "....#.#...."+"\n"+
+        ".##..S####."+"\n"+
+        ".##..#...#."+"\n"+
+        ".......##.."+"\n"+
+        ".##.#.####."+"\n"+
+        ".##..##.##."+"\n"+
+        "..........."
+    );
+
+
+    describe ( "getNumberOfReachablePots", () => {
         it ( "should identify 2 reachable pots with 1 step", () => {
             expect ( testee.getNumberOfReachablePots(1)).to.be.equal (2);                
-        })
+        });
 
         it ( "should identify 4 reachable pots with 2 steps", () => {
             expect ( testee.getNumberOfReachablePots(2)).to.be.equal (4);                
-        })
+        });
 
         it ( "should identify 16 reachable pots with 6 steps", () => {
             expect ( testee.getNumberOfReachablePots(6)).to.be.equal (16);                
-        })
-
+        });
     })
+
+    describe ( "getNumberOfReachablePots (with infinite map)", () => {
+        it ( "should return 1594 for 50 steps", () => {
+            expect ( testee.getNumberOfReachablePots(50, true)).to.be.equal (1594);
+        });
+    });
 });
