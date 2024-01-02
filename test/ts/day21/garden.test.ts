@@ -27,4 +27,33 @@ describe ("Day 21: Garden", () => {
             expect ( testee.getSymbolAt ( {x:5, y:5 })).to.be.equal("S");
         })
     });
+
+    describe ( "getNumberOfReachablePots", () => {
+        let testee = new Garden ( 
+            "..........."+"\n"+
+            ".....###.#."+"\n"+
+            ".###.##..#."+"\n"+
+            "..#.#...#.."+"\n"+
+            "....#.#...."+"\n"+
+            ".##..S####."+"\n"+
+            ".##..#...#."+"\n"+
+            ".......##.."+"\n"+
+            ".##.#.####."+"\n"+
+            ".##..##.##."+"\n"+
+            "..........."
+        );
+
+        it ( "should identify 2 reachable pots with 1 step", () => {
+            expect ( testee.getNumberOfReachablePots(1)).to.be.equal (2);                
+        })
+
+        it ( "should identify 4 reachable pots with 2 steps", () => {
+            expect ( testee.getNumberOfReachablePots(2)).to.be.equal (4);                
+        })
+
+        it ( "should identify 16 reachable pots with 6 steps", () => {
+            expect ( testee.getNumberOfReachablePots(6)).to.be.equal (16);                
+        })
+
+    })
 });
