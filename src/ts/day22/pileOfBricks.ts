@@ -5,7 +5,7 @@ export class PileOfBricks {
     private _occupied : boolean[][][] = [];
 
     numberOfOccupiedSpaces(): number {
-        return this._occupied.flat().filter ( occ => occ ).length;
+        return this._occupied.flat().flat().filter ( occ => occ ).length;
     }
 
     isOccupied(coordinates: Coordinates): boolean {
