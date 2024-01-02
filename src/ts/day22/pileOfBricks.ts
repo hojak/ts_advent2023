@@ -18,14 +18,31 @@ export class PileOfBricks {
     }
 
     add(brick: Brick) {
-        let directionDown = new Coordinates ( 0,0,-1);
-
-        let placeAt = brick.start;
-        while ( placeAt.z > 0 &&  ! this.isOccupied ( placeAt.plus(directionDown))) {
-            placeAt = placeAt.plus(directionDown);
+        let toCheck = brick.getBlocks();
+        if ( brick.isZDirection ()) {
+           toCheck = [brick.start];
         }
 
-        this.placeBrickAt (brick, placeAt);
+        let moveDown = new Coordinates(0,0,-brick.start.z);
+        for ( let block of toCheck ) {
+            let mayMoveDown = this.emptySpaceBelow ( block );
+            if ( mayMoveDown.z > moveDown.z ) {
+                moveDown = mayMoveDown;
+            }
+        }
+        console.log ( "moving down: " + moveDown);
+        this.placeBrickAt (brick, brick.start.plus ( moveDown));
+    }
+
+    emptySpaceBelow(coordinates: Coordinates) : Coordinates {
+        let directionDown = new Coordinates ( 0,0,-1);
+    
+        let lowestFreeSpace = coordinates;
+        while ( lowestFreeSpace.z > 0 &&  ! this.isOccupied ( lowestFreeSpace.plus(directionDown))) {
+            lowestFreeSpace = lowestFreeSpace.plus(directionDown);
+        }
+    
+        return lowestFreeSpace.minus(coordinates);
     }
 
     placeBrickAt(brick: Brick, placeForBrickStart: Coordinates) {
