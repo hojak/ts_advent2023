@@ -2,7 +2,7 @@ import { Brick } from "./brick";
 import { Coordinates } from "./coordinates";
 
 export class PileOfBricks {
-    private _occupied : boolean[][][] = [];
+    private _occupied : Brick[][][] = [];
     private _bricks: Brick[] = [];
 
     public get bricks(): Brick[] {
@@ -14,15 +14,10 @@ export class PileOfBricks {
     }
 
     isOccupied(coordinates: Coordinates): boolean {
-        try {
-            return this._occupied[coordinates.x][coordinates.y][coordinates.z] == true;
-        } catch ( error ) {
-            // out of bound is not occupied
-            return false;
-        }
+        return this.getBrickAt(coordinates) != undefined;
     }
 
-    add(brick: Brick) {
+    add(brick: Brick) : this {
         let toCheck = brick.getBlocks();
         if ( brick.isZDirection ()) {
            toCheck = [brick.start];
@@ -37,6 +32,8 @@ export class PileOfBricks {
         }
         this.placeBrickAt (brick, brick.start.plus ( moveDown));
         this._bricks.push(brick.move(moveDown));
+
+        return this;
     }
 
     emptySpaceBelow(coordinates: Coordinates) : Coordinates {
@@ -54,12 +51,21 @@ export class PileOfBricks {
         let movement = placeForBrickStart.minus(brick.start);
 
         for ( let blockOfBrick of brick.getBlocks() ) {
-            this.markPlaceAsOccupied(blockOfBrick.plus(movement));
+            this.markPlaceAsOccupiedBy(blockOfBrick.plus(movement), brick);
+        }
+    }
+
+    getBrickAt(coordinates: Coordinates) :Brick | undefined {
+        try {
+            return this._occupied[coordinates.x][coordinates.y][coordinates.z];
+        } catch ( error ) {
+            // out of bound is not occupied
+            return undefined;
         }
     }
 
 
-    private markPlaceAsOccupied(placeForBrickStart: Coordinates) {
+    private markPlaceAsOccupiedBy(placeForBrickStart: Coordinates, brick: Brick) {
         if (this._occupied[placeForBrickStart.x] == undefined) {
             this._occupied[placeForBrickStart.x] = [];
         }
@@ -67,6 +73,6 @@ export class PileOfBricks {
             this._occupied[placeForBrickStart.x][placeForBrickStart.y] = [];
         }
 
-        this._occupied[placeForBrickStart.x][placeForBrickStart.y][placeForBrickStart.z] = true;
+        this._occupied[placeForBrickStart.x][placeForBrickStart.y][placeForBrickStart.z] = brick;
     }
 }

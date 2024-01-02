@@ -49,13 +49,18 @@ describe ( "Day 22: PileOfBricks", () => {
 
         it ("should keep a list of added bricks", () => {
             let pile = new PileOfBricks();
-            pile.add ( new Brick ( "1,1,1~1,1,1"));
-            pile.add ( new Brick ( "2,2,2~2,4,2"));
+            const brick1 = new Brick("1,1,1~1,1,1");
+            const brick2 = new Brick("2,2,2~2,4,2");
 
-            expect ( pile.bricks ).to.be.deep.equal ( [
+            pile.add ( brick1)
+                .add ( brick2);
+
+            expect(pile.bricks ).to.be.deep.equal ( [
                 new Brick("1,1,0~1,1,0"),
                 new Brick("2,2,0~2,4,0"),
             ]);
+            expect(brick1.start).to.be.deep.equal ( new Coordinates(1,1,0));
+            expect(pile.getBrickAt (new Coordinates(2,2,0))).to.be.equal(brick2);
         });
     });
 });
