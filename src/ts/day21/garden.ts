@@ -40,7 +40,7 @@ export class Garden {
     }
 
     outOfBounds(position: Position) : boolean {
-        return position.x < 0 && position.y < 0 && position.x >= this.getWidth() && position.y >= this.getHeight();
+        return position.x < 0 || position.y < 0 || position.x >= this.getWidth() || position.y >= this.getHeight();
     }
 
     findStartposition() : Position {
