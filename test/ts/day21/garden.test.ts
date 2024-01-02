@@ -62,5 +62,9 @@ describe ("Day 21: Garden", () => {
         it ( "should return 1594 for 50 steps", () => {
             expect ( testee.getNumberOfReachablePots(50, true)).to.be.equal (1594);
         });
+
+        it ( "should return 167004 for 100 steps", () => {
+            expect ( testee.getNumberOfReachablePots(100, true)).to.be.equal (6536);
+        });
     });
 });
