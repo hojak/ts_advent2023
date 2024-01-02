@@ -13,5 +13,15 @@ describe ( "Day 22: PileOfBricks", () => {
             expect ( pile.isOccupied( new Coordinates ( 1,0,0)) ).to.be.true;
             expect ( pile.numberOfOccupiedSpaces()).to.be.equal(1);
         })
+
+        it ( "a larger block should fall down an occupy space", () => {
+            let pile = new PileOfBricks();
+            pile.add ( new Brick ( "10,0,10~1,0,10"));
+
+            expect ( pile.isOccupied( new Coordinates ( 1,0,0)) ).to.be.true;
+            expect ( pile.isOccupied( new Coordinates ( 10,0,0)) ).to.be.true;
+            expect ( pile.isOccupied( new Coordinates ( 3,0,0)) ).to.be.true;
+            expect ( pile.numberOfOccupiedSpaces()).to.be.equal(10);
+        })
     });
 });

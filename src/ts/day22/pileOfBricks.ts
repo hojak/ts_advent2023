@@ -25,18 +25,26 @@ export class PileOfBricks {
             placeAt = placeAt.plus(directionDown);
         }
 
-        this.placeBrickAt (placeAt);
+        this.placeBrickAt (brick, placeAt);
     }
 
-    placeBrickAt(placeAt: Coordinates) {
-        if ( this._occupied[placeAt.x] == undefined ) {
-            this._occupied[placeAt.x] = [];
-        }
-        if ( this._occupied[placeAt.x][placeAt.y] == undefined ) {
-            this._occupied[placeAt.x][placeAt.y] = [];
-        }
+    placeBrickAt(brick: Brick, placeForBrickStart: Coordinates) {
+        let movement = placeForBrickStart.minus(brick.start);
 
-        this._occupied[placeAt.x][placeAt.y][placeAt.z] = true;
+        for ( let blockOfBrick of brick.getBlocks() ) {
+            this.markPlaceAsOccupied(blockOfBrick.plus(movement));
+        }
     }
 
+
+    private markPlaceAsOccupied(placeForBrickStart: Coordinates) {
+        if (this._occupied[placeForBrickStart.x] == undefined) {
+            this._occupied[placeForBrickStart.x] = [];
+        }
+        if (this._occupied[placeForBrickStart.x][placeForBrickStart.y] == undefined) {
+            this._occupied[placeForBrickStart.x][placeForBrickStart.y] = [];
+        }
+
+        this._occupied[placeForBrickStart.x][placeForBrickStart.y][placeForBrickStart.z] = true;
+    }
 }
