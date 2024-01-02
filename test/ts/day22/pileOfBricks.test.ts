@@ -46,5 +46,16 @@ describe ( "Day 22: PileOfBricks", () => {
 
             expect ( pile.numberOfOccupiedSpaces()).to.be.equal(12);
         })
+
+        it ("should keep a list of added bricks", () => {
+            let pile = new PileOfBricks();
+            pile.add ( new Brick ( "1,1,1~1,1,1"));
+            pile.add ( new Brick ( "2,2,2~2,4,2"));
+
+            expect ( pile.bricks ).to.be.deep.equal ( [
+                new Brick("1,1,0~1,1,0"),
+                new Brick("2,2,0~2,4,0"),
+            ]);
+        });
     });
 });

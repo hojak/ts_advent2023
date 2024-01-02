@@ -18,6 +18,13 @@ export class Brick {
         return this._end;
     }
 
+    move(movement: Coordinates): this {
+        this._end = this._end.plus ( movement);
+        this._start = this._start.plus ( movement);
+
+        return this;
+    }
+
     getBlocks(): Coordinates[] {
         let directionStep = this._start.getDirectionTo(this._end);
 

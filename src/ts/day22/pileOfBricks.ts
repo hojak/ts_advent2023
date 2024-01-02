@@ -3,6 +3,11 @@ import { Coordinates } from "./coordinates";
 
 export class PileOfBricks {
     private _occupied : boolean[][][] = [];
+    private _bricks: Brick[] = [];
+
+    public get bricks(): Brick[] {
+        return this._bricks;
+    }
 
     numberOfOccupiedSpaces(): number {
         return this._occupied.flat().flat().filter ( occ => occ ).length;
@@ -30,8 +35,8 @@ export class PileOfBricks {
                 moveDown = mayMoveDown;
             }
         }
-        console.log ( "moving down: " + moveDown);
         this.placeBrickAt (brick, brick.start.plus ( moveDown));
+        this._bricks.push(brick.move(moveDown));
     }
 
     emptySpaceBelow(coordinates: Coordinates) : Coordinates {
