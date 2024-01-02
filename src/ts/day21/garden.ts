@@ -32,6 +32,10 @@ export class Garden {
         for ( let step = 0; step < numberOfSteps; step ++ ) {
             let nextSetOfReachablePositions : Set<string> = new Set();
 
+            if ( step % 100000 == 0 ) {
+                console.log ( new Date() + ": already walked for " + step + " steps");
+            }
+
             for ( let positionString of reachablePositions) {
                 let position = createPositionFromString ( positionString );
                 for ( let offset of stepOffsets ) {
