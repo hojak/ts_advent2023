@@ -2,6 +2,7 @@ import { Brick } from "./brick";
 import { Coordinates } from "./coordinates";
 
 export class PileOfBricks {
+
     private _occupied : Brick[][][] = [];
     private _bricks: Brick[] = [];
 
@@ -147,6 +148,13 @@ export class PileOfBricks {
         }
 
         return result;
+    }
+
+
+    getSumOfPossibleChainReactions() : number {
+        return this._bricks
+            .map ( brick => this.howManyBricksWouldFall(brick))
+            .reduce( (prev, curr) => prev+curr, 0);
     }
 
 
