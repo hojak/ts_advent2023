@@ -36,6 +36,12 @@ export class PileOfBricks {
         return this;
     }
 
+    addMultipleBricks(brickLines: string) {
+        for ( let line of brickLines.split("\n")) {
+            this.add ( new Brick(line) );
+        }
+    }
+
     emptySpaceBelow(coordinates: Coordinates) : Coordinates {
         let directionDown = new Coordinates ( 0,0,-1);
     
@@ -91,6 +97,18 @@ export class PileOfBricks {
         }
 
         return true;
+    }
+
+    getNumberOfRemovableBricks(): number {
+        let result = 0;
+
+        for ( let brick of this._bricks ) {
+            if ( this.isRemovable ( brick )) {
+                result++;
+            }
+        }
+
+        return result;
     }
 
 
