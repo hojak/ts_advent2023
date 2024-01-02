@@ -85,7 +85,7 @@ export class PileOfBricks {
         }
 
         for ( let brickToCheck of needToCheck ) {
-            let foundOtherSupport = this.stillHasSupportIfBrickIsRemoved(brickToCheck, candidate);
+            let foundOtherSupport = this.stillHasSupportIfBricksAreRemoved(brickToCheck, new Set<Brick>([candidate]));
 
             if ( ! foundOtherSupport ) {
                 return false;
@@ -95,11 +95,11 @@ export class PileOfBricks {
         return true;
     }
 
-    private stillHasSupportIfBrickIsRemoved(brickToCheck: Brick, removedBrick: Brick) {
+    private stillHasSupportIfBricksAreRemoved(brickToCheck: Brick, removedBricks: Set<Brick>) {
         let foundOtherSupport = false;
         for (let block of brickToCheck.getBlocks()) {
             let possibleBrickBelow = this.getBrickAt(block.minus(new Coordinates(0, 0, 1)));
-            if (possibleBrickBelow != undefined && possibleBrickBelow != removedBrick) {
+            if (possibleBrickBelow != undefined && !removedBricks.has(possibleBrickBelow)) {
                 foundOtherSupport = true;
             }
         }
