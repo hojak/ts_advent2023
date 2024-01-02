@@ -33,4 +33,15 @@ export class Brick {
 
         return result;
     }
+
+
+    isZDirection() : boolean {
+        let directionStep = this._start.getDirectionTo(this._end);
+        return directionStep.z != 0;
+    }
+
+    toString(): string {
+        return this._start.toString() + "~" + this._end.toString();
+    }
+
 }

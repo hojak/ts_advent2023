@@ -40,4 +40,26 @@ describe("Day 22: Brick", () => {
             ]); 
         });
     });
+
+    describe ( "isZDirection", () => {
+        [
+            new Brick("1,0,0~1,0,10"),
+            new Brick("1,0,10~1,0,1"),
+            new Brick("1,0,0~1,0,-1"),
+        ].forEach ( testee => {
+            it ( testee.toString() + " should be in Z direction", () => {
+                expect(testee.isZDirection()).to.be.true;
+            })
+        });
+
+        [
+            new Brick("1,0,0~1,0,0"),
+            new Brick("1,0,0~10,0,0")
+        ].forEach ( testee => {
+            it ( testee.toString() + " should not be in Z direction", () => {
+                expect(testee.isZDirection()).to.be.false;
+            })
+        });
+
+    })
 });
