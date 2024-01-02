@@ -123,10 +123,30 @@ export class PileOfBricks {
     }
 
 
-    howManyBricksWouldFall(candidate: Brick): any {
-        
-        let needToCheck : Set<Brick> = new Set();
+    howManyBricksWouldFall(candidate: Brick): number {        
+        let result = 0;
 
+        let queueOfFallingOrRemovedBricks = [candidate];
+        let fallingOrRemoved = new Set<Brick>(queueOfFallingOrRemovedBricks);
+
+        while ( queueOfFallingOrRemovedBricks.length > 0 )  {
+            let brick = queueOfFallingOrRemovedBricks.shift();
+            if ( brick == undefined) {
+                continue;
+            }
+
+            let needToCheck = this.getListOfBricksToCheckForRemoval(brick);
+
+            for ( let possiblyFalling of needToCheck ) {
+                if ( ! fallingOrRemoved.has(possiblyFalling) && ! this.stillHasSupportIfBricksAreRemoved (possiblyFalling, fallingOrRemoved)) {
+                    fallingOrRemoved.add ( possiblyFalling );
+                    queueOfFallingOrRemovedBricks.push(possiblyFalling)
+                    result ++;
+                }
+            }
+        }
+
+        return result;
     }
 
 
