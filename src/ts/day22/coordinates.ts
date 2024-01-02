@@ -45,6 +45,17 @@ export class Coordinates {
         return this.x == coordinates.x && this.y==coordinates.y && this.z == coordinates.z;
     }
 
+    largestCoordinateIsLargerThan(coordinates: Coordinates) : boolean{
+        let thisMax = Math.max ( Math.abs(this._x), Math.abs(this._y), Math.abs(this._z));
+        let thatMax = Math.max ( Math.abs(coordinates._x), Math.abs(coordinates._y), Math.abs(coordinates._z));
+        return thisMax > thatMax;
+    }
+
+    toString() : string {
+        return this._x + "," + this._y + "," + this._z;
+    }
+
+
     static createFromString(commaSeperatedString: string): Coordinates {
         let split = commaSeperatedString.split(",");
         return new Coordinates ( Number(split[0]), Number(split[1]), Number(split[2]));
