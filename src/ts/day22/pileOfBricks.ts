@@ -72,17 +72,7 @@ export class PileOfBricks {
     }
 
     isRemovable(candidate: Brick): boolean {
-        let needToCheck : Set<Brick> = new Set();
-
-        for ( let block of candidate.getBlocks() ) {
-            let brickAboveBlock = this.getBrickAt ( block.plus ( new Coordinates ( 0,0,1)));
-            if ( brickAboveBlock != undefined && brickAboveBlock != candidate ) {
-                if (brickAboveBlock.isOnlyOneBlock() || brickAboveBlock.isZDirection()) {
-                    return false;
-                }
-                needToCheck.add(brickAboveBlock);
-            }
-        }
+        let needToCheck : Set<Brick> = this.getListOfBricksToCheckForRemoval(candidate);
 
         for ( let brickToCheck of needToCheck ) {
             let foundOtherSupport = this.stillHasSupportIfBricksAreRemoved(brickToCheck, new Set<Brick>([candidate]));
@@ -95,11 +85,25 @@ export class PileOfBricks {
         return true;
     }
 
+
+    private getListOfBricksToCheckForRemoval( candidate: Brick ): Set<Brick> {
+        let result : Set<Brick> =new Set();
+
+        for ( let block of candidate.getBlocks() ) {
+            let brickAboveBlock = this.getBrickAt ( block.plus ( new Coordinates ( 0,0,1)));
+            if ( brickAboveBlock != undefined && brickAboveBlock != candidate ) {
+                result.add(brickAboveBlock);
+            }
+        }
+
+        return result;
+    }
+
     private stillHasSupportIfBricksAreRemoved(brickToCheck: Brick, removedBricks: Set<Brick>) {
         let foundOtherSupport = false;
         for (let block of brickToCheck.getBlocks()) {
             let possibleBrickBelow = this.getBrickAt(block.minus(new Coordinates(0, 0, 1)));
-            if (possibleBrickBelow != undefined && !removedBricks.has(possibleBrickBelow)) {
+            if (possibleBrickBelow != undefined && possibleBrickBelow != brickToCheck && !removedBricks.has(possibleBrickBelow)) {
                 foundOtherSupport = true;
             }
         }
