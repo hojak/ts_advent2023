@@ -85,19 +85,25 @@ export class PileOfBricks {
         }
 
         for ( let brickToCheck of needToCheck ) {
-            let foundOtherSupport = false;
-            for ( let block of brickToCheck.getBlocks() ) {
-                let possibleBrickBelow = this.getBrickAt ( block.minus(new Coordinates(0,0,1)));
-                if ( possibleBrickBelow != undefined && possibleBrickBelow != candidate ) {
-                    foundOtherSupport = true;
-                }
-            }
+            let foundOtherSupport = this.stillHasSupportIfBrickIsRemoved(brickToCheck, candidate);
+
             if ( ! foundOtherSupport ) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    private stillHasSupportIfBrickIsRemoved(brickToCheck: Brick, removedBrick: Brick) {
+        let foundOtherSupport = false;
+        for (let block of brickToCheck.getBlocks()) {
+            let possibleBrickBelow = this.getBrickAt(block.minus(new Coordinates(0, 0, 1)));
+            if (possibleBrickBelow != undefined && possibleBrickBelow != removedBrick) {
+                foundOtherSupport = true;
+            }
+        }
+        return foundOtherSupport;
     }
 
     getNumberOfRemovableBricks(): number {
@@ -110,6 +116,13 @@ export class PileOfBricks {
         }
 
         return result;
+    }
+
+
+    howManyBricksWouldFall(candidate: Brick): any {
+        
+        let needToCheck : Set<Brick> = new Set();
+
     }
 
 
