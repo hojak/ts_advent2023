@@ -63,4 +63,21 @@ describe ( "Day 22: PileOfBricks", () => {
             expect(pile.getBrickAt (new Coordinates(2,2,0))).to.be.equal(brick2);
         });
     });
+
+    describe ( "isRemovable", () => {
+        let pile = new PileOfBricks();
+        const brick1 = new Brick("1,1,1~1,1,1");
+        const brick2 = new Brick("0,1,4~2,1,4");
+
+        pile.add ( brick1)
+            .add ( brick2);
+
+        it ( "should be removable", () => {
+            expect ( pile.isRemovable ( brick2 )).to.be.true;
+        })
+
+        it ( "should not be removable", () => {
+            expect ( pile.isRemovable ( brick1 )).to.be.false;
+        })
+    })
 });

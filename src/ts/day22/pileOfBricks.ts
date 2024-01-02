@@ -64,6 +64,36 @@ export class PileOfBricks {
         }
     }
 
+    isRemovable(candidate: Brick): boolean {
+        let needToCheck : Set<Brick> = new Set();
+
+        for ( let block of candidate.getBlocks() ) {
+            let brickAboveBlock = this.getBrickAt ( block.plus ( new Coordinates ( 0,0,1)));
+            if ( brickAboveBlock != undefined && brickAboveBlock != candidate ) {
+                if (brickAboveBlock.isOnlyOneBlock() || brickAboveBlock.isZDirection()) {
+                    return false;
+                }
+                needToCheck.add(brickAboveBlock);
+            }
+        }
+
+        for ( let brickToCheck of needToCheck ) {
+            let foundOtherSupport = false;
+            for ( let block of brickToCheck.getBlocks() ) {
+                let possibleBrickBelow = this.getBrickAt ( block.minus(new Coordinates(0,0,1)));
+                if ( possibleBrickBelow != undefined && possibleBrickBelow != candidate ) {
+                    foundOtherSupport = true;
+                }
+            }
+            if ( ! foundOtherSupport ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
 
     private markPlaceAsOccupiedBy(placeForBrickStart: Coordinates, brick: Brick) {
         if (this._occupied[placeForBrickStart.x] == undefined) {

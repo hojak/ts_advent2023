@@ -51,4 +51,8 @@ export class Brick {
         return this._start.toString() + "~" + this._end.toString();
     }
 
+    isOnlyOneBlock() {
+        return this._end.equals ( this._start );
+    }
+
 }
