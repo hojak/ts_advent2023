@@ -54,7 +54,7 @@ export class Line {
         if ( thatFactor < 0 ) {
             return false;
         }
-        
+
         let crossingPoint = new Vector ( 
             Math.round((this.startPosition.x + this._direction.x * thisFactor) * 1000) / 1000,
             Math.round((this.startPosition.y + this._direction.y * thisFactor) * 1000) / 1000,
@@ -65,4 +65,21 @@ export class Line {
             && bottomRight.x >= crossingPoint.x && bottomRight.y >= crossingPoint.y;
     }
 
+}
+
+
+
+export function getNumberOfCriticalCrossing ( input: string , tl: Vector, br: Vector) {
+    let lines = input.split("\n").filter( line => line.trim() != "").map ( line => new Line ( line ) );
+
+    let result = 0;
+    for ( let index1 = 0; index1 < lines.length-1; index1++ ) {
+        for ( let index2 = index1+1; index2 < lines.length; index2 ++ ) {
+            if ( lines[index1].hasCriticalCrossing(lines[index2], tl, br)) {
+                result++;
+            }
+        }
+    }
+
+    return result;
 }

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { Line } from "../../../src/ts/day24/line";
+import { Line, getNumberOfCriticalCrossing } from "../../../src/ts/day24/line";
 import { Vector } from "../../../src/ts/day24/vector";
 
 describe ("Day 24: Line", () => {
@@ -51,4 +51,19 @@ describe ("Day 24: Line", () => {
         });
 
     });
+
+
+    describe ( "findNumberOfCriticalHits", () => {
+        it ( "should return 2 for the test input", () => {
+            expect ( getNumberOfCriticalCrossing ( 
+                "19, 13, 30 @ -2,  1, -2" + "\n"+
+                "18, 19, 22 @ -1, -1, -2"+ "\n"+
+                "20, 25, 34 @ -2, -2, -4"+ "\n"+
+                "12, 31, 28 @ -1, -2, -1"+ "\n"+
+                "20, 19, 15 @  1, -5, -3",
+                new Vector ( 7,7,0),
+                new Vector ( 27,27,0 )
+            )).to.be.equal (2);
+        });
+    })
 });
