@@ -110,6 +110,14 @@ export class HikingMap {
     getStartPosition(): Position {
         return { x: 1, y: 0};
     }
+
+    removeSlopes() {
+        return new HikingMap( this._map.replace(/[\^v<>]/g, "."));
+    }
+
+    toString() {
+        return this._map;
+    }
 }
 
 
