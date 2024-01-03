@@ -27,56 +27,81 @@ export class HikingMap {
     }
 
     private _getLongestWalk(currentPosition: Position): string {
-        const directions = [
-            {x: 0, y: 1},
-            {x: 0, y: -1},
-            {x: 1, y: 0},
-            {x: -1, y: 0},
-        ]
-
         let currentLongestLength = -1;
         let currentLongestWalk = "";
 
-        let checkedDirections = 0;
+        let walkingPosition = currentPosition;
+        let walkingMap = this._map;
+        let possibleSteps : Position[] = this.getPossibleNextSteps(walkingPosition, walkingMap);
+        while ( possibleSteps.length == 1 ) {
+            if ( this.getSymbolAt( possibleSteps[0]) == "F") {
+                return walkingMap;
+            }
+            walkingMap = this.walkTheStep ( possibleSteps[0], walkingMap );
+            walkingPosition = possibleSteps[0];
+            possibleSteps = this.getPossibleNextSteps(walkingPosition, walkingMap );
+        }
 
-        for ( let direction of directions ) {
-            const posInDirection = addPositions(currentPosition, direction);
-            let tileInDirection = this.getSymbolAt(posInDirection);
+        if ( possibleSteps.length == 0) {
+            return "";
+        }
 
-            let nextWalk : HikingMap | undefined = undefined;
-            let startOfNextWalk = posInDirection;
+        let mapToNextJunction = new HikingMap ( walkingMap );
 
-            let directionOfTile : Position | undefined;
-
-            if ( tileInDirection == ".") {
-                nextWalk = this.markPositionOnMap(posInDirection, "O");
-            } else if ( (directionOfTile = getDirectionForSlopteTile ( tileInDirection )) != undefined) {
-                if ( direction.x != - directionOfTile.x || direction.y != - directionOfTile.y ) {
-                    startOfNextWalk = addPositions ( posInDirection, directionOfTile)
-                    nextWalk = this.markPositionOnMap(posInDirection, "O")
-                        .markPositionOnMap(startOfNextWalk, "O");
-                }
-            } else if ( tileInDirection == "F") {
+        for ( let step of possibleSteps ) {
+            if ( this.getSymbolAt(step) == "F") {
                 return this._map;
             }
 
-            if ( nextWalk != undefined ) {
-                let walkForPosition = nextWalk._getLongestWalk(startOfNextWalk);
-                let lengthOfWalkForPosition = lengthOfWalk(walkForPosition);
-                checkedDirections++;
+            let mapForStep = mapToNextJunction.markPositionOnMap(step, "O");
+            let longestHikeForStep = mapForStep._getLongestWalk(step);
+            let lengthOfWalkForStep = lengthOfWalk(longestHikeForStep);
 
-                if (lengthOfWalkForPosition > currentLongestLength ) {
-                    currentLongestLength = lengthOfWalkForPosition;
-                    currentLongestWalk = walkForPosition;
-                }
+            if (lengthOfWalkForStep > currentLongestLength ) {
+                currentLongestLength = lengthOfWalkForStep;
+                currentLongestWalk = longestHikeForStep;
             }
         }
 
         return currentLongestWalk;
     }
 
-    getSymbolAt(position: Position) {
-        return this._map[this._stringPositionFor( position )];
+    walkTheStep(position: Position, mapString: string): string {
+        return mapString.substring ( 0, this._stringPositionFor(position) )
+            + "O"
+            +  mapString.substring ( this._stringPositionFor(position)+1 ) 
+    }
+
+    getPossibleNextSteps(walkingPosition: Position, walkingMap: string): Position[] {
+        let result: Position[] = [];
+        let directionOfSlopeTile : Position | undefined;
+
+        let currentSymbol = this.getSymbolAt(walkingPosition, walkingMap);
+        if ( (directionOfSlopeTile = getDirectionForSlopteTile ( currentSymbol )) != undefined) {
+            return [addPositions(walkingPosition, directionOfSlopeTile)];
+        }
+
+        for (let direction of directions) {
+            let symbol = this.getSymbolAt( addPositions(walkingPosition, direction), walkingMap );
+
+
+            if ( symbol == "." || symbol == "F" ) {
+                result.push ( addPositions(walkingPosition, direction));
+            } else if ((directionOfSlopeTile = getDirectionForSlopteTile ( symbol )) != undefined) {
+                if ( direction.x != - directionOfSlopeTile.x || direction.y != - directionOfSlopeTile.y ) {
+                    result.push ( addPositions(walkingPosition, direction));
+                }
+            }
+        }
+        return result;
+    }
+
+    getSymbolAt(position: Position, overrideMap: String = "") {
+        if ( overrideMap != "" ) {
+            return overrideMap[this._stringPositionFor( position )];
+        } else {
+            return this._map[this._stringPositionFor( position )];
+        }
     }
 
     markPositionOnMap(position: Position, symbol: string): HikingMap {
@@ -125,7 +150,16 @@ let slopeCharToDirection : {[tile: string]: any} = {
     "v": {x: 0, y:1}
 }
 
+const directions = [
+    {x: 0, y: 1},
+    {x: 0, y: -1},
+    {x: 1, y: 0},
+    {x: -1, y: 0},
+]
+
 function getDirectionForSlopteTile (tile: string) : Position | undefined {
     return slopeCharToDirection[tile];
 }
+
+
 
