@@ -122,7 +122,7 @@ function addPositions(pos1: Position, pos2: Position): Position {
     return {x: pos1.x+pos2.x, y: pos1.y+pos2.y};
 }
 
-function lengthOfWalk(walkForPosition: string) {
+export function lengthOfWalk(walkForPosition: string) {
     return walkForPosition.length - walkForPosition.replace(/O/g,"").length +1 ;
 }
 
