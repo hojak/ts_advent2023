@@ -11,4 +11,13 @@ consoleApp (input => {
 
     console.log(hike);
     console.log( lengthOfWalk ( hike ));
+
+    console.log ( "Now walking up slopes:")
+    map = map.removeSlopes();
+    hike = map.getLongestWalk();
+
+    console.log ( "This is now the longest hike:")
+    console.log(hike);
+    console.log( lengthOfWalk ( hike ));
+    
 })
