@@ -46,29 +46,13 @@ export class HikingMap {
             let nextWalk : HikingMap | undefined = undefined;
             let startOfNextWalk = posInDirection;
 
+            let directionOfTile : Position | undefined;
+
             if ( tileInDirection == ".") {
                 nextWalk = this.markPositionOnMap(posInDirection, "O");
-            } else if ( tileInDirection == ">") {
-                if ( direction.x != -1 ) {
-                    startOfNextWalk = addPositions ( posInDirection, {x: 1, y:0})
-                    nextWalk = this.markPositionOnMap(posInDirection, "O")
-                        .markPositionOnMap(startOfNextWalk, "O");
-                }
-            } else if ( tileInDirection == "<") {
-                if ( direction.x != 1 ) {
-                    startOfNextWalk = addPositions ( posInDirection, {x: -1, y:0})
-                    nextWalk = this.markPositionOnMap(posInDirection, "O")
-                        .markPositionOnMap(startOfNextWalk, "O");
-                }
-            } else if ( tileInDirection == "^" ) {
-                if ( direction.y != 1) {
-                    startOfNextWalk = addPositions ( posInDirection, {x: 0, y:-1})
-                    nextWalk = this.markPositionOnMap(posInDirection, "O")
-                        .markPositionOnMap(startOfNextWalk, "O");
-                }
-            } else if ( tileInDirection == "v") {
-                if ( direction.y != -1 ) {
-                    startOfNextWalk = addPositions ( posInDirection, {x: 0, y:1})
+            } else if ( (directionOfTile = getDirectionForSlopteTile ( tileInDirection )) != undefined) {
+                if ( direction.x != - directionOfTile.x || direction.y != - directionOfTile.y ) {
+                    startOfNextWalk = addPositions ( posInDirection, directionOfTile)
                     nextWalk = this.markPositionOnMap(posInDirection, "O")
                         .markPositionOnMap(startOfNextWalk, "O");
                 }
@@ -132,5 +116,16 @@ function addPositions(pos1: Position, pos2: Position): Position {
 
 export function lengthOfWalk(walkForPosition: string) {
     return walkForPosition.length - walkForPosition.replace(/O/g,"").length +1 ;
+}
+
+let slopeCharToDirection : {[tile: string]: any} = {
+    ">": {x: 1, y:0},
+    "<": {x: -1, y:0},
+    "^": {x: 0, y:-1},
+    "v": {x: 0, y:1}
+}
+
+function getDirectionForSlopteTile (tile: string) : Position | undefined {
+    return slopeCharToDirection[tile];
 }
 
