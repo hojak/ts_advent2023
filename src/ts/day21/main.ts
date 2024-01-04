@@ -10,5 +10,5 @@ consoleApp (input => {
     
 
     console.log ( "lets see, where a really long walk will can take us");
-    console.log ( "I could reach " + garden.getNumberOfReachablePots ( 26501365 ) + " different pots!");
+    console.log ( "I could reach " + garden.getNumberOfReachablePots ( 26501365, true ) + " different pots!");
 })
