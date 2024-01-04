@@ -65,13 +65,17 @@ export class Platform {
         return this;
     }
 
-    cylce (): this {
+    cycle (): this {
         for ( let i=0; i<4; i++ ) {
             this.tilt();
             this.rotateRight();
         }
 
         return this;
+    }
+
+    toString() : string {
+        return this.lines.join("\n");
     }
 
 }

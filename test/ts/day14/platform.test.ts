@@ -96,7 +96,7 @@ describe ("day 14: platform", () => {
                 ".......O..\n"+
                 "#....###..\n"+
                 "#OO..#...."
-            ).cylce().getDescription()).to.be.equal (
+            ).cycle().getDescription()).to.be.equal (
                 ".....#....\n"+
                 "....#...O#\n"+
                 "...OO##...\n"+
@@ -122,7 +122,7 @@ describe ("day 14: platform", () => {
                 ".......O..\n"+
                 "#....###..\n"+
                 "#OO..#...."
-            ).cylce().cylce().getDescription()).to.be.equal (
+            ).cycle().cycle().getDescription()).to.be.equal (
                 ".....#....\n"+
                 "....#...O#\n"+
                 ".....##...\n"+
@@ -132,6 +132,32 @@ describe ("day 14: platform", () => {
                 "....O#...O\n"+
                 ".......OOO\n"+
                 "#..OO###..\n"+
+                "#.OOO#...O"
+            );
+        });
+
+        it ( "should cycle 3 times the test input as given", () => {
+            expect ( new Platform (
+                "O....#....\n"+
+                "O.OO#....#\n"+
+                ".....##...\n"+
+                "OO.#O....O\n"+
+                ".O.....O#.\n"+
+                "O.#..O.#.#\n"+
+                "..O..#O..O\n"+
+                ".......O..\n"+
+                "#....###..\n"+
+                "#OO..#...."
+            ).cycle().cycle().cycle().getDescription()).to.be.equal (
+                ".....#...."+"\n"+
+                "....#...O#"+"\n"+
+                ".....##..."+"\n"+
+                "..O#......"+"\n"+
+                ".....OOO#."+"\n"+
+                ".O#...O#.#"+"\n"+
+                "....O#...O"+"\n"+
+                ".......OOO"+"\n"+
+                "#...O###.O"+"\n"+
                 "#.OOO#...O"
             );
         });
