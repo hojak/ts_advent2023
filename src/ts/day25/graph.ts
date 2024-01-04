@@ -1,3 +1,4 @@
+import { isStringLiteral } from "typescript";
 import { GraphNode } from "./graphNode";
 
 export class Graph {
@@ -11,18 +12,20 @@ export class Graph {
 
     addLine(line: string): void {
         let split = line.split(":");
-        let leftNode = this.getOrCreateNode ( split[0].trim() );
+        let leftNodeName = split[0].trim();
         
         for ( let nodeName of split[1].trim().split(/ +/)) {
-            let rightNode = this.getOrCreateNode(nodeName);
-
-            this.addEdge ( leftNode, rightNode );
+            this.addEdgeBetweenNodeNames ( leftNodeName, nodeName );
         }
     }
 
     addEdge(leftNode: GraphNode, rightNode: GraphNode) {
         leftNode.addEdge ( rightNode );
         rightNode.addEdge ( leftNode );
+    }
+
+    addEdgeBetweenNodeNames ( leftNodeName: string, rightNodeName: string ) {
+        this.addEdge( this.getOrCreateNode(leftNodeName), this.getOrCreateNode(rightNodeName));
     }
 
 
@@ -72,6 +75,47 @@ export class Graph {
             }
         }
         return result.sort();
+    }
+
+
+    findBiPartition(): number[] {
+        let edges = this.getListOfEdgeDescriptions();
+        let sizeOfGraph = this._nodes.size;
+
+        for ( let index1 = 0; index1 < edges.length-2; index1++) {
+            let [node11, node12] = edges[index1].split(",");
+            this.removeEdge ( node11, node12);
+            for ( let index2 = index1+1; index2 < edges.length-1; index2++) {
+                let [node21, node22] = edges[index2].split(",");
+                this.removeEdge ( node21, node22);
+                for ( let index3 = index2+1; index3 < edges.length; index3++) {
+                    let [node31, node32] = edges[index3].split(",");
+                    this.removeEdge ( node31, node32);
+
+                    let sizeOfPartition = this.getPartitionSize(this._nodes.keys().next().value );
+                    if ( sizeOfPartition < sizeOfGraph ) {
+                        return [sizeOfPartition, sizeOfGraph-sizeOfPartition].sort();
+                    }
+                    this.addEdgeBetweenNodeNames(node31, node32);                    
+                }
+                this.addEdgeBetweenNodeNames(node21, node22);
+            }
+            this.addEdgeBetweenNodeNames(node11, node12);
+        }
+
+        return [0, this._nodes.size];
+    }
+
+    removeEdge(nodeName1: string, nodeName2: string) {
+        let node1 = this._nodes.get(nodeName1);
+        let node2 = this._nodes.get(nodeName2);
+
+        if  ( node1 == undefined || node2 == undefined ) {
+            return;
+        }
+
+        node1.removeEdge(node2);
+        node2.removeEdge(node1);
     }
 
 

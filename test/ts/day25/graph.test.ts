@@ -18,5 +18,27 @@ describe( "Day 25: Graph", () => {
             ]);
         })
     } )
+
+    describe("findBiPartition", () => {
+        it ( "it should fiond a 6/9 partition of the testgraph", () => {
+            let testGraph = new Graph (
+                "jqt: rhn xhk nvd" + "\n" +
+                "rsh: frs pzl lsr" + "\n" +
+                "xhk: hfx" + "\n" +
+                "cmg: qnr nvd lhk bvb" + "\n" +
+                "rhn: xhk bvb hfx" + "\n" +
+                "bvb: xhk hfx" + "\n" +
+                "pzl: lsr hfx nvd" + "\n" +
+                "qnr: nvd" + "\n" +
+                "ntq: jqt hfx bvb xhk" + "\n" +
+                "nvd: lhk" + "\n" +
+                "lsr: lhk" + "\n" +
+                "rzs: qnr cmg lsr rsh" + "\n" +
+                "frs: qnr lhk lsr"
+            );
+
+            expect ( testGraph.findBiPartition()).to.be.deep.equal ([6,9]);
+        });
+    });
 });
 

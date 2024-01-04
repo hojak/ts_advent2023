@@ -10,6 +10,9 @@ export class GraphNode {
     addEdge(thatNode: GraphNode) {
         this._connectedTo.add (thatNode);
     }
+    removeEdge(thatNode: GraphNode) {
+        this._connectedTo.delete(thatNode);
+    }
 
     public get connectedNodes(): Set<GraphNode> {
         return this._connectedTo;
