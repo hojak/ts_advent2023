@@ -14,5 +14,8 @@ export class GraphNode {
     public get connectedNodes(): Set<GraphNode> {
         return this._connectedTo;
     }
+    public get name(): string {
+        return this._name;
+    }
 
 }

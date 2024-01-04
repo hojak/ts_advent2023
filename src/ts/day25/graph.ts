@@ -62,4 +62,17 @@ export class Graph {
         return reachableNodes.size;
     }
 
+    getListOfEdgeDescriptions(): string[] {
+        let result: string[] = [];
+        for ( let node of this._nodes.values() ) {
+            for ( let connectedTo of node.connectedNodes) {
+                if ( node.name < connectedTo.name) {
+                    result.push ( node.name + "," + connectedTo.name);
+                }
+            }
+        }
+        return result.sort();
+    }
+
+
 }
