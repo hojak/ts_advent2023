@@ -19,7 +19,11 @@ cat data/dayX/input.txt | node out/src/ts/dayX/part1.js
 
 ## ToDo
 
-* Day 22 - 24
+* Day 25
+  number of nodes: 1550, number of edges: 3481, 
+  number of possible selections of edges to remove: 42.144.188.520
+  current implementation of trying all combinations is way too slow (~40s for 100k)
+* Day 24 Part 2
 * Day 23 Part 2: Algorithm works, but it took a lot of time
 * Day 21 Part 2
 * Day 20 Part 2
