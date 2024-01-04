@@ -1,4 +1,3 @@
-import { isStringLiteral } from "typescript";
 import { GraphNode } from "./graphNode";
 
 export class Graph {
@@ -9,6 +8,15 @@ export class Graph {
             .map( line => line.trim()).filter ( line => line != "")
             .forEach (line => this.addLine ( line ))
     }
+
+    public get numberOfNodes(): number {
+        return this._nodes.size;
+    }
+
+    public get numberOfEdges(): number {
+        return this.getListOfEdgeDescriptions().length;
+    }
+
 
     addLine(line: string): void {
         let split = line.split(":");
@@ -78,9 +86,11 @@ export class Graph {
     }
 
 
-    findBiPartition(): number[] {
+    findPartitioningByRemovingEdges(): number[] {
         let edges = this.getListOfEdgeDescriptions();
         let sizeOfGraph = this._nodes.size;
+
+        let counter = 0;
 
         for ( let index1 = 0; index1 < edges.length-2; index1++) {
             let [node11, node12] = edges[index1].split(",");
@@ -89,6 +99,11 @@ export class Graph {
                 let [node21, node22] = edges[index2].split(",");
                 this.removeEdge ( node21, node22);
                 for ( let index3 = index2+1; index3 < edges.length; index3++) {
+                    counter ++;
+                    if ( counter % 1000 == 0) {
+                        console.log ( new Date() + ": number of checked edge combinations: " + counter)
+                    }
+
                     let [node31, node32] = edges[index3].split(",");
                     this.removeEdge ( node31, node32);
 

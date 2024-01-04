@@ -19,8 +19,8 @@ describe( "Day 25: Graph", () => {
         })
     } )
 
-    describe("findBiPartition", () => {
-        it ( "it should fiond a 6/9 partition of the testgraph", () => {
+    describe("findPartitioningByRemovingEdges", () => {
+        it ( "it should find a 6/9 partition of the testgraph", () => {
             let testGraph = new Graph (
                 "jqt: rhn xhk nvd" + "\n" +
                 "rsh: frs pzl lsr" + "\n" +
@@ -37,7 +37,7 @@ describe( "Day 25: Graph", () => {
                 "frs: qnr lhk lsr"
             );
 
-            expect ( testGraph.findBiPartition()).to.be.deep.equal ([6,9]);
+            expect ( testGraph.findPartitioningByRemovingEdges()).to.be.deep.equal ([6,9]);
         });
     });
 });
