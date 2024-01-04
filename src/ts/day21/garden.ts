@@ -34,6 +34,7 @@ export class Garden {
 
             if ( step % 100000 == 0 ) {
                 console.log ( new Date() + ": already walked for " + step + " steps");
+                console.log ( "-> currently looking at " + reachablePositions.size + " positions");
             }
 
             for ( let positionString of reachablePositions) {
