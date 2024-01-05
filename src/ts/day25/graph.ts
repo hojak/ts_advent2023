@@ -207,7 +207,7 @@ export class Graph {
         let currentMinimalCut = ["", ""];
 
         while ( this.numberOfNodes > 2 ) {
-            let cutOfTheIteration = this.getCutOfTheInteration();
+            let cutOfTheIteration = this.getCutOfTheIteration();
 
             if (isNaN(minimalCutWeight) || minimalCutWeight > cutOfTheIteration.weight) {
                 minimalCutWeight = cutOfTheIteration.weight;
@@ -240,37 +240,34 @@ export class Graph {
             .join("\n");
     }
 
-    getCutOfTheInteration() : CutOfTheIteration{
-        let nodes = Array.from(this._nodes.values());
+    getCutOfTheIteration() : CutOfTheIteration{
+        // alternatively select a random node instead of the first
         //let randomNodeIndex = Math.floor(Math.random() * nodes.length)
-        let randomNodeIndex = 0;
-        
-        let availableNodes = new Set(nodes);
-        let selectedNodes : GraphNode[] = [nodes[randomNodeIndex]];
-        availableNodes.delete(nodes[randomNodeIndex]);
 
-        let latestAddedNode = nodes[randomNodeIndex];
+        let availableNodes = Array.from(this._nodes.values());       
+        let selectedNodes : GraphNode[] = [availableNodes.shift() ?? new GraphNode("ERROR")];
+        let latestAddedNode = selectedNodes[0];
         let maxKnownConnectionWeight = 0;
 
-        while ( availableNodes.size > 1 ) {
+        while ( availableNodes.length > 1 ) {
             maxKnownConnectionWeight = 0;
-            let candidate : GraphNode = availableNodes.values().next().value;
+            let nodeWithMaxConnectionToSelection : GraphNode = availableNodes[0];
 
-            for ( let node of availableNodes.values()) {
-                let connectionBetweenSelectedAndNode = this._getNodeConnectionWeight(node, selectedNodes);
+            for ( let candidate of availableNodes.values()) {
+                let connectionBetweenSelectedAndNode = this._getNodeConnectionWeight(candidate, selectedNodes);
                 
                 if ( connectionBetweenSelectedAndNode > maxKnownConnectionWeight) {
-                    candidate = node;
+                    nodeWithMaxConnectionToSelection = candidate;
                     maxKnownConnectionWeight = connectionBetweenSelectedAndNode;
                 }
             }
 
-            selectedNodes.push( candidate );
-            availableNodes.delete(candidate);
-            latestAddedNode = candidate;
+            selectedNodes.push( nodeWithMaxConnectionToSelection );
+            availableNodes.splice( availableNodes.indexOf(nodeWithMaxConnectionToSelection), 1);
+            latestAddedNode = nodeWithMaxConnectionToSelection;
         }
 
-        let nodeS = availableNodes.values().next().value; 
+        let nodeS = availableNodes[0]; 
 
         return {
             nodeS: nodeS,
