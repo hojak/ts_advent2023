@@ -3,6 +3,20 @@ import { describe } from "mocha";
 import { Graph } from "../../../src/ts/day25/graph";
 
 describe( "Day 25: Graph", () => {
+
+    describe ( "constructor", () => {
+        it ( "should create a weighted graph", () => {
+            let testee = new Graph ( "A: B(2) c(10)");
+            expect ( testee.nodes.map ( node => node.name).sort()).to.be.deep.equal ( [
+                "A","B","c"
+            ]);
+            expect ( testee.numberOfEdges ).to.be.equal(2);
+            expect ( testee.nodes[0].edges[0].weight).to.be.equal(2);
+            expect ( testee.nodes[0].edges[1].weight).to.be.equal(10);
+        });
+    });
+
+
     describe ( "getPartitionSize", () => {
         it ( "should return 2 for a graph with two connected nodes", () => {
             expect(new Graph("a: b").getPartitionSize("a")).to.be.equal(2);

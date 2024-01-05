@@ -21,6 +21,10 @@ export class Graph {
         return Array.from(this._nodes.values()).map( node => node.name ).sort();
     }
 
+    public get nodes() : GraphNode[] {
+        return Array.from(this._nodes.values());
+    }
+
     getWeightOfEdge(node1: string, node2: string): number | undefined  {
         return this._nodes.get(node1)?.getWeightOfEdgeTo(node2);
     }
@@ -28,19 +32,27 @@ export class Graph {
     addLine(line: string): void {
         let split = line.split(":");
         let leftNodeName = split[0].trim();
+        let weightMatcher = /^(.*)\(([0-9]+)\)$/;
         
         for ( let nodeName of split[1].trim().split(/ +/)) {
-            this.addEdgeBetweenNodeNames ( leftNodeName, nodeName );
+            let weight = 1;
+            let matchGroups = weightMatcher.exec(nodeName);
+            if ( matchGroups != null ) {
+                weight = Number ( matchGroups[2]);
+                nodeName = matchGroups[1];
+            }
+
+            this.addEdgeBetweenNodeNames ( leftNodeName, nodeName, weight );
         }
     }
 
-    addEdge(leftNode: GraphNode, rightNode: GraphNode) {
-        leftNode.addEdge ( rightNode );
-        rightNode.addEdge ( leftNode );
+    addEdge(leftNode: GraphNode, rightNode: GraphNode, weight: number = 1) {
+        leftNode.addEdge ( rightNode, weight );
+        rightNode.addEdge ( leftNode, weight );
     }
 
-    addEdgeBetweenNodeNames ( leftNodeName: string, rightNodeName: string ) {
-        this.addEdge( this.getOrCreateNode(leftNodeName), this.getOrCreateNode(rightNodeName));
+    addEdgeBetweenNodeNames ( leftNodeName: string, rightNodeName: string, weight: number = 1 ) {
+        this.addEdge( this.getOrCreateNode(leftNodeName), this.getOrCreateNode(rightNodeName), weight);
     }
 
 
