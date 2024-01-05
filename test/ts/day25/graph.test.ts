@@ -126,27 +126,27 @@ describe( "Day 25: Graph", () => {
             });
         });
 
-                
-        it ( "should compute the correct minimal cut for a small sample", () => {
-            let testGraph = new Graph (
-                "A: B(2) E(3)" + "\n" +
-                "B: C(3) E(2) F(2)" + "\n" +
-                "C: D(4) G(2)" + "\n" +
-                "D: G(2) H(2)" + "\n" +
-                "E: F(3)" + "\n" +
-                "F: G(1)" + "\n" +
-                "G: H(3)" 
-            );
+        let testGraph = new Graph (
+            "A: B(2) E(3)" + "\n" +
+            "B: C(3) E(2) F(2)" + "\n" +
+            "C: D(4) G(2)" + "\n" +
+            "D: G(2) H(2)" + "\n" +
+            "E: F(3)" + "\n" +
+            "F: G(1)" + "\n" +
+            "G: H(3)" 
+        );        
+        let result = testGraph.stoerWagnerMinCut();
             
-            let result = testGraph.stoerWagnerMinCut();
+        it ( "should compute the correct minimal cut for a small sample", () => {
             expect( result ).to.be.deep.equal ({
                 setA: ["A","B","E","F"],
                 setB: ["C","D","G","H"],
                 weight: 4
             });
-            
-
-        })
+        });
+        it ("should not change the original graph", () => {
+            expect(testGraph.numberOfNodes).to.be.equal(8);
+        });
         
     });
 });

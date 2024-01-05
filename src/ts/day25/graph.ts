@@ -195,7 +195,14 @@ export class Graph {
     }
 
 
+
     stoerWagnerMinCut() : MinCutResult {
+        return this.getCopyOfGraph()._destroyingStoerWagnerMinCut();
+    }
+
+    _destroyingStoerWagnerMinCut() : MinCutResult {
+        console.log ( Array.from ( this._nodes.values() ));
+
         let minimalCutWeight = NaN;
         let currentMinimalCut = ["", ""];
 
@@ -220,6 +227,17 @@ export class Graph {
             setB: currentMinimalCut[1].split(",").sort(),
             weight: minimalCutWeight
         };
+    }
+
+    getCopyOfGraph() : Graph {
+        return new Graph( this.toString() );
+    }
+
+    toString (): string {
+        return Array.from(this._nodes.values())
+            .sort ( (node1, node2) => node1.name.localeCompare(node2.name))
+            .map( node => node.toStringWithReducedEdges())
+            .join("\n");
     }
 
     getCutOfTheInteration() : CutOfTheIteration{
