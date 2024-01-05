@@ -164,18 +164,29 @@ export class Graph {
     }
 
     mergeNodes ( node1: GraphNode, node2: GraphNode) {
-        let newNode = new GraphNode( [node1.name,node2.name].sort().join(","));
+        if ( node1 == node2 ) {
+            throw new Error ( "cannot merge a node with itself!");
+        }
+
+        let newNodeName = node1.name.split(",")
+            .concat ( node2.name.split(",")).sort().join(",");
+
+        let newNode = new GraphNode( newNodeName );
 
         for ( let edgeOfNode1 of node1.edges) {
-            newNode.addEdge(edgeOfNode1.node, edgeOfNode1.weight);
-            edgeOfNode1.node.removeEdge( node1);
-            edgeOfNode1.node.addEdge(newNode, edgeOfNode1.weight);
+            if ( edgeOfNode1.node != node2) {
+                newNode.addEdge(edgeOfNode1.node, edgeOfNode1.weight);
+                edgeOfNode1.node.removeEdge( node1);
+                edgeOfNode1.node.addEdge(newNode, edgeOfNode1.weight);
+            }
         }
 
         for ( let edgeOfNode2 of node2.edges ) {
-            newNode.addWeightOrEdge ( edgeOfNode2.node, edgeOfNode2.weight);
-            edgeOfNode2.node.removeEdge(node2);
-            edgeOfNode2.node.addWeightOrEdge( newNode, edgeOfNode2.weight);
+            if ( edgeOfNode2.node != node1) {
+                newNode.addWeightOrEdge ( edgeOfNode2.node, edgeOfNode2.weight);
+                edgeOfNode2.node.removeEdge(node2);
+                edgeOfNode2.node.addWeightOrEdge( newNode, edgeOfNode2.weight);
+            }
         }
 
         this._nodes.delete(node1.name);
@@ -184,4 +195,98 @@ export class Graph {
     }
 
 
+    stoerWagnerMinCut() : MinCutResult {
+        let minimalCutWeight = NaN;
+        let currentMinimalCut = ["", ""];
+
+        while ( this.numberOfNodes > 2 ) {
+            let cutOfTheIteration = this.getCutOfTheInteration();
+
+            if (isNaN(minimalCutWeight) || minimalCutWeight > cutOfTheIteration.weight) {
+                minimalCutWeight = cutOfTheIteration.weight;
+                currentMinimalCut = [
+                    cutOfTheIteration.nodeS.name,
+                    Array.from(this._nodes.values()).map(node => node.name).filter(name => name != cutOfTheIteration.nodeS.name).sort().join(",")
+                ];
+            }
+
+            this.mergeNodes ( cutOfTheIteration.nodeS, cutOfTheIteration.nodeT);
+        }
+
+        currentMinimalCut = currentMinimalCut.sort();
+
+        return {
+            setA: currentMinimalCut[0].split(",").sort(),
+            setB: currentMinimalCut[1].split(",").sort(),
+            weight: minimalCutWeight
+        };
+    }
+
+    getCutOfTheInteration() : CutOfTheIteration{
+        let nodes = Array.from(this._nodes.values());
+        //let randomNodeIndex = Math.floor(Math.random() * nodes.length)
+        let randomNodeIndex = 0;
+        
+        let availableNodes = new Set(nodes);
+        let selectedNodes : GraphNode[] = [nodes[randomNodeIndex]];
+        availableNodes.delete(nodes[randomNodeIndex]);
+
+        let latestAddedNode = nodes[randomNodeIndex];
+        let maxKnownConnectionWeight = 0;
+
+        while ( availableNodes.size > 1 ) {
+            maxKnownConnectionWeight = 0;
+            let candidate : GraphNode = availableNodes.values().next().value;
+
+            for ( let node of availableNodes.values()) {
+                let connectionBetweenSelectedAndNode = this._getNodeConnectionWeight(node, selectedNodes);
+                
+                if ( connectionBetweenSelectedAndNode > maxKnownConnectionWeight) {
+                    candidate = node;
+                    maxKnownConnectionWeight = connectionBetweenSelectedAndNode;
+                }
+            }
+
+            selectedNodes.push( candidate );
+            availableNodes.delete(candidate);
+            latestAddedNode = candidate;
+        }
+
+        let nodeS = availableNodes.values().next().value; 
+
+        return {
+            nodeS: nodeS,
+            nodeT: latestAddedNode,
+            weight: this._getNodeConnectionWeight(nodeS, selectedNodes)
+        }
+    }
+
+    _getNodeConnectionWeight(fromNode: GraphNode, toNodeArray: GraphNode[] ) {
+        return toNodeArray
+            .flatMap(node => node.edges)                        // get all edges of selected nodes
+            .filter( edge => edge.node.name == fromNode.name)       // which hit the current _node_
+            .reduce( (prev, curr) => prev + curr.weight, 0); 
+    }
+
+    selectSecondReduceNode(node1: GraphNode) : GraphNode {
+        return node1.edges
+            .reduce ( (prev, curr) => prev.weight < curr.weight ? curr : prev)
+            .node;
+    }
+
+
+}
+
+
+
+interface CutOfTheIteration {
+    nodeS: GraphNode,
+    nodeT: GraphNode,
+    weight: number
+}
+
+interface MinCutResult {
+    setA: string[],
+    setB: string[],
+    weight: number
 }

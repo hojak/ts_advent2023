@@ -1,3 +1,5 @@
+import { nodeModuleNameResolver } from "typescript";
+
 export class GraphNode {
     private _name: string;
     private _edges: Set<Edge> = new Set();
@@ -47,6 +49,10 @@ export class GraphNode {
             }
         }
         return undefined;
+    }
+
+    public toString() {
+        return this._name + ": " + Array.from(this._edges).map( edge => edge.node.name + "(" + edge.weight + ")").join (",");
     }
 }
 

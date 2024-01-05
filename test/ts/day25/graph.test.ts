@@ -71,5 +71,56 @@ describe( "Day 25: Graph", () => {
             expect ( testGraph.numberOfEdges).to.be.equal(3);
         })
     });
+
+    describe ("stoerWagnerMinCut", () => {
+        
+        it ( "should compute the correct minimal cut", () => {
+            let testGraph = new Graph (
+                "jqt: rhn xhk nvd" + "\n" +
+                "rsh: frs pzl lsr" + "\n" +
+                "xhk: hfx" + "\n" +
+                "cmg: qnr nvd lhk bvb" + "\n" +
+                "rhn: xhk bvb hfx" + "\n" +
+                "bvb: xhk hfx" + "\n" +
+                "pzl: lsr hfx nvd" + "\n" +
+                "qnr: nvd" + "\n" +
+                "ntq: jqt hfx bvb xhk" + "\n" +
+                "nvd: lhk" + "\n" +
+                "lsr: lhk" + "\n" +
+                "rzs: qnr cmg lsr rsh" + "\n" +
+                "frs: qnr lhk lsr"
+            );
+            
+            let result = testGraph.stoerWagnerMinCut();
+            expect ( result ).to.be.deep.equal ( {
+                setA: ["bvb","hfx","jqt","ntq","rhn","xhk"],
+                setB: ["cmg","frs","lhk","lsr","nvd","pzl","qnr","rsh","rzs"],
+                weight: 3
+            });
+        });
+
+                
+        it ( "should compute the correct minimal cut for a small sample", () => {
+            let testGraph = new Graph (
+                "A: B(2) E(3)" + "\n" +
+                "B: C(3) E(2) F(2)" + "\n" +
+                "C: D(4) G(2)" + "\n" +
+                "D: G(2) H(2)" + "\n" +
+                "E: F(3)" + "\n" +
+                "F: G(1)" + "\n" +
+                "G: H(3)" 
+            );
+            
+            let result = testGraph.stoerWagnerMinCut();
+            expect( result ).to.be.deep.equal ({
+                setA: ["A","B","E","F"],
+                setB: ["C","D","G","H"],
+                weight: 4
+            });
+            
+
+        })
+        
+    });
 });
 
