@@ -51,8 +51,17 @@ export class GraphNode {
         return undefined;
     }
 
-    public toString() {
-        return this._name + ": " + Array.from(this._edges).map( edge => edge.node.name + "(" + edge.weight + ")").join (",");
+    public toString() : string {
+        return this._name + ": " + Array.from(this._edges).map( edge => edge.node.name + "(" + edge.weight + ")").join (" ");
+    }
+
+    toStringWithReducedEdges(): string {
+        return this._name + ": " + 
+            Array.from(this._edges)
+                .filter ( edge => edge.node.name > this.name )
+                .sort ( (edge1, edge2) => edge1.node.name.localeCompare(edge2.node.name))
+                .map( edge => edge.node.name + "(" + edge.weight + ")")
+                .join (" ");
     }
 }
 

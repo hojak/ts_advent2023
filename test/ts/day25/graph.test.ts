@@ -17,6 +17,33 @@ describe( "Day 25: Graph", () => {
     });
 
 
+    describe ( "toString", () => {
+        it ( "should return an ordered representation of the graph", () => {
+            expect ( new Graph ( 
+                "D: A\n"+
+                "A: C B"
+            ).toString()).to.be.equal(
+                "A: B(1) C(1) D(1)\n"+
+                "B: \n"+
+                "C: \n"+
+                "D: "
+            );
+        })
+
+        it ( "should not create an additional node", () => {
+            expect ( new Graph ( new Graph ( 
+                "D: A\n"+
+                "A: C B"
+            ).toString()).toString() ).to.be.equal(
+                "A: B(1) C(1) D(1)\n"+
+                "B: \n"+
+                "C: \n"+
+                "D: "
+            );
+        });
+    });
+
+
     describe ( "getPartitionSize", () => {
         it ( "should return 2 for a graph with two connected nodes", () => {
             expect(new Graph("a: b").getPartitionSize("a")).to.be.equal(2);

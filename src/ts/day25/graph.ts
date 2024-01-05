@@ -34,7 +34,7 @@ export class Graph {
         let leftNodeName = split[0].trim();
         let weightMatcher = /^(.*)\(([0-9]+)\)$/;
         
-        for ( let nodeName of split[1].trim().split(/ +/)) {
+        for ( let nodeName of split[1].trim().split(/ +/).filter( item => item !="")) {
             let weight = 1;
             let matchGroups = weightMatcher.exec(nodeName);
             if ( matchGroups != null ) {
