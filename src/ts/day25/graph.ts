@@ -242,12 +242,10 @@ export class Graph {
         }
     }
 
-    _getNodeConnectionWeight(fromNode: GraphNode, toNodeArray: Set<GraphNode> ) : number {
+    _getNodeConnectionWeight(fromNode: GraphNode, toSetOfNodes: Set<GraphNode> ) : number {
         let result = 0;
-        for (let node of toNodeArray ) {
-            result += node.edges
-                .filter( edge => edge.node.name == fromNode.name)       // which hit the current _node_
-                .reduce( (prev, curr) => prev + curr.weight, 0); 
+        for (let node of toSetOfNodes ) {
+            result += node.getWeightOfEdgeTo(fromNode.name) ?? 0;
         }
         return result;            
     }

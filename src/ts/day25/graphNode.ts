@@ -3,6 +3,7 @@ import { nodeModuleNameResolver } from "typescript";
 export class GraphNode {
     private _name: string;
     private _edges: Set<Edge> = new Set();
+    private _nodeWeights : Map<string,number> = new Map();
     
     constructor ( name: string ) {
         this._name = name;
@@ -12,6 +13,7 @@ export class GraphNode {
         this._edges.add ({ 
             node: thatNode, weight: weight
         });
+        this._nodeWeights.set (thatNode.name, weight );
     }
 
     removeEdge(thatNode: GraphNode) {
@@ -20,12 +22,14 @@ export class GraphNode {
                 this._edges.delete ( edge );
             }
         }
+        this._nodeWeights.delete(thatNode.name);
     }
 
     addWeightOrEdge(thatNode: GraphNode, weight: number) {
         for ( let edge of this._edges) {
             if ( edge.node.name == thatNode.name) {
                 edge.weight += weight;
+                this._nodeWeights.set(thatNode.name, edge.weight);
                 return;
             }
         }
@@ -43,12 +47,7 @@ export class GraphNode {
     }
 
     public getWeightOfEdgeTo( thatNode: string ) : number|undefined {
-        for ( let edge of this._edges) {
-            if ( edge.node.name == thatNode) {
-                return edge.weight;
-            }
-        }
-        return undefined;
+        return this._nodeWeights.get(thatNode);
     }
 
     public toString() : string {
