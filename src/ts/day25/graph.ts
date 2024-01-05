@@ -250,13 +250,6 @@ export class Graph {
         return result;            
     }
 
-    selectSecondReduceNode(node1: GraphNode) : GraphNode {
-        return node1.edges
-            .reduce ( (prev, curr) => prev.weight < curr.weight ? curr : prev)
-            .node;
-    }
-
-
 }
 
 

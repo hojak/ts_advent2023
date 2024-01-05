@@ -1,5 +1,3 @@
-import { nodeModuleNameResolver } from "typescript";
-
 export class GraphNode {
     private _name: string;
     private _edges: Set<Edge> = new Set();
