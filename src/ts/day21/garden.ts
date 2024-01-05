@@ -32,9 +32,10 @@ export class Garden {
         for ( let step = 0; step < numberOfSteps; step ++ ) {
             let nextSetOfReachablePositions : Set<string> = new Set();
 
-            if ( step % 100000 == 0 ) {
-                console.log ( new Date() + ": already walked for " + step + " steps");
-                console.log ( "-> currently looking at " + reachablePositions.size + " positions");
+            // trying to get some kind of trend / repetition
+            // depending on the map size (131x131, center at 65/65)
+            if ( (step-35) % 131 == 0 ) {
+                console.log ( new Date() + ";" + step + ";"+ reachablePositions.size);
             }
 
             for ( let positionString of reachablePositions) {
