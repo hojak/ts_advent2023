@@ -169,6 +169,8 @@ export class Graph {
         let currentMinimalCut = ["", ""];
 
         while ( this.numberOfNodes > 2 ) {
+            console.log(new Date() + ": reduced problem to " + this.numberOfNodes );
+            
             let cutOfTheIteration = this.getCutOfTheIteration();
 
             if (isNaN(minimalCutWeight) || minimalCutWeight > cutOfTheIteration.weight) {
@@ -206,14 +208,16 @@ export class Graph {
         // alternatively select a random node instead of the first
         //let randomNodeIndex = Math.floor(Math.random() * nodes.length)
 
-        let availableNodes = Array.from(this._nodes.values());       
-        let selectedNodes : GraphNode[] = [availableNodes.shift() ?? new GraphNode("ERROR")];
-        let latestAddedNode = selectedNodes[0];
+        let availableNodes = new Set<GraphNode>(this._nodes.values());       
+        let latestAddedNode = availableNodes.values().next().value;
+        let selectedNodes : Set<GraphNode> = new Set( [latestAddedNode] )
+        availableNodes.delete ( latestAddedNode );
+
         let maxKnownConnectionWeight = 0;
 
-        while ( availableNodes.length > 1 ) {
+        while ( availableNodes.size > 1 ) {
             maxKnownConnectionWeight = 0;
-            let nodeWithMaxConnectionToSelection : GraphNode = availableNodes[0];
+            let nodeWithMaxConnectionToSelection : GraphNode = availableNodes.values().next().value;
 
             for ( let candidate of availableNodes.values()) {
                 let connectionBetweenSelectedAndNode = this._getNodeConnectionWeight(candidate, selectedNodes);
@@ -224,12 +228,12 @@ export class Graph {
                 }
             }
 
-            selectedNodes.push( nodeWithMaxConnectionToSelection );
-            availableNodes.splice( availableNodes.indexOf(nodeWithMaxConnectionToSelection), 1);
+            selectedNodes.add(nodeWithMaxConnectionToSelection );
+            availableNodes.delete(nodeWithMaxConnectionToSelection);
             latestAddedNode = nodeWithMaxConnectionToSelection;
         }
 
-        let nodeS = availableNodes[0]; 
+        let nodeS = availableNodes.values().next().value; 
 
         return {
             nodeS: nodeS,
@@ -238,11 +242,14 @@ export class Graph {
         }
     }
 
-    _getNodeConnectionWeight(fromNode: GraphNode, toNodeArray: GraphNode[] ) {
-        return toNodeArray
-            .flatMap(node => node.edges)                        // get all edges of selected nodes
-            .filter( edge => edge.node.name == fromNode.name)       // which hit the current _node_
-            .reduce( (prev, curr) => prev + curr.weight, 0); 
+    _getNodeConnectionWeight(fromNode: GraphNode, toNodeArray: Set<GraphNode> ) : number {
+        let result = 0;
+        for (let node of toNodeArray ) {
+            result += node.edges
+                .filter( edge => edge.node.name == fromNode.name)       // which hit the current _node_
+                .reduce( (prev, curr) => prev + curr.weight, 0); 
+        }
+        return result;            
     }
 
     selectSecondReduceNode(node1: GraphNode) : GraphNode {
