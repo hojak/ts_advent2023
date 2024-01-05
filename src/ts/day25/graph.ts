@@ -104,42 +104,6 @@ export class Graph {
         return result.sort();
     }
 
-
-    findPartitioningByRemovingEdges(): number[] {
-        let edges = this.getListOfEdgeDescriptions();
-        let sizeOfGraph = this._nodes.size;
-
-        let counter = 0;
-
-        for ( let index1 = 0; index1 < edges.length-2; index1++) {
-            let [node11, node12] = edges[index1].split(",");
-            this.removeEdge ( node11, node12);
-            for ( let index2 = index1+1; index2 < edges.length-1; index2++) {
-                let [node21, node22] = edges[index2].split(",");
-                this.removeEdge ( node21, node22);
-                for ( let index3 = index2+1; index3 < edges.length; index3++) {
-                    counter ++;
-                    if ( counter % 1000 == 0) {
-                        console.log ( new Date() + ": number of checked edge combinations: " + counter)
-                    }
-
-                    let [node31, node32] = edges[index3].split(",");
-                    this.removeEdge ( node31, node32);
-
-                    let sizeOfPartition = this.getPartitionSize(this._nodes.keys().next().value );
-                    if ( sizeOfPartition < sizeOfGraph ) {
-                        return [sizeOfPartition, sizeOfGraph-sizeOfPartition].sort();
-                    }
-                    this.addEdgeBetweenNodeNames(node31, node32);                    
-                }
-                this.addEdgeBetweenNodeNames(node21, node22);
-            }
-            this.addEdgeBetweenNodeNames(node11, node12);
-        }
-
-        return [0, this._nodes.size];
-    }
-
     removeEdge(nodeName1: string, nodeName2: string) {
         let node1 = this._nodes.get(nodeName1);
         let node2 = this._nodes.get(nodeName2);

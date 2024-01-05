@@ -60,28 +60,6 @@ describe( "Day 25: Graph", () => {
         })
     } )
 
-    describe("findPartitioningByRemovingEdges", () => {
-        it ( "it should find a 6/9 partition of the testgraph", () => {
-            let testGraph = new Graph (
-                "jqt: rhn xhk nvd" + "\n" +
-                "rsh: frs pzl lsr" + "\n" +
-                "xhk: hfx" + "\n" +
-                "cmg: qnr nvd lhk bvb" + "\n" +
-                "rhn: xhk bvb hfx" + "\n" +
-                "bvb: xhk hfx" + "\n" +
-                "pzl: lsr hfx nvd" + "\n" +
-                "qnr: nvd" + "\n" +
-                "ntq: jqt hfx bvb xhk" + "\n" +
-                "nvd: lhk" + "\n" +
-                "lsr: lhk" + "\n" +
-                "rzs: qnr cmg lsr rsh" + "\n" +
-                "frs: qnr lhk lsr"
-            );
-
-            expect ( testGraph.findPartitioningByRemovingEdges()).to.be.deep.equal ([6,9]);
-        });
-    });
-
     describe ("mergeNodes", () => {
         it ( "should combine two nodes an sum up the edges", () => {
             let testGraph = new Graph ( 
