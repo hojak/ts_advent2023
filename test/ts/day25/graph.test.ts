@@ -40,5 +40,22 @@ describe( "Day 25: Graph", () => {
             expect ( testGraph.findPartitioningByRemovingEdges()).to.be.deep.equal ([6,9]);
         });
     });
+
+    describe ("mergeNodes", () => {
+        it ( "should combine two nodes an sum up the edges", () => {
+            let testGraph = new Graph ( 
+                "a: b c\n"+
+                "b: d e\n"+
+                "d: a"
+            );
+            testGraph.mergeNodesByName ("a", "b");
+            expect (testGraph.nodeNames).to.be.deep.equal (
+                ["a,b", "c", "d", "e"]
+            );
+            expect ( testGraph.getWeightOfEdge("a,b", "d")).to.be.equal(2);
+            expect ( testGraph.numberOfNodes).to.be.equal(4);
+            expect ( testGraph.numberOfEdges).to.be.equal(3);
+        })
+    });
 });
 

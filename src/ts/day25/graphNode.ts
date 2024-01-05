@@ -11,6 +11,7 @@ export class GraphNode {
             node: thatNode, weight: weight
         });
     }
+
     removeEdge(thatNode: GraphNode) {
         for ( let edge of this._edges) {
             if ( edge.node.name == thatNode.name) {
@@ -19,11 +20,33 @@ export class GraphNode {
         }
     }
 
+    addWeightOrEdge(thatNode: GraphNode, weight: number) {
+        for ( let edge of this._edges) {
+            if ( edge.node.name == thatNode.name) {
+                edge.weight += weight;
+                return;
+            }
+        }
+        this.addEdge(thatNode, weight);
+    }
+
     public get connectedNodes(): GraphNode[] {
         return Array.from(this._edges.values()).map(edge => edge.node);
     }
     public get name(): string {
         return this._name;
+    }
+    public get edges(): Edge[] {
+        return Array.from(this._edges);
+    }
+
+    public getWeightOfEdgeTo( thatNode: string ) : number|undefined {
+        for ( let edge of this._edges) {
+            if ( edge.node.name == thatNode) {
+                return edge.weight;
+            }
+        }
+        return undefined;
     }
 }
 

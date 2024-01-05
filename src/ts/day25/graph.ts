@@ -17,6 +17,13 @@ export class Graph {
         return this.getListOfEdgeDescriptions().length;
     }
 
+    public get nodeNames(): string[] {
+        return Array.from(this._nodes.values()).map( node => node.name ).sort();
+    }
+
+    getWeightOfEdge(node1: string, node2: string): number | undefined  {
+        return this._nodes.get(node1)?.getWeightOfEdgeTo(node2);
+    }
 
     addLine(line: string): void {
         let split = line.split(":");
@@ -131,6 +138,37 @@ export class Graph {
 
         node1.removeEdge(node2);
         node2.removeEdge(node1);
+    }
+
+
+    mergeNodesByName(nodeName1: string, nodeName2: string) {
+        const node1 = this._nodes.get(nodeName1);
+        const node2 = this._nodes.get(nodeName2);
+        if ( node1==undefined ||node2 == undefined) {
+            return;
+        }
+
+        this.mergeNodes(node1, node2);
+    }
+
+    mergeNodes ( node1: GraphNode, node2: GraphNode) {
+        let newNode = new GraphNode( [node1.name,node2.name].sort().join(","));
+
+        for ( let edgeOfNode1 of node1.edges) {
+            newNode.addEdge(edgeOfNode1.node, edgeOfNode1.weight);
+            edgeOfNode1.node.removeEdge( node1);
+            edgeOfNode1.node.addEdge(newNode, edgeOfNode1.weight);
+        }
+
+        for ( let edgeOfNode2 of node2.edges ) {
+            newNode.addWeightOrEdge ( edgeOfNode2.node, edgeOfNode2.weight);
+            edgeOfNode2.node.removeEdge(node2);
+            edgeOfNode2.node.addWeightOrEdge( newNode, edgeOfNode2.weight);
+        }
+
+        this._nodes.delete(node1.name);
+        this._nodes.delete(node2.name);
+        this._nodes.set ( newNode.name, newNode);
     }
 
 
