@@ -9,10 +9,12 @@ consoleApp (input => {
 
     console.log ( "number of nodes: " + graph.numberOfNodes );
     console.log ( "number of edges: " + graph.numberOfEdges );
-    console.log ( "number of possible edge removals: " + graph.numberOfEdges * ( graph.numberOfEdges-1) * (graph.numberOfEdges-2));
 
-    let result = graph.findPartitioningByRemovingEdges();
+    let result = graph.stoerWagnerMinCut();
 
-    console.log ( "found partion: " + result);
-    console.log ( "result: " + (result[0]*result[1]));
+    console.log ( "found partion: " );
+    console.log ( result.setA  );
+    console.log ( result.setB  );
+    console.log ( "with weight " + result.weight );
+    console.log ( "   -> puzzle result: " + (result.setA.length*result.setB.length));
 })
