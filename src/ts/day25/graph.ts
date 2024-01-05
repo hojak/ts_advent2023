@@ -165,8 +165,6 @@ export class Graph {
     }
 
     _destroyingStoerWagnerMinCut() : MinCutResult {
-        console.log ( Array.from ( this._nodes.values() ));
-
         let minimalCutWeight = NaN;
         let currentMinimalCut = ["", ""];
 
