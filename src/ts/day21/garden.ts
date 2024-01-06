@@ -30,29 +30,28 @@ export class Garden {
 
         let reachablePositions : Set<string> = new Set( [posToString(startPosition)]);
         for ( let step = 0; step < numberOfSteps; step ++ ) {
-            let nextSetOfReachablePositions : Set<string> = new Set();
-
-            // trying to get some kind of trend / repetition
-            // depending on the map size (131x131, center at 65/65)
-            if ( (step-35) % 131 == 0 ) {
-                console.log ( new Date() + ";" + step + ";"+ reachablePositions.size);
-            }
-
-            for ( let positionString of reachablePositions) {
-                let position = createPositionFromString ( positionString );
-                for ( let offset of stepOffsets ) {
-                    let checkPosition = addPositions ( position, offset );
-                    if ( (infiniteMap || ! this.outOfBounds ( checkPosition )) 
-                            && this.getSymbolAt (checkPosition) != "#") {
-                        nextSetOfReachablePositions.add ( posToString(checkPosition) );
-                    }
-                }
-            }
-
-            reachablePositions = nextSetOfReachablePositions;
+            reachablePositions = this.walkSingleStep(reachablePositions, infiniteMap);
         }
 
         return reachablePositions.size;
+    }
+
+    private walkSingleStep(reachablePositions: Set<string>, infiniteMap: boolean) {
+        let nextSetOfReachablePositions: Set<string> = new Set();
+
+        for (let positionString of reachablePositions) {
+            let position = createPositionFromString(positionString);
+            for (let offset of stepOffsets) {
+                let checkPosition = addPositions(position, offset);
+                if ((infiniteMap || !this.outOfBounds(checkPosition))
+                    && this.getSymbolAt(checkPosition) != "#") {
+                    nextSetOfReachablePositions.add(posToString(checkPosition));
+                }
+            }
+        }
+
+        reachablePositions = nextSetOfReachablePositions;
+        return reachablePositions;
     }
 
     outOfBounds(position: Position) : boolean {
