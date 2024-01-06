@@ -19,7 +19,14 @@ cat data/dayX/input.txt | node out/src/ts/dayX/part1.js
 
 ## ToDo
 
-* Day 19+
+* Day 25
+  - implemented Stoer Wagner Algorithm to solve the min cut problem. It still needs some time (~90 minutes) for a graph of 1550 nodes at the moment.
+  - Part 2 missing
+* Day 24 Part 2
+* Day 23 Part 2: Algorithm works, but it took a lot of time
+* Day 21 Part 2
+* Day 20 Part 2
+* Day 19 Part 2
 * Day 18 Part 2
 
   The resulting floor plan is too large to fit in the memory. Even for the test input, we get a square of 1.186.328 x 1.186.328. The _real_ input results in an even larger area.
@@ -39,5 +46,5 @@ cat data/dayX/input.txt | node out/src/ts/dayX/part1.js
    * The initial 3 cycles seem to work, but 1.000.000 cycles produce an offset of 1.
    * performance could be better
 *  Day 12 Part 2
-   * algorith is way too slow
+   * algorithm is way too slow
 
