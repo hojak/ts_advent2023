@@ -1,4 +1,4 @@
-import { Point } from "./quadraticFunction";
+import { Point, QuadraticFunction } from "./quadraticFunction";
 
 export class LinearFunction {
     private _b: number;
@@ -11,6 +11,10 @@ export class LinearFunction {
 
     toString () {
         return "f(x) = " + this._a + " + " + this._b + "*x";
+    }
+
+    getIntegral(): any {
+        return new QuadraticFunction(0, this._a, this._b/2);
     }
 
     static createFromPoints(p1: Point, p2: Point): LinearFunction {

@@ -30,7 +30,7 @@ export class QuadraticFunction {
 }
 
 
-interface Point {
+export interface Point {
     x: number,
     y: number
 }
