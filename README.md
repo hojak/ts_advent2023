@@ -19,7 +19,10 @@ cat data/dayX/input.txt | node out/src/ts/dayX/part1.js
 
 ## ToDo
 
-* Day 22 - 24
+* Day 25
+  - implemented Stoer Wagner Algorithm to solve the min cut problem. It still needs some time (~90 minutes) for a graph of 1550 nodes at the moment.
+  - Part 2 missing
+* Day 24 Part 2
 * Day 23 Part 2: Algorithm works, but it took a lot of time
 * Day 21 Part 2
 * Day 20 Part 2
@@ -40,5 +43,5 @@ cat data/dayX/input.txt | node out/src/ts/dayX/part1.js
   * for each row (y coordinate), get a list of dig lines _hitting_ this row, ordered by their x coordinates
   * uses this lists in the algorithm to measure the inner area
 *  Day 12 Part 2
-   * algorith is way too slow
+   * algorithm is way too slow
 
