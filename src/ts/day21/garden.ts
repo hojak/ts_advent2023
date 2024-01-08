@@ -81,7 +81,8 @@ export class Garden {
         // happens directly and no offset would be required.
         // additional possible feature: detect this point automatically.
         // for now, we go with 20 cycles and use cycle 20 and 21 for the gradient functions
-        // hint: the cycle is not always the same as the tile's length (or width)
+        // hint: the cycle length in general is not necessarily equal to the tile's length (or width); 
+        // it could be larger depending on the layout
 
         let reachablePositionsForNumberOfSteps = this.getReachableStepsForCycles((this.startUpCycles+1) * this.getHeight());
         reachablePositionsForNumberOfSteps.unshift(0);
