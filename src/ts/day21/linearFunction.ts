@@ -1,5 +1,3 @@
-import { Point, QuadraticFunction } from "./quadraticFunction";
-
 export class LinearFunction {
     private _a: number;
     private _b: number;
@@ -12,10 +10,6 @@ export class LinearFunction {
 
     toString () {
         return "f(x) = " + this._a + " + " + this._b + "*x";
-    }
-
-    getIntegral(): any {
-        return new QuadraticFunction(0, this._a, this._b/2);
     }
 
     public get a(): number {
@@ -38,5 +32,10 @@ export class LinearFunction {
         return new LinearFunction(a,b);
     }
 
-
 }
+
+export interface Point {
+    x: number,
+    y: number
+}
+
