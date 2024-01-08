@@ -18,7 +18,7 @@ export class LinearFunction {
     }
 
     static createFromPoints(p1: Point, p2: Point): LinearFunction {
-        let b = (p2.x-p1.x)/(p2.y-p1.y);
+        let b = (p2.y-p1.y)/(p2.x-p1.x);
         let a = p1.y-b*p1.x;
 
         return new LinearFunction(a,b);

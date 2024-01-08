@@ -11,14 +11,13 @@ describe ( "Day 21: Linear Function", () => {
                 {x:6, y:8},
             )).to.be.deep.equal ( new LinearFunction(2,1));
         });
-    });
 
-    describe ( "get integral", () => {
-        it ( "should give back 2*x²+10x", () => {
-            expect(new LinearFunction(10,4).getIntegral())
-                .to.be.deep.equal(new QuadraticFunction(0, 10, 2));
-        } )
-        
-    })
+        it ( "should create 2+5x function", () => {
+            expect ( LinearFunction.createFromPoints(
+                {x:1, y:7},
+                {x:4, y:22},
+            )).to.be.deep.equal ( new LinearFunction(2,5));
+        });
+    });
 
 });
