@@ -1,7 +1,6 @@
 import { describe } from "mocha";
 import { expect } from "chai";
 import { LinearFunction } from "../../../src/ts/day21/linearFunction";
-import { QuadraticFunction } from "../../../src/ts/day21/quadraticFunction";
 
 describe ( "Day 21: Linear Function", () => {
     describe ("create from points", () => {
