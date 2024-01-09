@@ -57,11 +57,10 @@ export class DigTrail {
         let verticalIndex = 0;
         let horizontalIndex = 0;
 
-        let currentPosition = new Position(0,0);
-        for ( currentPosition.y = topLeft.y; currentPosition.y <= bottomRight.y; currentPosition.y++ ) {
-            currentVerticals = currentVerticals.filter ( vertical => vertical.end.y >= currentPosition.y);
+        for ( let y = topLeft.y; y <= bottomRight.y; y++ ) {
+            currentVerticals = currentVerticals.filter ( vertical => vertical.end.y >= y);
 
-            while (verticalIndex < this._verticalSegments.length && this._verticalSegments[verticalIndex].start.y == currentPosition.y) {
+            while (verticalIndex < this._verticalSegments.length && this._verticalSegments[verticalIndex].start.y == y) {
                 currentVerticals.push ( this._verticalSegments[verticalIndex] );
                 verticalIndex++;
             }
@@ -74,7 +73,7 @@ export class DigTrail {
             while ( currentVerticalIndex < currentVerticals.length ) {
                 let vertical = currentVerticals[currentVerticalIndex];
 
-                if ( currentVerticals[currentVerticalIndex].isMidPosition(currentPosition.y)) {
+                if ( currentVerticals[currentVerticalIndex].isMidPosition(y)) {
                     if ( open ) {
                         result += vertical.start.x - lastX +1;
                     } else {
