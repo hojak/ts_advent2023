@@ -24,7 +24,6 @@ cat data/dayX/input.txt | node out/src/ts/dayX/part1.js
   - Part 2 missing
 * Day 24 Part 2
 * Day 23 Part 2: Algorithm works, but it took a lot of time
-* Day 21 Part 2
 * Day 20 Part 2
 * Day 19 Part 2
 * Day 18 Part 2

@@ -3,7 +3,7 @@ import { describe } from "mocha";
 import { Mapping } from "../../../src/ts/day5/mapping";
 import { SingleMap } from "../../../src/ts/day5/singleMap";
 
-describe ("day 5: mapping", () => {
+describe ("Day 5: mapping", () => {
     let testee = new Mapping ( 
         "10 0 2\n"+
         "100 10 20\n"+

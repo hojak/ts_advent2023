@@ -2,7 +2,7 @@ import { describe } from "mocha";
 import { computePowerSumOfAllMinimalSets, computeSumOfPossibleGames } from "../../../src/ts/day2/main";
 import { expect } from "chai";
 
-describe ("day 2", () => {
+describe ("Day 2: Main functions", () => {
 
     describe ("computeSumOfPossibleGames", () => {
         it ("should compute to 8", () => {
