@@ -1,8 +1,10 @@
+import { Position } from "./position";
+
 export class GroundPlan {
     private _groundPlan : string[][] = [];
 
     digAsPlanned(digPlan: string) : this {
-        let diggerAt : Position = {x: 0, y: 0};
+        let diggerAt = new Position (0,0);
 
         let lastDirection = "";
 
@@ -58,7 +60,7 @@ export class GroundPlan {
 
         let open = false;
 
-        let lookAt : Position = {x:0, y:0};
+        let lookAt = new Position (0, 0);
 
         for ( lookAt.y = topLeft.y; lookAt.y <= bottomRight.y; lookAt.y++ ) {
             for ( lookAt.x = topLeft.x; lookAt.x <= bottomRight.x ; lookAt.x++) {
@@ -113,7 +115,7 @@ export class GroundPlan {
 
         let result = "";
 
-        let lookAt: Position = {x: 0, y:0};
+        let lookAt: Position = new Position ( 0,0);
         for ( lookAt.y = topLeft.y; lookAt.y <= bottomRight.y; lookAt.y++ ) {
             for ( lookAt.x = topLeft.x; lookAt.x <= bottomRight.x ; lookAt.x++) {
                 result += this._groundPlan[lookAt.x][lookAt.y] ?? ".";
@@ -135,7 +137,7 @@ export class GroundPlan {
         let bottomRight = getBottomRightOfFloorPlan ( this._groundPlan );
 
         let result = 0;
-        let lookAt: Position = {x: 0, y:0};
+        let lookAt = new Position (0,0);
 
         for ( lookAt.y = topLeft.y; lookAt.y <= bottomRight.y; lookAt.y++ ) {
             for ( lookAt.x = topLeft.x; lookAt.x <= bottomRight.x ; lookAt.x++) {
@@ -156,33 +158,23 @@ export class GroundPlan {
     }
 }
 
-
-interface Position {
-    x: number,
-    y: number
-}
-
-
 function isDigTraceSymbol(currentSymbol: string) {
     return currentSymbol == "U" || currentSymbol == "D" || currentSymbol == "L" || currentSymbol == "R";
 }
 
 function getDelta(direction: string) : Position {
     switch ( direction ) {
-        case "R": return {x: 1, y: 0};
-        case "L": return {x: -1, y: 0};
-        case "D": return {x: 0, y: 1};
-        case "U": return {x: 0, y: -1};
+        case "R": return new Position (1,0);
+        case "L": return new Position (-1, 0);
+        case "D": return new Position (0, 1);
+        case "U": return new Position (0, -1);
         default:
-            return {x:0, y:0};
+            return new Position (0, 0);
     }
 }
 
 function sumOfPositions(pos1: Position, pos2: Position): Position {
-    return {
-        x: pos1.x + pos2.x,
-        y: pos1.y + pos2.y
-    };
+    return new Position (pos1.x + pos2.x, pos1.y + pos2.y);
 }
 
 function getMinimalKeyOf( someArray : any[]) : any{
@@ -197,10 +189,10 @@ function getMaximalKeyOf( someArray : any[]) : any{
 
 
 function getTopLeftOfFloorPlan(groundPlan: string[][]) : Position {
-    let result : Position = {
-        x: getMinimalKeyOf(groundPlan), 
-        y: 0
-    };
+    let result = new Position (
+        getMinimalKeyOf(groundPlan), 
+        0
+    );
 
     let maxX = getMaximalKeyOf(groundPlan);
 
@@ -212,10 +204,10 @@ function getTopLeftOfFloorPlan(groundPlan: string[][]) : Position {
 }
 
 function getBottomRightOfFloorPlan(groundPlan: string[][]) : Position {
-    let result : Position = {
-        x: getMaximalKeyOf(groundPlan), 
-        y: 0
-    };
+    let result = new Position (
+        getMaximalKeyOf(groundPlan), 
+        0
+    );
 
     let minX = getMinimalKeyOf(groundPlan);
 
@@ -254,9 +246,9 @@ function isDirectionSymbol(symbol: string | undefined) {
 }
 
 export function getPlanBoundaries ( digPlan : string ) : Position[] {
-    let topLeft : Position = {x: 0, y:0};
-    let bottomRight: Position = {x: 0, y: 0};
-    let diggerAt : Position = {x: 0, y: 0};
+    let topLeft = new Position (0, 0);
+    let bottomRight = new Position  (0, 0);
+    let diggerAt = new Position (0, 0);
 
     digPlan.split("\n").filter(line => line.length>0).forEach ( line => {
         let lineSplit = line.split(" ").map ( part => part.trim()).filter ( part => part.length > 0);
