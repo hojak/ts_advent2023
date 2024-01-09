@@ -20,4 +20,9 @@ export class Position {
         this._y = value;
     }
 
+    public add(pos: Position): Position {
+        return new Position (this.x + pos.x, this.y + pos.y);
+    }
+    
+
 }

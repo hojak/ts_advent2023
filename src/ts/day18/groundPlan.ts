@@ -19,12 +19,12 @@ export class GroundPlan {
             let directionSymbol = (lineSplit[0] == "R" || lineSplit[0] == "L") ? "-" : "|";
      
             for ( let steps=0; steps<Number(lineSplit[1])-1; steps++) {
-                diggerAt = sumOfPositions(diggerAt, directionDelta);
+                diggerAt = diggerAt.add(directionDelta);
                 this.digAt ( diggerAt, directionSymbol );
             }
 
             // last position may alreay contain a symbol (close the loop)
-            diggerAt = sumOfPositions(diggerAt, directionDelta);
+            diggerAt = diggerAt.add(directionDelta);
             let symbolAtLastPosition = this.getSymbolAt(diggerAt)
             
             if ( isDirectionSymbol(symbolAtLastPosition) ) {
@@ -173,10 +173,6 @@ function getDelta(direction: string) : Position {
     }
 }
 
-function sumOfPositions(pos1: Position, pos2: Position): Position {
-    return new Position (pos1.x + pos2.x, pos1.y + pos2.y);
-}
-
 function getMinimalKeyOf( someArray : any[]) : any{
     if ( someArray == undefined) {return 0;}
     return Object.keys ( someArray ).reduce( (prev, curr) => (Number(prev) < Number(curr)) ? prev : curr);
@@ -255,7 +251,7 @@ export function getPlanBoundaries ( digPlan : string ) : Position[] {
         let directionDelta = getDelta(lineSplit[0]);
 
         for ( let steps=0; steps<Number(lineSplit[1]); steps++) {
-            diggerAt = sumOfPositions(diggerAt, directionDelta);
+            diggerAt = diggerAt.add(directionDelta);
             if ( diggerAt.x < topLeft.x) {
                 topLeft.x = diggerAt.x;
             }
