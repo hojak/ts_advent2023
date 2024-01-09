@@ -1,7 +1,6 @@
 import { consoleApp } from "../consoleApp"
-import { GroundPlan, getPlanBoundaries } from "./groundPlan";
 import { transformPlan } from "./transformPlan";
-import { DigTrail } from "./digTrail";
+import { DigTrail, getPlanBoundaries } from "./digTrail";
 
 consoleApp (input => {
     console.log ( "let's start digging");

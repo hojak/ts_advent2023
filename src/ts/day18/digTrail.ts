@@ -1,5 +1,4 @@
 import { Position } from "./position";
-import { getDelta } from "./groundPlan";
 import { TrailSegment } from "./trailSegment";
 import { EndOfLineState, ModuleResolutionKind } from "typescript";
 
@@ -124,3 +123,44 @@ export class DigTrail {
 
 }
 
+
+export function getPlanBoundaries ( digPlan : string ) : Position[] {
+    let topLeft = new Position (0, 0);
+    let bottomRight = new Position  (0, 0);
+    let diggerAt = new Position (0, 0);
+
+    digPlan.split("\n").filter(line => line.length>0).forEach ( line => {
+        let lineSplit = line.split(" ").map ( part => part.trim()).filter ( part => part.length > 0);
+        let directionDelta = getDelta(lineSplit[0]);
+
+        for ( let steps=0; steps<Number(lineSplit[1]); steps++) {
+            diggerAt = diggerAt.add(directionDelta);
+            if ( diggerAt.x < topLeft.x) {
+                topLeft.x = diggerAt.x;
+            }
+            if ( diggerAt.x > bottomRight.x) {
+                bottomRight.x = diggerAt.x;
+            }
+            if ( diggerAt.y < topLeft.y) {
+                topLeft.y = diggerAt.y;
+            }
+            if ( diggerAt.y > bottomRight.y) {
+                bottomRight.y = diggerAt.y;
+            }
+        }
+    });
+
+    return [topLeft, bottomRight];
+}
+
+
+export function getDelta(direction: string) : Position {
+    switch ( direction ) {
+        case "R": return new Position (1, 0);
+        case "L": return new Position (-1, 0);
+        case "D": return new Position (0, 1);
+        case "U": return new Position (0, -1);
+        default:
+            return new Position (0, 0);
+    }
+}
