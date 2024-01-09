@@ -1,20 +1,19 @@
 import { consoleApp } from "../consoleApp"
 import { GroundPlan, getPlanBoundaries } from "./groundPlan";
 import { transformPlan } from "./transformPlan";
+import { DigTrail } from "./digTrail";
 
 consoleApp (input => {
     console.log ( "let's start digging");
-    const groundPlan = new GroundPlan().digAsPlanned(input);
-    groundPlan.printBoundaries();
-    console.log ( groundPlan.digOutInterior().numberOfDiggedSquares() );
+    let trail = new DigTrail ( input );
+    console.log ( trail.getSizeOfHole() );
 
     console.log ( "decode plan");
     let decoded = transformPlan(input);
 
     console.log ( "get boundaries");
-    console.log ( getPlanBoundaries ( decoded));
+    console.log (getPlanBoundaries(decoded));
     
-    const groundPlanDecoded = new GroundPlan().digAsPlanned(decoded);
-    groundPlanDecoded.printBoundaries();
-    console.log ( groundPlanDecoded.digOutInterior().numberOfDiggedSquares() );
+    trail = new DigTrail ( decoded );
+    console.log ( trail.getSizeOfHole());
 })
