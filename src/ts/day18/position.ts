@@ -24,5 +24,13 @@ export class Position {
         return new Position (this.x + pos.x, this.y + pos.y);
     }
     
+    public multiply(factor: number): Position {
+        return new Position ( this.x * factor, this.y*factor);
+    }
+
+    equals(other: Position) :boolean {
+        return this.x == other.x && this.y == other.y;
+    }
+    
 
 }

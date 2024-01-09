@@ -100,7 +100,6 @@ export class GroundPlan {
         return this;
     }
 
-
     printBoundaries () {
         let topLeft = getTopLeftOfFloorPlan ( this._groundPlan );
         let bottomRight = getBottomRightOfFloorPlan ( this._groundPlan );
@@ -162,9 +161,9 @@ function isDigTraceSymbol(currentSymbol: string) {
     return currentSymbol == "U" || currentSymbol == "D" || currentSymbol == "L" || currentSymbol == "R";
 }
 
-function getDelta(direction: string) : Position {
+export function getDelta(direction: string) : Position {
     switch ( direction ) {
-        case "R": return new Position (1,0);
+        case "R": return new Position (1, 0);
         case "L": return new Position (-1, 0);
         case "D": return new Position (0, 1);
         case "U": return new Position (0, -1);

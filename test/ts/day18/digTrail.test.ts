@@ -24,9 +24,51 @@ describe ("Day 18: Dig Trail", () => {
     describe( "Constructor", () => {
         it ( "should create a trail with 14 entries", () => {
             expect(testee.numberOfSegments).to.be.equal(14);
-        })
-    })
+        });
+    });
 
+    describe ( "getLength", () => {
+        it ( "should have length of 38", () => {
+            expect(testee.getLength()).to.be.equal (38);
+        });
+    });
 
+    describe ("getSizeOfHole", () => {
+        it ( "should have a size of 62", () => {
+            expect(testee.getSizeOfHole()).to.be.equal (62);        
+        });
 
+        
+        it ( "should have a size of 9 (1)", () => {
+            expect( new DigTrail ( 
+                "R 2\n"+
+                "D 2\n"+
+                "L 2\n"+
+                "U 2"
+            ).getSizeOfHole()).to.be.equal (9);
+        });
+
+        it ( "should have a size of 33", () => {
+            expect( new DigTrail ( 
+                "R 2\n"+
+                "D 2\n"+
+                "R 2\n"+
+                "U 2\n"+
+                "R 2\n"+
+                "D 4\n"+
+                "L 6\n"+
+                "U 4\n"
+            ).getSizeOfHole()).to.be.equal (33);
+        });
+
+        it ( "should have a size of 9 (2)", () => {
+            expect( new DigTrail ( 
+                "L 2\n"+
+                "D 2\n"+
+                "R 2\n"+
+                "U 2"
+            ).getSizeOfHole()).to.be.equal (9);
+        });
+
+    });
 });
