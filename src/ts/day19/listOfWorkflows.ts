@@ -1,4 +1,5 @@
 import { Part, createPartFromString } from "./part";
+import { RangeOfParts } from "./rangeOfParts";
 import { Workflow } from "./workflow";
 
 export class ListOfWorkflows {
@@ -42,9 +43,34 @@ export class ListOfWorkflows {
         return accepted;
     }
 
+
+    getAcceptedRanges(inputRange: RangeOfParts) : RangeOfParts[] {
+        const startWorkflow = this._workflows.get('in');
+        if (startWorkflow == undefined) {
+            return [];
+        }
+        return this._getAcceptedRanges ( [], startWorkflow, inputRange);
+    }
+
+    private _getAcceptedRanges(previousDecisions: Decision[], upcomingWorkflow: Workflow, range: RangeOfParts): RangeOfParts[] {
+        let result : RangeOfParts[] = [];
+
+        for ( let step of upcomingWorkflow.steps ) {
+
+        }
+
+        return result;
+    }
+
 }
 
 
 export function evaluateParts ( parts: Part[]) {
     return parts.map ( part => part.getSum() ).reduce ( (prev, curr) => prev+curr);
+}
+
+
+interface Decision {
+    workflow: Workflow,
+    descicionIndex: number;
 }

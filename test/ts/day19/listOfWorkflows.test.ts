@@ -1,7 +1,9 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { ListOfWorkflows, evaluateParts } from "../../../src/ts/day19/listOfWorkflows";
-import { createPartFromString } from "../../../src/ts/day19/part";
+import { Part, createPartFromString } from "../../../src/ts/day19/part";
+import { RangeOfParts } from "../../../src/ts/day19/rangeOfParts";
+
 
 describe ( "day 19: ListOfWorkflows", () => {
     let testee = new ListOfWorkflows (
@@ -30,7 +32,6 @@ describe ( "day 19: ListOfWorkflows", () => {
 
     describe("runOnPart", () => {
 
-
         it ( "should accept (787, 2655, 1222, 2876)", () => {
             expect ( testee.runOnPart ( createPartFromString ( "{x=787,m=2655,a=1222,s=2876}"))).to.be.equal("A");
         });
@@ -52,5 +53,13 @@ describe ( "day 19: ListOfWorkflows", () => {
             ))).to.be.equal(19114)
         });
     })
+
+    describe ("getAcceptedRanges", () => {
+        it ( "should return the full possible range for a simple accepting rule", () => {
+            expect ( new ListOfWorkflows("in{A}").getAcceptedRanges( RangeOfParts.standardRange()))
+               .to.be.deep.equal([RangeOfParts.standardRange()]);
+        });
+
+    });
 
 });
