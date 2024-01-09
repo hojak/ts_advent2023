@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import { Universe } from "../../../src/ts/day11/universe";
 
-describe ( "day 11", () => {
+describe ( "Day 11", () => {
     
     describe ( "creating universe", () => {
         it ( "should find the correct size", () => {
