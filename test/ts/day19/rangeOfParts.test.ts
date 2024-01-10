@@ -30,7 +30,7 @@ describe ("Day 19: Range of Parts", () => {
 
         it ( "should return the correct size for the standard range", () => {
             expect ( RangeOfParts.standardRange().size)
-            .to.be.equal(Math.pow (4001,4));    
+            .to.be.equal(Math.pow (4000,4));    
         })
 
 

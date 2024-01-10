@@ -5,7 +5,7 @@ export class RangeOfParts {
     private _max: Part;
     private _min: Part;
 
-    private static readonly standardMinValue = 0;
+    private static readonly standardMinValue = 1;
 
     private static readonly standardMaxValue = 4000;
 

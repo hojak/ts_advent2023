@@ -62,7 +62,7 @@ describe ( "day 19: ListOfWorkflows", () => {
 
         it ( "should return 2000<a for a simple rule", () => {
             expect ( new ListOfWorkflows("in{a>2000:A,R}").getAcceptedRanges( RangeOfParts.standardRange()))
-               .to.be.deep.equal([new RangeOfParts(new Part(0,0,2001,0), new Part(4000,4000,4000,4000))]);
+               .to.be.deep.equal([new RangeOfParts(new Part(1,1,2001,1), new Part(4000,4000,4000,4000))]);
         });
 
     });
