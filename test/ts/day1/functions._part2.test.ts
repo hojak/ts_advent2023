@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { findCalibrationValue, calibrate } from "../../../src/ts/day1/functions_part2";
 
-describe ('day 1', () => {
+describe ('Day 1: Part 2', () => {
 
     describe ('findCalibrationValue', () => {
         [

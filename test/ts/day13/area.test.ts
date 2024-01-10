@@ -96,7 +96,7 @@ describe( "Day 13: area", () => {
                 "#####.##.\n"+
                 "..##..###\n"+
                 "#....#..#");
-            expect ( testee.findHorizontalReflections()).to.be.deep.equal([0]);
+            expect ( testee.findHorizontalReflections()).to.be.deep.equal([3]);
         })
         
     })

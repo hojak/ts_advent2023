@@ -19,10 +19,12 @@ cat data/dayX/input.txt | node out/src/ts/dayX/part1.js
 
 ## ToDo
 
-* Day 16+
-* Day 14 Part 2 
-   * The initial 3 cycles seem to work, but 1.000.000 cycles produce an offset of 1.
-   * performance could be better
-*  Day 12 Part 2
-   * algorith is way too slow
+* Day 25
+  - implemented Stoer Wagner Algorithm to solve the min cut problem. It still needs some time (~90 minutes) for a graph of 1550 nodes at the moment.
+  - Part 2 missing
+* Day 24 Part 2
+* Day 23 Part 2: Algorithm works, but it took a lot of time
+* Day 20 Part 2
+* Day 12 Part 2
+   * algorithm is way too slow
 
