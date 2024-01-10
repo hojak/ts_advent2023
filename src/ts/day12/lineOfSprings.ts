@@ -1,6 +1,7 @@
 export class LineOfSprings {
     springs: string;
     groups: number[];
+    private _partialResults: Map<string, number> = new Map();
 
     constructor( line: string ) {
         let split = line.trim().split(" ");
@@ -17,8 +18,11 @@ export class LineOfSprings {
         return this.springs + " " + this.groups.join(",");
     }
 
+
+
     getNumberOfPossibleSolutions () : number {
-        return getNumberOfPossibleSolutions ( this.springs, this.groups );
+        this._partialResults = new Map();
+        return this._getNumberOfPossibleSolutions ( this.springs, this.groups );
     }
 
 
@@ -86,51 +90,59 @@ export class LineOfSprings {
         return true;
     }
         
-}
-
-function getNumberOfPossibleSolutions ( springs: string, groups : number[], l: number = 1 ) : number {
-    springs = trimSprings(springs);
-    let copyOfGroups = Object.assign([], groups);
-
-    if ( groups.length == 0) {
-        return ( springs.indexOf("#") == -1 ) ? 1 : 0;
-    }
-
-    let numberOfUnknowns = springs.length - springs.replace ( /\?/g, "").length;
-    let numberOfSprings = groups.reduce( (prev, curr, index) => prev+curr);
-    let numberOfKnownSprings = springs.length - springs.replace ( /#/g, "").length;
-
-    if ( ! LineOfSprings.isValid(springs, groups) ) {
-        return 0;
-    }
-
-    if ( numberOfUnknowns == 0 ) {
-        return 1;
-    }
-
-    if (numberOfUnknowns < numberOfSprings - numberOfKnownSprings) {
-        return 0;
-    }
 
 
-    let sizeOfFirstGroup = copyOfGroups.shift() ?? 0;
-    let sizeOfRemainingGroups = numberOfSprings - sizeOfFirstGroup;
 
-    let firstPossibleStart = getSmallesStartIndexForABlock(springs);
-    let lastPossibleStart = Math.min (
-        springs.length - sizeOfFirstGroup - sizeOfRemainingGroups - copyOfGroups.length,
-        getFirstKnownSpring(springs)
-    );
-
-    let result = 0;
-    for ( let tryStartForFirstGroup = firstPossibleStart; tryStartForFirstGroup <= lastPossibleStart; tryStartForFirstGroup ++) {
-        let springsWithPlacedGroup = placeGroup ( springs, sizeOfFirstGroup, tryStartForFirstGroup );
-        if ( springsWithPlacedGroup != null ) {
-            result += getNumberOfPossibleSolutions(springsWithPlacedGroup.substring(tryStartForFirstGroup + sizeOfFirstGroup + 1), copyOfGroups, l+1);
+    _getNumberOfPossibleSolutions ( springs: string, groups : number[], l: number = 1 ) : number {
+        let solution = this._partialResults.get(springs + " " + groups.join(","));
+        if ( solution != undefined) {
+            return solution;
         }
-    }
 
-    return result;
+        springs = trimSprings(springs);
+        let copyOfGroups = Object.assign([], groups);
+
+        if ( groups.length == 0) {
+            return ( springs.indexOf("#") == -1 ) ? 1 : 0;
+        }
+
+        let numberOfUnknowns = springs.length - springs.replace ( /\?/g, "").length;
+        let numberOfSprings = groups.reduce( (prev, curr, index) => prev+curr);
+        let numberOfKnownSprings = springs.length - springs.replace ( /#/g, "").length;
+
+        if ( ! LineOfSprings.isValid(springs, groups) ) {
+            return 0;
+        }
+
+        if ( numberOfUnknowns == 0 ) {
+            return 1;
+        }
+
+        if (numberOfUnknowns < numberOfSprings - numberOfKnownSprings) {
+            return 0;
+        }
+
+
+        let sizeOfFirstGroup = copyOfGroups.shift() ?? 0;
+        let sizeOfRemainingGroups = numberOfSprings - sizeOfFirstGroup;
+
+        let firstPossibleStart = getSmallesStartIndexForABlock(springs);
+        let lastPossibleStart = Math.min (
+            springs.length - sizeOfFirstGroup - sizeOfRemainingGroups - copyOfGroups.length,
+            getFirstKnownSpring(springs)
+        );
+
+        let result = 0;
+        for ( let tryStartForFirstGroup = firstPossibleStart; tryStartForFirstGroup <= lastPossibleStart; tryStartForFirstGroup ++) {
+            let springsWithPlacedGroup = placeGroup ( springs, sizeOfFirstGroup, tryStartForFirstGroup );
+            if ( springsWithPlacedGroup != null ) {
+                result += this._getNumberOfPossibleSolutions(springsWithPlacedGroup.substring(tryStartForFirstGroup + sizeOfFirstGroup + 1), copyOfGroups, l+1);
+            }
+        }
+
+        this._partialResults.set(springs + " " + groups.join(","), result);
+        return result;
+    }
 }
 
 function getSmallesStartIndexForABlock(springs: string) {
