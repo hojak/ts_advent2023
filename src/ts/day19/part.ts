@@ -35,7 +35,7 @@ export class Part {
         return this._s;
     }
     public set s(value: number) {
-        this.s = value;
+        this._s = value;
     }
 
     public getSum () : number {
