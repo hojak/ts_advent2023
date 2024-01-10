@@ -37,7 +37,7 @@ export class Workflow {
 
 
 
-interface Step {
+export interface Step {
     target: string,
     condition: Condition | null
 }
