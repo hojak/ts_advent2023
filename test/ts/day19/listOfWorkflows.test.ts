@@ -65,6 +65,15 @@ describe ( "day 19: ListOfWorkflows", () => {
                .to.be.deep.equal([new RangeOfParts(new Part(1,1,2001,1), new Part(4000,4000,4000,4000))]);
         });
 
+
+        it ( "should return ranges with a sum of sizes of 167409079868000 for the test input", () => {
+            expect( 
+                testee.getAcceptedRanges(RangeOfParts.standardRange())
+                    .map(range => range.size)
+                    .reduce ( (prev, curr) => prev+curr)
+            ).to.be.equal(167409079868000);
+        })
+
     });
 
 });
