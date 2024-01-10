@@ -25,6 +25,5 @@ cat data/dayX/input.txt | node out/src/ts/dayX/part1.js
 * Day 24 Part 2
 * Day 23 Part 2: Algorithm works, but it took a lot of time
 * Day 20 Part 2
-* Day 12 Part 2
-   * algorithm is way too slow
+* general refactoring / tidy up
 
