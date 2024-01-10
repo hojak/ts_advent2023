@@ -1,7 +1,7 @@
 import {Part} from './part';
 
 export class Workflow {
-    private _steps : Step[] = [];
+    private _steps: Step[] = [];
     private _name: string;
 
     constructor  ( description: string ) {
@@ -29,11 +29,15 @@ export class Workflow {
     public get name(): string {
         return this._name;
     }
+
+    public get steps(): Step[] {
+        return this._steps;
+    }
 }
 
 
 
-interface Step {
+export interface Step {
     target: string,
     condition: Condition | null
 }

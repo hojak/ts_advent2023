@@ -16,19 +16,36 @@ export class Part {
     public get x(): number {
         return this._x;
     }
+    public set x(value: number) {
+        this._x = value;
+    }
     public get m(): number {
         return this._m;
+    }
+    public set m(value: number) {
+        this._m = value;
     }
     public get a(): number {
         return this._a;
     }
+    public set a(value: number) {
+        this._a = value;
+    }
     public get s(): number {
         return this._s;
+    }
+    public set s(value: number) {
+        this._s = value;
     }
 
     public getSum () : number {
         return this._x + this._m + this._a + this._s;
     }
+
+    copy(): Part {
+        return new Part ( this._x, this._m, this._a, this._s);
+    }
+
 }
 
 export function createPartFromString (description: string): Part {
