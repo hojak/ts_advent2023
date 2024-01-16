@@ -14,12 +14,14 @@ consoleApp (input => {
 
 
     result = 0;
+    let count = 0;
     console.log ("evaluate all lines unfolded: ")
     input.split ("\n").forEach( line => {
+        count ++;
         const listOfSprings = new LineOfSprings(line);
         listOfSprings.unfold();
         let possibilities = listOfSprings.getNumberOfPossibleSolutions();
-        console.log ( line + ": " + possibilities );
+        console.log ( count +" / " + line + ": " + possibilities );
         result+= possibilities;
     })
 

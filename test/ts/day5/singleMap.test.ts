@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import { SingleMap } from "../../../src/ts/day5/singleMap";
 
-describe("day 5", () => {
+describe("Day 5: SingleMap", () => {
     
     describe ("singleMap", () => {
         let testee = new SingleMap ( 1, 10, 5 );

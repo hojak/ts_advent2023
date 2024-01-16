@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import { ListOfHands } from "../../../src/ts/day7/listOfHands";
 
-describe("Day7: List of Hands", () => {
+describe("Day 7: List of Hands", () => {
 
     describe ("total winning", () => {
         it ( "should be 6440", () => {

@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import { next_step, sum_of_next_steps, sum_of_prev_steps } from "../../../src/ts/day9/next_step";
 
-describe ( "day 9", () => {
+describe ( "Day 9", () => {
 
     describe ( "next_value", () => {
 

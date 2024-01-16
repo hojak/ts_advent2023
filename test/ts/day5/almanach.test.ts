@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import { Almanach } from "../../../src/ts/day5/almanach";
 
-describe ( "day 5: almanach", () => {
+describe ( "Day 5: almanach", () => {
     let testee = new Almanach ( 
 		"seeds: 79 14 55 13\n"+
 		"\n"+
