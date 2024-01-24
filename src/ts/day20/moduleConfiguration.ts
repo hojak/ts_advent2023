@@ -25,8 +25,8 @@ export class ModuleConfiguration {
 
     getNumberOfProcessedSignals () : number[] {
         return Array.from(this._modules.values()).map( module => [
-            module.received.filter( signal => signal.type == SignalType.Low).length,
-            module.received.filter( signal => signal.type == SignalType.High).length
+            module.received.numberOfLowSignals,
+            module.received.numberOfHighSignals
         ]).reduce ( (prev, curr) => [prev[0]+curr[0], prev[1]+curr[1]], [0,0] );
     }
 

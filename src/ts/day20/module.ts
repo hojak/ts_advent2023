@@ -1,9 +1,10 @@
 import { Signal, SignalType } from "./signal";
+import { SignalSequence } from "./signalSequence";
 
 export abstract class Module {
     private _name: string;
     private _outputs: string[];
-    private _received: Signal[] = [];
+    private _received = new SignalSequence();
 
     constructor ( name: string, outputs: string[] ) {
         this._name = name;
@@ -44,12 +45,12 @@ export abstract class Module {
         }
     }
 
-    public get received () :  Signal[] {
+    public get received () :  SignalSequence {
         return this._received;
     }
 
     protected registerReveived ( signal: Signal ) {
-        this._received.push ( signal );
+        this._received.add ( signal );
     }
 
 }

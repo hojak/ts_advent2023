@@ -127,7 +127,7 @@ describe ( "Day 20: Module", () => {
             testee.process ( {type: SignalType.Low, sender: "test", receiver: "con"});
             testee.process ( {type: SignalType.Low, sender: "test2", receiver: "con"});
 
-            expect ( testee.received ).to.be.deep.equal ([
+            expect ( testee.received.signals ).to.be.deep.equal ([
                 {type: SignalType.Low, sender: "test", receiver: "con"},
                 {type: SignalType.Low, sender: "test2", receiver: "con"}
             ]);
