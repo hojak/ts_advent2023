@@ -45,9 +45,11 @@ describe("Day 20: ModuleConfiguration", () => {
         );
 
         it ( "should return the expected count of low and high signals", () => {
-            expect ( testee.process ( {
+            testee.process ( {
                 type: SignalType.Low, receiver: "broadcaster", sender: "button"
-            })).to.be.deep.equal ([8,4]);
+            });
+
+            expect ( testee.getNumberOfProcessedSignals()).to.be.deep.equal ([8,4]);
         })
     })
 });

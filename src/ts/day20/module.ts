@@ -3,6 +3,7 @@ import { Signal, SignalType } from "./signal";
 export abstract class Module {
     private _name: string;
     private _outputs: string[];
+    private _received: Signal[] = [];
 
     constructor ( name: string, outputs: string[] ) {
         this._name = name;
@@ -43,11 +44,20 @@ export abstract class Module {
         }
     }
 
+    public get received () :  Signal[] {
+        return this._received;
+    }
+
+    protected registerReveived ( signal: Signal ) {
+        this._received.push ( signal );
+    }
+
 }
 
 export class BroadcasterModule extends Module {
 
     process(signal: Signal) : Signal[] {
+        this.registerReveived ( signal );
         return this.outputs.map ( name => { return {type: signal.type, sender: this.name, receiver: name }; } );
     }
 
@@ -61,6 +71,8 @@ export class FlipFlopModule extends Module {
     }
 
     process(signal: Signal): Signal[] {
+        this.registerReveived ( signal );
+
         if( signal.type == SignalType.High) {
             return [];        
         }
@@ -80,6 +92,8 @@ export class ConjunctionModule extends Module {
     }
 
     process(signal: Signal): Signal[] {
+        this.registerReveived ( signal );
+
         this._inputs.set ( signal.sender, signal.type);
 
         let outSignal = this.rememberOnlyHighs() ? SignalType.Low : SignalType.High;

@@ -1,3 +1,4 @@
+import { prev_step } from "../day9/next_step";
 import { ConjunctionModule, Module } from "./module";
 import { Signal, SignalType } from "./signal";
 
@@ -21,6 +22,13 @@ export class ModuleConfiguration {
                 } 
             }
         }
+    }
+
+    getNumberOfProcessedSignals () : number[] {
+        return Array.from(this._modules.values()).map( module => [
+            module.received.filter( signal => signal.type == SignalType.Low).length,
+            module.received.filter( signal => signal.type == SignalType.High).length
+        ]).reduce ( (prev, curr) => [prev[0]+curr[0], prev[1]+curr[1]], [0,0] );
     }
 
     getNumberOfModules(): number {

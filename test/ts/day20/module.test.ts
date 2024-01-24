@@ -119,5 +119,19 @@ describe ( "Day 20: Module", () => {
         })
 
     });
-})
+
+
+    describe ( "process signal", () => {
+        it ("should store received input signals", () => {
+            let testee = new ConjunctionModule ( "con", ["a", "b"]);
+            testee.process ( {type: SignalType.Low, sender: "test", receiver: "con"});
+            testee.process ( {type: SignalType.Low, sender: "test2", receiver: "con"});
+
+            expect ( testee.received ).to.be.deep.equal ([
+                {type: SignalType.Low, sender: "test", receiver: "con"},
+                {type: SignalType.Low, sender: "test2", receiver: "con"}
+            ]);
+        });
+    });
+});
 
