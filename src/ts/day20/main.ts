@@ -6,13 +6,11 @@ consoleApp (input => {
 
     let moduleConfiguration = new ModuleConfiguration ( input );
 
-    let sumOfHigh = 0;
-    let sumOfLow = 0;
     for ( let i=0; i<1000; i++ ) {
-        let [low, high ] = moduleConfiguration.pushTheButton();
-        sumOfHigh += high;
-        sumOfLow += low;
+        moduleConfiguration.pushTheButton();
     }
+
+    let[sumOfLow, sumOfHigh] = moduleConfiguration.getNumberOfProcessedSignals();
     
     console.log ( "Processed Low Signals: " + sumOfLow);
     console.log ( "Processed High Signale: " + sumOfHigh);

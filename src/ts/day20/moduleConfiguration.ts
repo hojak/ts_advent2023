@@ -5,6 +5,7 @@ import { Signal, SignalType } from "./signal";
 export class ModuleConfiguration {
     
     private _modules: Map<string, Module> = new Map();
+    private _numberOfSignalsWithNoReceiver = [0,0];
     
     constructor ( configuration: string ) {
         configuration.split("\n")
@@ -28,7 +29,7 @@ export class ModuleConfiguration {
         return Array.from(this._modules.values()).map( module => [
             module.received.filter( signal => signal.type == SignalType.Low).length,
             module.received.filter( signal => signal.type == SignalType.High).length
-        ]).reduce ( (prev, curr) => [prev[0]+curr[0], prev[1]+curr[1]], [0,0] );
+        ]).reduce ( (prev, curr) => [prev[0]+curr[0], prev[1]+curr[1]], this._numberOfSignalsWithNoReceiver );
     }
 
     getNumberOfModules(): number {
@@ -39,10 +40,8 @@ export class ModuleConfiguration {
         return this._modules.get(name);
     }
 
-    process(initialSignal: Signal): number[] {
+    process(initialSignal: Signal) {
         let queue : Signal[] = [ initialSignal ];
-        let lowSignals = 0;
-        let highSignals = 0;
 
         while ( queue.length > 0 ) {
             let currentSignal = queue.shift();
@@ -50,21 +49,23 @@ export class ModuleConfiguration {
                 continue;
             }
 
-            if ( currentSignal?.type == SignalType.Low ) {
-                lowSignals ++;
-            } else {
-                highSignals++;
-            }
+            let receiver = this._modules.get(currentSignal.receiver);
 
-            let newSignals = this._modules.get ( currentSignal.receiver )?.process(currentSignal);
-            newSignals?.forEach ( newSignal => queue.push ( newSignal ))
+            if ( receiver == undefined ) {
+                if ( currentSignal.type == SignalType.Low) {
+                    this._numberOfSignalsWithNoReceiver[0] ++;
+                } else {
+                    this._numberOfSignalsWithNoReceiver[1] ++;
+                }
+            } else {
+                let newSignals = receiver.process(currentSignal);
+                newSignals.forEach ( newSignal => queue.push ( newSignal ))    
+            }
         }
- 
-        return [lowSignals, highSignals];
     }
 
-    pushTheButton() : number[] {
-        return this.process ( {
+    pushTheButton() {
+        this.process ( {
             type: SignalType.Low,
             receiver: "broadcaster",
             sender: "button"

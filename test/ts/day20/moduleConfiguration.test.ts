@@ -35,7 +35,6 @@ describe("Day 20: ModuleConfiguration", () => {
     })
 
     describe ( "processSignal", () => {
-
         let testee = new ModuleConfiguration ( 
             "broadcaster -> a, b, c\n"+
             "%a -> b\n"+
@@ -52,4 +51,31 @@ describe("Day 20: ModuleConfiguration", () => {
             expect ( testee.getNumberOfProcessedSignals()).to.be.deep.equal ([8,4]);
         })
     })
+
+    describe("counting signals", () => {
+        it ( "should return 8000 low and 4000 high signales for pushing 1000 times", () => {
+
+            let testee = new ModuleConfiguration ( 
+                "broadcaster -> a, b, c\n"+
+                "%a -> b\n"+
+                "%b -> c\n"+
+                "%c -> inv\n"+
+                "&inv -> a"
+            );
+            for ( let i=0; i<1000; i++)  {
+                testee.pushTheButton();
+            }
+
+            expect( testee.getNumberOfProcessedSignals()).to.be.deep.equal([8000,4000]);
+        })
+
+        it ( "should collect signals with no especially configured receiver", () => {
+            let testee = new ModuleConfiguration ( 
+                "broadcaster -> a, b"
+            );
+            testee.pushTheButton();
+
+            expect (testee.getNumberOfProcessedSignals()).to.be.deep.equal ([3,0]);
+        });
+    });
 });
