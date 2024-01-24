@@ -1,6 +1,5 @@
 import { consoleApp } from "../consoleApp";
 import { ModuleConfiguration } from "./moduleConfiguration";
-import { SignalType } from "./signal";
 
 consoleApp (input => {
     console.log ( "working on module configuration");
@@ -10,11 +9,7 @@ consoleApp (input => {
     let sumOfHigh = 0;
     let sumOfLow = 0;
     for ( let i=0; i<1000; i++ ) {
-        let [low, high ] = moduleConfiguration.process ( {
-            type: SignalType.Low,
-            receiver: "broadcaster",
-            sender: "button"
-        });
+        let [low, high ] = moduleConfiguration.pushTheButton();
         sumOfHigh += high;
         sumOfLow += low;
     }

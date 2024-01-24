@@ -3,7 +3,6 @@ import { Signal, SignalType } from "./signal";
 
 export class ModuleConfiguration {
     
-    
     private _modules: Map<string, Module> = new Map();
     
     constructor ( configuration: string ) {
@@ -32,7 +31,6 @@ export class ModuleConfiguration {
         return this._modules.get(name);
     }
 
-
     process(initialSignal: Signal): number[] {
         let queue : Signal[] = [ initialSignal ];
         let lowSignals = 0;
@@ -55,6 +53,14 @@ export class ModuleConfiguration {
         }
  
         return [lowSignals, highSignals];
+    }
+
+    pushTheButton() : number[] {
+        return this.process ( {
+            type: SignalType.Low,
+            receiver: "broadcaster",
+            sender: "button"
+        });
     }
 }
 
