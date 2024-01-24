@@ -59,7 +59,12 @@ export class BroadcasterModule extends Module {
 
     process(signal: Signal) : Signal[] {
         this.registerReveived ( signal );
-        return this.outputs.map ( name => { return {type: signal.type, sender: this.name, receiver: name }; } );
+        return this.outputs.map ( name => { return {
+            type: signal.type, 
+            sender: this.name, 
+            receiver: name,
+            push: signal.push
+        }; } );
     }
 
 }
@@ -81,7 +86,12 @@ export class FlipFlopModule extends Module {
         this._isOn = ! this._isOn;
         let outSignal = this._isOn ? SignalType.High : SignalType.Low;
         
-        return this.outputs.map ( name => { return {type: outSignal, receiver: name, sender: this.name }; } );
+        return this.outputs.map ( name => { return {
+            type: outSignal, 
+            sender: this.name,
+            receiver: name, 
+            push: signal.push
+        }; } );
     }
 }
 
@@ -99,7 +109,12 @@ export class ConjunctionModule extends Module {
 
         let outSignal = this.rememberOnlyHighs() ? SignalType.Low : SignalType.High;
         
-        return this.outputs.map ( name => { return {type: outSignal, receiver: name, sender: this.name }; } );
+        return this.outputs.map ( name => { return {
+            type: outSignal, 
+            sender: this.name,
+            receiver: name, 
+            push: signal.push
+        }; } );
     }
 
     rememberOnlyHighs() : boolean{

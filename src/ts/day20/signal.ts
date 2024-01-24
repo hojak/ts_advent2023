@@ -1,7 +1,8 @@
 export interface Signal {
     type: SignalType,
-    receiver: string,
     sender: string
+    receiver: string,
+    push: number;
 }
 
 export enum SignalType {

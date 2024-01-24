@@ -4,6 +4,7 @@ import { Signal, SignalType } from "./signal";
 export class ModuleConfiguration {
     
     private _modules: Map<string, Module> = new Map();
+    private _numberOfPushes = 0;
     
     constructor ( configuration: string ) {
         configuration.split("\n")
@@ -59,11 +60,15 @@ export class ModuleConfiguration {
         }
     }
 
+
     pushTheButton() {
+        this._numberOfPushes ++;
+        
         this.process ( {
             type: SignalType.Low,
             receiver: "broadcaster",
-            sender: "button"
+            sender: "button",
+            push: this._numberOfPushes
         });
     }
 }

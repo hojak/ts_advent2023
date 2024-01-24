@@ -19,4 +19,8 @@ export class SignalSequence {
         return this._sequence.filter ( signal => signal.type == SignalType.High ).length;
     }
 
+    getSignalsReceivedInPush(push: number): Signal[] {
+        return this._sequence.filter ( signal => signal.push == push );
+    }
+
 }
