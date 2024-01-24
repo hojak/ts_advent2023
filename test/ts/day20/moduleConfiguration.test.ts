@@ -62,9 +62,8 @@ describe("Day 20: ModuleConfiguration", () => {
                 "%c -> inv\n"+
                 "&inv -> a"
             );
-            for ( let i=0; i<1000; i++)  {
-                testee.pushTheButton();
-            }
+
+            testee.pushTheButton(1000);
 
             expect( testee.getNumberOfProcessedSignals()).to.be.deep.equal([8000,4000]);
         })
@@ -73,7 +72,7 @@ describe("Day 20: ModuleConfiguration", () => {
             let testee = new ModuleConfiguration ( 
                 "broadcaster -> a, b"
             );
-            testee.pushTheButton();
+            testee.pushTheButton(1);
 
             expect (testee.getNumberOfProcessedSignals()).to.be.deep.equal ([3,0]);
         });

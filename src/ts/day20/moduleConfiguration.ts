@@ -60,16 +60,17 @@ export class ModuleConfiguration {
         }
     }
 
+    pushTheButton(times: number) {
+        for ( let push = 0; push < times; push ++ ) {
+            this._numberOfPushes ++;
 
-    pushTheButton() {
-        this._numberOfPushes ++;
-        
-        this.process ( {
-            type: SignalType.Low,
-            receiver: "broadcaster",
-            sender: "button",
-            push: this._numberOfPushes
-        });
+            this.process ( {
+                type: SignalType.Low,
+                receiver: "broadcaster",
+                sender: "button",
+                push: this._numberOfPushes
+            });
+        }
     }
 }
 

@@ -117,7 +117,6 @@ describe ( "Day 20: Module", () => {
                 {type: SignalType.High, sender: "con", receiver: "b", push: 1},
             ]);
         })
-
     });
 
 

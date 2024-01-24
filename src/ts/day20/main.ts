@@ -6,9 +6,7 @@ consoleApp (input => {
 
     let moduleConfiguration = new ModuleConfiguration ( input );
 
-    for ( let i=0; i<1000; i++ ) {
-        moduleConfiguration.pushTheButton();
-    }
+    moduleConfiguration.pushTheButton(1000);
 
     let[sumOfLow, sumOfHigh] = moduleConfiguration.getNumberOfProcessedSignals();
     
