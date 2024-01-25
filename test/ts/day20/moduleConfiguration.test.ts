@@ -149,5 +149,23 @@ describe("Day 20: ModuleConfiguration", () => {
             ]);
 
         });
-    })
+    });
+
+    describe ( "analyzeModuleLoops", () => {
+        let testee = new ModuleConfiguration(
+            "broadcaster -> a\n"+
+            "%a -> b\n"+
+            "%b -> a"
+        );
+        testee.analyzeModuleLoops();  
+
+        it("should recognize the loop a<>b and make it available there", () => {
+            expect (testee.getModuleLoops("a")).to.be.deep.equal ( [["a","b"]])
+            expect (testee.getModuleLoops("b")).to.be.deep.equal ( [["a","b"]])
+        })
+
+        it ( "should make the distance to boradcaster available", () => {
+            expect ( testee.getDistanceToButton("a") ).to.be.equal (2);
+        })
+    });
 });

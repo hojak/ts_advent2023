@@ -1,10 +1,10 @@
 import { BroadcasterModule, ConjunctionModule, Module } from "./module";
 import { Signal, SignalType } from "./signal";
 
-export class ModuleConfiguration {
-    
+export class ModuleConfiguration {    
     private _modules: Map<string, Module> = new Map();
     private _numberOfPushes = 0;
+    private _distanceToButton: Map<string, number> = new Map();
     
     constructor ( configuration: string ) {
         configuration.split("\n")
@@ -72,6 +72,47 @@ export class ModuleConfiguration {
             });
         }
     }
+
+
+
+    analyzeModuleLoops() {
+        let queue : string[][] = [ ["broadcaster"] ];
+
+        this._distanceToButton = new Map<string, number>();
+        this._distanceToButton.set ( "broadcaster", 1);
+
+        while ( queue.length > 0) {
+            const currentPath : string[] = queue.shift() ?? [];
+            const nameOfCurrentModule = currentPath[currentPath.length - 1];
+            const currentModule = this._modules.get(nameOfCurrentModule);
+
+            if (currentModule == undefined) {
+                continue;
+            }
+
+            for ( let connected of currentModule.outputs ) {
+                const indexInPath = currentPath.indexOf(connected);
+                if ( indexInPath >= 0 ) {
+                    // we have a loop
+                    // this._moduleLoops.
+                    // hemingway
+                } else {
+                    this._distanceToButton.set ( connected, this.getDistanceToButton(nameOfCurrentModule)+1)
+                    queue.push ( currentPath.concat([connected]));
+                }
+            }    
+        }
+        
+    }
+
+    getDistanceToButton(moduleName: string): number {
+        return this._distanceToButton.get(moduleName) ?? NaN;
+    }
+
+    getModuleLoops(arg0: string): any {
+        throw new Error("Method not implemented.");
+    }
+
 }
 
 function queueToString(queue: Signal[]) :string {
