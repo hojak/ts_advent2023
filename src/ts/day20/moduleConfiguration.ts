@@ -5,6 +5,7 @@ export class ModuleConfiguration {
     private _modules: Map<string, Module> = new Map();
     private _numberOfPushes = 0;
     private _distanceToButton: Map<string, number> = new Map();
+    private _moduleLoops: Map<string, string[][]> = new Map();
     
     constructor ( configuration: string ) {
         configuration.split("\n")
@@ -93,24 +94,32 @@ export class ModuleConfiguration {
             for ( let connected of currentModule.outputs ) {
                 const indexInPath = currentPath.indexOf(connected);
                 if ( indexInPath >= 0 ) {
-                    // we have a loop
-                    // this._moduleLoops.
-                    // hemingway
+                    this._registerLoopAtSteps(currentPath.splice(indexInPath));
                 } else {
-                    this._distanceToButton.set ( connected, this.getDistanceToButton(nameOfCurrentModule)+1)
+                    this._distanceToButton.set ( connected, this.getDistanceToButton(nameOfCurrentModule)+1);
                     queue.push ( currentPath.concat([connected]));
                 }
             }    
         }
-        
+    }
+
+    private _registerLoopAtSteps(loop: string[]) {
+        for (const pathModule of loop) {
+            let registeredLoops = this._moduleLoops.get(pathModule);
+            if (registeredLoops == undefined) {
+                registeredLoops = [];
+            }
+            registeredLoops.push(loop);
+            this._moduleLoops.set(pathModule, registeredLoops);
+        }
     }
 
     getDistanceToButton(moduleName: string): number {
         return this._distanceToButton.get(moduleName) ?? NaN;
     }
 
-    getModuleLoops(arg0: string): any {
-        throw new Error("Method not implemented.");
+    getModuleLoops(moculeName: string): any {
+        return this._moduleLoops.get ( moculeName );
     }
 
 }
