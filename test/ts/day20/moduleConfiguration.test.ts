@@ -163,9 +163,23 @@ describe("Day 20: ModuleConfiguration", () => {
             expect (testee.getModuleLoops("a")).to.be.deep.equal ( [["a","b"]])
             expect (testee.getModuleLoops("b")).to.be.deep.equal ( [["a","b"]])
         })
-
-        it ( "should make the distance to boradcaster available", () => {
-            expect ( testee.getDistanceToButton("a") ).to.be.equal (2);
-        })
     });
+
+    describe ( "loop analysis returns correct module distances", () => {
+        let testee = new ModuleConfiguration ( 
+            "broadcaster -> a, b, c\n"+
+            "%a -> b\n"+
+            "%b -> c\n"+
+            "%c -> inv\n"+
+            "&inv -> a"
+        );
+        testee.analyzeModuleLoops();
+        it ( "should return the correct depths", () => {
+            expect(testee.getDistanceToButton("a")).to.be.equal(2);
+            expect(testee.getDistanceToButton("b")).to.be.equal(2);
+            expect(testee.getDistanceToButton("c")).to.be.equal(2);
+            expect(testee.getDistanceToButton("inv")).to.be.equal(3);
+        })
+        
+    })
 });

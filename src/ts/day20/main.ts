@@ -13,4 +13,13 @@ consoleApp (input => {
     console.log ( "Processed Low Signals: " + sumOfLow);
     console.log ( "Processed High Signale: " + sumOfHigh);
     console.log ( "Result: "+ (sumOfHigh *sumOfLow));
+
+    moduleConfiguration.analyzeModuleLoops();
+
+    for (const moduleName of moduleConfiguration.moduleNames.sort( (a,b) => moduleConfiguration.getDistanceToButton(a) - moduleConfiguration.getDistanceToButton(b))) {
+        console.log ( "Module: " + moduleName + ", distance: " + moduleConfiguration.getDistanceToButton(moduleName));
+        console.log ( "Loops: " + (moduleConfiguration.getModuleLoops(moduleName) ?? []).join(" | "));
+        console.log ();
+    }
+
 })

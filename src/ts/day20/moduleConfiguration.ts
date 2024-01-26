@@ -25,6 +25,11 @@ export class ModuleConfiguration {
         }
     }
 
+    public get moduleNames () : string[] {
+        return Array.from(this._modules.keys());
+    }
+    
+
     getNumberOfProcessedSignals () : number[] {
         return Array.from(this._modules.values()).map( module => [
             module.received.numberOfLowSignals,
@@ -96,7 +101,9 @@ export class ModuleConfiguration {
                 if ( indexInPath >= 0 ) {
                     this._registerLoopAtSteps(currentPath.splice(indexInPath));
                 } else {
-                    this._distanceToButton.set ( connected, this.getDistanceToButton(nameOfCurrentModule)+1);
+                    if ( ! this._distanceToButton.has(connected)) {
+                        this._distanceToButton.set ( connected, this.getDistanceToButton(nameOfCurrentModule)+1);
+                    }
                     queue.push ( currentPath.concat([connected]));
                 }
             }    
